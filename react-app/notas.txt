@@ -1,6 +1,0 @@
-para ejecutar app
-
-cd react-app
-pnpm install
-pnpm run dev
-
