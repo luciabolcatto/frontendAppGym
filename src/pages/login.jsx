@@ -1,7 +1,10 @@
-import React from 'react';
-import './login.css'; // Importás tus estilos
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Login.css';
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     alert('Iniciaste sesión (ejemplo)');
@@ -16,11 +19,24 @@ const Login = () => {
           <input type="email" placeholder="tuemail@ejemplo.com" required />
 
           <label>Contraseña</label>
-          <input type="password" placeholder="••••••••" required />
+          <div className="input-group">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              required
+            />
+            <button
+              type="button"
+              className="toggle-btn"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
+          </div>
 
           <button type="submit">Ingresar</button>
           <p>
-            ¿No tenés cuenta? <a href="#">Registrate</a>
+            ¿No tenés cuenta? <Link to="/register">Registrate</Link>
           </p>
         </form>
       </div>
