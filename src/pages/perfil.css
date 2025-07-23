@@ -1,0 +1,155 @@
+/* Contenedor principal */
+.perfil-container {
+  background: linear-gradient(to bottom, #000000, #111111);
+  min-height: 100vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Título */
+.perfil-title {
+  font-size: 36px;
+  color: #00bfff;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+/* Card contenedora */
+.perfil-card {
+  display: flex;
+  flex-direction: row;
+  background-color: #1a1a1a;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 191, 255, 0.15);
+  max-width: 1000px;
+  width: 100%;
+  gap: 40px;
+  flex-wrap: wrap;
+  transition: 0.3s ease all;
+}
+
+/* Sección izquierda (foto + nombre) */
+.perfil-left {
+  flex: 1;
+  text-align: center;
+  min-width: 240px;
+}
+
+/* Foto de perfil */
+.perfil-avatar img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #00bfff;
+  transition: 0.3s ease;
+}
+
+.avatar-placeholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 14px;
+  border: 2px dashed #00bfff;
+  margin: 0 auto;
+}
+
+.perfil-avatar input[type='file'] {
+  margin-top: 12px;
+  color: white;
+  font-size: 13px;
+}
+
+/* Nombre mostrado debajo de la imagen */
+.perfil-nombre {
+  margin-top: 20px;
+  color: #00bfff;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Sección derecha con el formulario */
+.perfil-right {
+  flex: 2;
+  min-width: 300px;
+}
+
+/* Formulario */
+.perfil-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.perfil-form label {
+  margin-top: 14px;
+  margin-bottom: 6px;
+  color: #bbb;
+  font-weight: 500;
+}
+
+.perfil-form input {
+  padding: 10px;
+  background-color: #111;
+  border: 1px solid #00bfff;
+  border-radius: 6px;
+  color: white;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.perfil-form input:disabled {
+  background-color: #222;
+  border-color: #444;
+  color: #777;
+}
+
+/* Botón Editar / Guardar */
+.perfil-form button {
+  margin-top: 25px;
+  background-color: #00bfff;
+  color: black;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.perfil-form button:hover {
+  background-color: #008fcc;
+  color: white;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .perfil-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .perfil-left,
+  .perfil-right {
+    width: 100%;
+    text-align: center;
+  }
+
+  .perfil-form {
+    align-items: center;
+  }
+
+  .perfil-form input {
+    width: 90%;
+  }
+}
