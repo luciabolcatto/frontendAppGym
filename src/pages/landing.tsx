@@ -3,7 +3,7 @@ import './landing.css';
 import { useNavigate } from 'react-router-dom';
 import paginainicio from '../assets/paginainicio.jpg';
 
-export default function Landing() {
+export default function Landing(): React.JSX.Element {
   const navigate = useNavigate();
 
   return (

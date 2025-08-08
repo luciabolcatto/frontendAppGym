@@ -1,30 +1,36 @@
-// NO VA ESTE
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './reservas.css';
 
-const Reservas = () => {
-  const [form, setForm] = useState({ clase: '', fecha: '', horario: '' });
-  const [reservas, setReservas] = useState([]);
+interface ReservaItem {
+  id: number;
+  clase: string;
+  fecha: string;
+  horario: string;
+}
+
+const Reservas = (): React.JSX.Element => {
+  const [form, setForm] = useState<Omit<ReservaItem, 'id'>>({ clase: '', fecha: '', horario: '' });
+  const [reservas, setReservas] = useState<ReservaItem[]>([]);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('reservas')) || [];
+    const saved: ReservaItem[] = JSON.parse(localStorage.getItem('reservas') || '[]');
     setReservas(saved);
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const nuevaReserva = { ...form, id: Date.now() };
+    const nuevaReserva: ReservaItem = { ...form, id: Date.now() };
     const nuevas = [...reservas, nuevaReserva];
     setReservas(nuevas);
     localStorage.setItem('reservas', JSON.stringify(nuevas));
     setForm({ clase: '', fecha: '', horario: '' });
   };
 
-  const cancelarReserva = (id) => {
+  const cancelarReserva = (id: number) => {
     const filtradas = reservas.filter((r) => r.id !== id);
     setReservas(filtradas);
     localStorage.setItem('reservas', JSON.stringify(filtradas));

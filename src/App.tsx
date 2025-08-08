@@ -7,7 +7,7 @@ import Home from './pages/home';
 import Perfil from './pages/perfil';
 import Reserva from './pages/reservas';
 
-function App() {
+function App(): React.JSX.Element {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />

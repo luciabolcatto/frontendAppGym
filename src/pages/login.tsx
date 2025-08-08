@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+interface Usuario {
+  email: string;
+  password: string;
+  [key: string]: unknown;
+}
+
+const Login = (): React.JSX.Element => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const usuarios: Usuario[] = JSON.parse(localStorage.getItem('usuarios') || '[]');
 
     const usuarioEncontrado = usuarios.find(
       (u) => u.email === email && u.password === password

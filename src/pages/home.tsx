@@ -1,9 +1,8 @@
-// src/pages/Home.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
-const Home = () => {
+const Home = (): React.JSX.Element => {
   return (
     <div>
       <nav className="navbar">
