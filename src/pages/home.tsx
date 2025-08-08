@@ -18,7 +18,7 @@ const Home = (): React.JSX.Element => {
       </nav>
 
       <main className="home-content">
-        <h1>¡Bienvenida a tu espacio, Lu! 💪</h1>
+        <h1>¡Bienvenido a tu espacio! 💪</h1>
         <p>Elegí una opción del menú para continuar.</p>
       </main>
     </div>

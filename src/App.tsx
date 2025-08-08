@@ -6,6 +6,7 @@ import Register from './pages/register';
 import Home from './pages/home';
 import Perfil from './pages/perfil';
 import Reserva from './pages/reservas';
+import ActividadesPage from './pages/actividades';
 
 function App(): React.JSX.Element {
   return (
@@ -16,6 +17,7 @@ function App(): React.JSX.Element {
       <Route path="/home" element={<Home />} />
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/reserva" element={<Reserva />} />
+      <Route path="/actividades" element={<ActividadesPage />} />
     </Routes>
   );
 }
