@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { Actividad } from "../types/actividad";
+import ActividadItem from "../components/ActividadItem";
+import "./actividades.css";
 
-interface Actividad {
-  id: string;
-  nombre: string;
-  descripcion: string;
-  cupo: number;
-}
-
-const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5500/api';
+const API_BASE = (import.meta as any).env?.VITE_API_URL || "http://localhost:5500/api";
 
 const ActividadesPage: React.FC = () => {
   const [data, setData] = useState<Actividad[]>([]);
@@ -19,10 +15,11 @@ const ActividadesPage: React.FC = () => {
     let cancelled = false;
     setLoading(true);
     setError(null);
+
     fetch(`${API_BASE}/actividad`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      method: "GET",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
     })
       .then(async (r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -34,48 +31,35 @@ const ActividadesPage: React.FC = () => {
       })
       .catch((e: any) => {
         if (cancelled) return;
-        setError(e.message || 'Error desconocido');
+        setError(e.message || "Error desconocido");
       })
       .finally(() => !cancelled && setLoading(false));
+
     return () => {
       cancelled = true;
     };
   }, [reloadFlag]);
 
   return (
-    <div style={{ padding: '1rem', fontFamily: 'sans-serif' }}>
-      <h1 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>Actividades</h1>
+    <div className="actividades-container">
+      <h1 className="titulo">Actividades</h1>
+
       <button
-        style={{ marginBottom: '1rem' }}
+        className="boton-recargar"
         onClick={() => setReloadFlag((n) => n + 1)}
         disabled={loading}
       >
-        {loading ? 'Cargando...' : 'Recargar'}
+        {loading ? "Cargando..." : "Recargar"}
       </button>
-      {error && (
-        <div style={{ color: 'red', marginBottom: '1rem' }}>
-          Error: {error}
-        </div>
-      )}
-      {loading && !error && <div>Cargando actividades...</div>}
-      {!loading && !error && data.length === 0 && <div>No hay actividades.</div>}
+
+      {error && <div className="error">Error: {error}</div>}
+      {loading && !error && <div className="cargando">Cargando actividades...</div>}
+      {!loading && !error && data.length === 0 && <div className="no-data">No hay actividades.</div>}
+
       {!loading && !error && data.length > 0 && (
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '0.5rem' }}>
+        <ul className="lista-actividades">
           {data.map((a) => (
-            <li
-              key={a.id}
-              style={{
-                border: '1px solid #444',
-                borderRadius: 4,
-                padding: '0.75rem',
-                background: '#111',
-                color: '#eee',
-              }}
-            >
-              <strong style={{ color: '#00bfff' }}>{a.nombre}</strong>
-              <div style={{ fontSize: '0.85rem', opacity: 0.85 }}>{a.descripcion}</div>
-              <div style={{ fontSize: '0.75rem', marginTop: 4 }}>Cupo: {a.cupo}</div>
-            </li>
+            <ActividadItem key={a.id} actividad={a} />
           ))}
         </ul>
       )}

@@ -1,28 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Home.css';
+import React from "react";
+import "./home.css";
+import paginainicio from "../assets/paginainicio.jpg";
 
-const Home = (): React.JSX.Element => {
+export default function Home(): React.JSX.Element {
   return (
-    <div>
-      <nav className="navbar">
-        <h2>Fitness Prime</h2>
-        <ul>
-          <li>
-            <Link to="/reserva">Reservar</Link>
-          </li>
-          <li>
-            <Link to="/perfil">Perfil</Link>
-          </li>
-        </ul>
-      </nav>
-
-      <main className="home-content">
-        <h1>¡Bienvenido a tu espacio! 💪</h1>
-        <p>Elegí una opción del menú para continuar.</p>
-      </main>
+    <div className="home-container">
+      <div className="main-content">
+        <img src={paginainicio} alt="Gym" className="hero-image" />
+        <div className="text-content">
+          <h1>LIBERÁ TU POTENCIAL</h1>
+          <p>Unite a nosotros y sentí la diferencia</p>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
-export default Home;
+
