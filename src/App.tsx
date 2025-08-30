@@ -14,13 +14,13 @@ function App(): React.JSX.Element {
         {/* Todas las rutas usan Layout */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />           {/* / */}
-          <Route path="home" element={<Home />} />    {/* /home */}
-          <Route path="login" element={<Login />} />  
-          <Route path="register" element={<Register />} />
+          <Route path="home" element={<Home />} />    {/* /home */}  
           <Route path="perfil" element={<Perfil />} />
           <Route path="reserva" element={<Reserva />} />
           <Route path="actividades" element={<ActividadesPage />} />
         </Route>
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
       </Routes>
     
   );

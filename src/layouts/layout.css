@@ -24,7 +24,7 @@
   color: #00bfff;
 }
 
-.nav-buttons button {
+.nav-center button {
   margin-left: 10px;
   background-color: transparent;
   color: white;
@@ -34,6 +34,29 @@
   border-radius: 4px;
   transition: 0.3s;
 }
+
+.nav-right button {
+  margin-left: 10px;
+  background-color: #00bfff;
+  color: black;
+  border: 1px solid white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.nav-right2 button {
+  margin-left: 10px;
+  background-color: white;
+  color: black;
+  border: 1px solid #00bfff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
 
 .nav-buttons button:hover {
   background-color: #00bfff;
