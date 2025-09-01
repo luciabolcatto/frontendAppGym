@@ -1,7 +1,7 @@
-import React from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import "./layout.css";
-import { FaInstagram, FaFacebookF, FaTwitter } from "react-icons/fa";
+import React from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import './layout.css';
+import { FaInstagram, FaFacebookF, FaTwitter } from 'react-icons/fa';
 
 export default function Layout(): React.JSX.Element {
   const navigate = useNavigate();
@@ -12,36 +12,30 @@ export default function Layout(): React.JSX.Element {
       <nav
         className="navbar"
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
         <div className="logo">
-          <Link to="/" style={{ textDecoration: "none", color: "#00bfff" }}>
+          <Link to="/" style={{ textDecoration: 'none', color: '#00bfff' }}>
             FITNESS PRIME
           </Link>
         </div>
 
         <div
-          className="nav-center"
+          className="nav-left"
           style={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            gap: "12px",
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center',
           }}
         >
-          <button onClick={() => navigate("/actividades")}>Actividades</button>
-          <button onClick={() => navigate("/clases")}>Clases</button>
-          <button>Conócenos</button>
-        </div>
-
-        <div className="nav-right" style={{ display: "flex", gap: "12px" }}>
-          <button onClick={() => navigate("/planes")}>Planes</button>
-        </div>
-        <div className="nav-right2" style={{ display: "flex", gap: "12px" }}>
-          <button onClick={() => navigate("/login")}>Iniciar sesión</button>
+          <button onClick={() => navigate('/actividades')}>Actividades</button>
+          <button onClick={() => navigate('/clases')}>Clases</button>
+          <button onClick={() => navigate('/conocenos')}>Conócenos</button>
+          <button onClick={() => navigate('/planes')}>Planes</button>
+          <button onClick={() => navigate('/login')}>Iniciar sesión</button>
         </div>
       </nav>
 
@@ -71,7 +65,6 @@ export default function Layout(): React.JSX.Element {
             <FaTwitter /> @FitnessPrimeOk
           </p>
         </div>
-
 
         <div className="footer-bottom">
           <p>
