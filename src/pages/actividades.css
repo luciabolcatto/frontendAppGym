@@ -1,0 +1,107 @@
+:root {
+  --celeste: #00bfff;
+  --negro: #0a0a0a;
+  --blanco: #ffffff;
+}
+
+.actividades-page {
+  background: var(--negro);
+  min-height: 100vh;
+  color: var(--blanco);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem 1rem;
+}
+
+.hero-title {
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--blanco);
+  font-size: clamp(2.25rem, 6vw, 6rem);
+  line-height: 0.9;
+  text-align: center;
+  text-shadow: 0 6px 24px rgba(0,0,0,.6);
+}
+
+.actividades-grid {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.card {
+  background: #0d0d0d;
+  border: 1px solid #1f1f1f;
+  border-radius: 18px;
+  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+
+.card-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+}
+
+.card-title {
+  font-weight: 800;
+  margin-top: 0.9rem;
+  font-size: 1.15rem;
+  text-align: center;
+}
+
+.card-desc {
+  margin-top: 0.5rem;
+  font-size: 0.92rem;
+  color: #e9e9e9;
+  opacity: 0.95;
+  text-align: center;
+}
+
+.meta {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-pill {
+  border: 2px solid var(--celeste);
+  color: var(--blanco);
+  background: transparent;
+  border-radius: 9999px;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  transition: all .2s ease;
+  font-weight: 600;
+}
+
+.btn-pill:hover {
+  background: var(--celeste);
+  color: #000;
+  transform: translateY(-1px);
+}
+
+.placeholder {
+  background: radial-gradient(circle at 30% 20%, #0f172a, #0b0b0b 60%);
+  color: #94a3b8;
+  display: grid;
+  place-items: center;
+}
+
+/* responsive 1/2/3 columnas (complementa a Tailwind si está presente) */
+@media (min-width: 640px) {
+  .actividades-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .actividades-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
