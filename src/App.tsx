@@ -1,22 +1,30 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Landing from './pages/landing';
-import Login from './pages/login';
-import Register from './pages/register';
-import Home from './pages/home';
-import Perfil from './pages/perfil';
-import Reserva from './pages/reservas';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./layouts/layout";
+import Home from "./pages/home";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import Perfil from "./pages/perfil";
+import Reserva from "./pages/reservas";
+import ActividadesPage from "./pages/actividades";
+import PlanesPage from "./pages/planes";
 
 function App(): React.JSX.Element {
   return (
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/perfil" element={<Perfil />} />
-      <Route path="/reserva" element={<Reserva />} />
-    </Routes>
+   
+      <Routes>
+        {/* Todas las rutas usan Layout */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />           {/* / */}
+          <Route path="home" element={<Home />} />    {/* /home */}  
+          <Route path="perfil" element={<Perfil />} />
+          <Route path="reserva" element={<Reserva />} />
+          <Route path="actividades" element={<ActividadesPage />} />
+          <Route path="planes" element={<PlanesPage />} />
+        </Route>
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+      </Routes>
+    
   );
 }
 
