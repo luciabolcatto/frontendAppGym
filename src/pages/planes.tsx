@@ -36,7 +36,12 @@ const PlanesPage: React.FC = () => {
 
   return (
     <div className="planes-page">
-      <div className="hero"><h1 className="hero-title">PLANES</h1></div>
+      <div className="hero">
+        <div className="text-center">
+          <h1 className="hero-title">PLANES</h1>
+          <p className="mt-2 text-sm md:text-base opacity-90">Elige el plan que mejor se ajuste a tus objetivos.</p>
+        </div>
+      </div>
 
       {loading && (
         <div className="planes-grid">
@@ -57,7 +62,11 @@ const PlanesPage: React.FC = () => {
               <h3 className="plan-name">{p.nombre}</h3>
               <p className="plan-desc">{p.descripcion}</p>
               <div className="plan-price">{currency(p.precio)}</div>
-              <div className="plan-meta">{p.meses} meses</div>
+              {p.meses == 1 ? (
+                <div className="plan-meta">{p.meses} mes</div>
+              ) : (
+                <div className="plan-meta">{p.meses} meses</div>
+              )}
               <button className="cta">¡Inscribite ya!</button>
             </article>
           ))}
