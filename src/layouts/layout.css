@@ -19,12 +19,13 @@
 }
 
 .logo {
+  font-family: 'Montserrat', Arial, sans-serif;
   font-size: 24px;
   font-weight: 800;
-  color: #00bfff;
+  color: #fff;
 }
 
-.nav-center button {
+.navbar button {
   margin-left: 10px;
   background-color: transparent;
   color: white;
@@ -35,30 +36,7 @@
   transition: 0.3s;
 }
 
-.nav-right button {
-  margin-left: 10px;
-  background-color: #00bfff;
-  color: black;
-  border: 1px solid white;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: 0.3s;
-}
-
-.nav-right2 button {
-  margin-left: 10px;
-  background-color: white;
-  color: black;
-  border: 1px solid #00bfff;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: 0.3s;
-}
-
-
-.nav-buttons button:hover {
+.navbar button:hover {
   background-color: #00bfff;
   color: black;
 }
@@ -79,35 +57,8 @@
   border-top: 1px solid #00bfff;
 }
 
-.footer h2 {
-  color: #00bfff;
-  margin-bottom: 10px;
-}
-
-.footer-top p {
-  margin: 5px 0;
-  font-size: 14px;
-}
-
-.footer-social {
-  margin: 15px 0;
+.nav-left {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.footer-social a {
-  color: #00bfff;
-  font-size: 22px;
-  transition: color 0.3s;
-}
-
-.footer-social a:hover {
-  color: white;
-}
-
-.footer-bottom {
-  margin-top: 15px;
-  font-size: 12px;
-  color: #aaa;
+  gap: 12px;
+  align-items: center;
 }
