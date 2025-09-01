@@ -46,7 +46,7 @@ const ActividadesPage: React.FC = () => {
     return (
       <div className="actividades-page">
         <div className="hero">
-          <h1 className="hero-title">CLASSES</h1>
+          <h1 className="hero-title">ACTIVIDADES</h1>
         </div>
         <div className="actividades-grid">
           <div className="card placeholder rounded-[18px] h-[320px]"></div>
