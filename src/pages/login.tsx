@@ -1,34 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import type { Usuario } from '../types/usuario';
 import './Login.css';
 
-interface Usuario {
-  email: string;
-  password: string;
-  [key: string]: unknown;
-}
-
 const Login = (): React.JSX.Element => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [mail, setMail] = useState<string>('');
+  const [contrasena, setContrasena] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Mostrar bienvenida 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('usuario');
+    if (storedUser) {
+      const user: Usuario = JSON.parse(storedUser);
+      alert(`Bienvenido ${user.nombre} ${user.apellido}`);
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const usuarios: Usuario[] = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    try {
+      //  Login
+      const res = await fetch('http://localhost:5500/api/Usuarios/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mail, contrasena }),
+      });
 
-    const usuarioEncontrado = usuarios.find(
-      (u) => u.email === email && u.password === password
-    );
+      const data = await res.json();
 
-    if (usuarioEncontrado) {
-      localStorage.setItem('usuario', JSON.stringify(usuarioEncontrado));
-      alert('Iniciaste sesión (ejemplo)');
+      if (!res.ok) {
+        alert(data.message || 'Error al iniciar sesión');
+        return;
+      }
+
+      const { token, usuario } = data;
+      localStorage.setItem('token', token);
+
+      // Traer datos completos del usuario
+      const usuarioRes = await fetch(`http://localhost:5500/api/Usuarios/${usuario.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const usuarioData = await usuarioRes.json();
+
+      if (!usuarioRes.ok) {
+        alert(usuarioData.message || 'Error al traer datos del usuario');
+        return;
+      }
+
+      
+      localStorage.setItem('usuario', JSON.stringify(usuarioData.data));
+
+      alert(`Bienvenido ${usuarioData.data.nombre} ${usuarioData.data.apellido}`);
       navigate('/home');
-    } else {
-      alert('Email o contraseña incorrectos');
+    } catch (error) {
+      console.error(error);
+      alert('Error al conectar con el servidor');
     }
   };
 
@@ -41,8 +71,8 @@ const Login = (): React.JSX.Element => {
           <input
             type="email"
             placeholder="tuemail@ejemplo.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={mail}
+            onChange={(e) => setMail(e.target.value)}
             required
           />
 
@@ -51,8 +81,8 @@ const Login = (): React.JSX.Element => {
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
               required
             />
             <button
@@ -65,8 +95,13 @@ const Login = (): React.JSX.Element => {
           </div>
 
           <button type="submit">Ingresar</button>
+
           <p>
             ¿No tenés cuenta? <Link to="/register">Registrate</Link>
+          </p>
+
+          <p>
+            <Link to="/" className="home-link">Volver al Home</Link>
           </p>
         </form>
       </div>

@@ -1,50 +1,102 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import './layout.css';
-import { FaInstagram, FaFacebookF, FaTwitter } from 'react-icons/fa';
+import { FaInstagram, FaFacebookF, FaTwitter, FaUserCircle } from 'react-icons/fa';
+import type { Usuario } from '../types/usuario';
+
+const API_BASE = (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:5500';
+
+function resolveImageUrl(u: Usuario): string | undefined {
+  if (u.fotoPerfil) {
+    if (/^https?:\/\//i.test(u.fotoPerfil)) return u.fotoPerfil;
+    const path = u.fotoPerfil.startsWith('/') ? u.fotoPerfil : `/${u.fotoPerfil}`;
+    return `${API_BASE}/public${path}`;
+  }
+  return undefined;
+}
 
 export default function Layout(): React.JSX.Element {
   const navigate = useNavigate();
+  const [usuario, setUsuario] = useState<Usuario | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('usuario');
+    if (storedUser) setUsuario(JSON.parse(storedUser));
+  }, []);
+
+  const handleProfileClick = () => {
+    if (!usuario) {
+      alert('Debes iniciar sesión para acceder al perfil');
+      navigate('/login');
+      return;
+    }
+    navigate('/perfil');
+  };
+
+  const handleProtectedRoute = (path: string) => {
+    if (!usuario) {
+      alert('Debes iniciar sesión para acceder a esta sección');
+      navigate('/login');
+      return;
+    }
+    navigate(path);
+  };
+
+  const handlePublicRoute = (path: string) => {
+    if (usuario) {
+      alert('Ya has iniciado sesión');
+      navigate('/home');
+      return;
+    }
+    navigate(path);
+  };
+
+  const getAvatarSrc = () => {
+    if (!usuario || !usuario.fotoPerfil) return undefined;
+    return resolveImageUrl(usuario);
+  };
 
   return (
     <div className="layout-container">
-      {/* Navbar */}
-      <nav
-        className="navbar"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <nav className="navbar">
         <div className="logo">
           <Link to="/" style={{ textDecoration: 'none', color: '#00bfff' }}>
             FITNESS PRIME
           </Link>
         </div>
 
-        <div
-          className="nav-left"
-          style={{
-            display: 'flex',
-            gap: '12px',
-            alignItems: 'center',
-          }}
-        >
+        <div className="nav-left">
           <button onClick={() => navigate('/actividades')}>Actividades</button>
-          <button onClick={() => navigate('/clases')}>Clases</button>
+          <button onClick={() => handleProtectedRoute('/clases')}>Clases</button>
           <button onClick={() => navigate('/conocenos')}>Conócenos</button>
           <button onClick={() => navigate('/planes')}>Planes</button>
-          <button onClick={() => navigate('/login')}>Iniciar sesión</button>
+
+          {usuario ? (
+            <button onClick={handleProfileClick} className="profile-btn">
+              {getAvatarSrc() ? (
+                <img
+                  src={getAvatarSrc()}
+                  alt="avatar"
+                  className="avatar"
+                />
+              ) : (
+                <FaUserCircle size={32} />
+              )}
+              <span className="usuario-nombre">{usuario.nombre}</span>
+            </button>
+          ) : (
+            <>
+              <button onClick={() => handlePublicRoute('/login')}>Iniciar sesión</button>
+              
+            </>
+          )}
         </div>
       </nav>
 
-      {/* Página actual */}
       <main className="layout-main">
         <Outlet />
       </main>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-top">
           <h2>FITNESS PRIME</h2>
@@ -55,22 +107,13 @@ export default function Layout(): React.JSX.Element {
         </div>
 
         <div className="footer-social">
-          <p>
-            <FaInstagram /> @fitnessprime_gym
-          </p>
-          <p>
-            <FaFacebookF /> /FitnessPrimeOficial
-          </p>
-          <p>
-            <FaTwitter /> @FitnessPrimeOk
-          </p>
+          <p><FaInstagram /> @fitnessprime_gym</p>
+          <p><FaFacebookF /> /FitnessPrimeOficial</p>
+          <p><FaTwitter /> @FitnessPrimeOk</p>
         </div>
 
         <div className="footer-bottom">
-          <p>
-            © {new Date().getFullYear()} FITNESS PRIME. Todos los derechos
-            reservados.
-          </p>
+          <p>© {new Date().getFullYear()} FITNESS PRIME. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>

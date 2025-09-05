@@ -7,6 +7,9 @@ import Perfil from './pages/perfil';
 import Reserva from './pages/reservas';
 import ActividadesPage from './pages/actividades';
 import ConocenosPage from './pages/conocenos';
+import PlanesPage from './pages/planes';
+import CambiarContrasena from './pages/cambiarContrasena';
+import BorrarCuenta from './pages/borrarCuenta';
 
 function App(): React.JSX.Element {
   return (
@@ -17,9 +20,11 @@ function App(): React.JSX.Element {
         <Route path="home" element={<Home />} /> {/* /home */}
         <Route path="perfil" element={<Perfil />} />
         <Route path="reserva" element={<Reserva />} />
+        <Route path="planes" element={<PlanesPage />} />
         <Route path="actividades" element={<ActividadesPage />} />
-        <Route path="conocenos" element={<ConocenosPage />} />{' '}
-        {/* Usa el componente correcto */}
+        <Route path="conocenos" element={<ConocenosPage />} />
+        <Route path="cambiarContrasena" element={<CambiarContrasena />} />
+        <Route path="borrarCuenta" element={<BorrarCuenta />} />
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
