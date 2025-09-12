@@ -1,39 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './conocenos.css';
 
 import imagenGimnasio from '../assets/conocenos1.jpg';
-import profesoraImg from '../assets/profesora.jpg';
-import profesorImg from '../assets/profesor.jpg';
-import profesor2Img from '../assets/profesor2.jpg';
 
-const entrenadores = [
-  {
-    nombre: 'Juan Pérez',
-    especialidad: 'Entrenamiento de Fuerza',
-    frase: 'La disciplina vence al talento.',
-    foto: profesor2Img,
-  },
-  {
-    nombre: 'Ana Gómez',
-    especialidad: 'Yoga y Pilates',
-    frase: 'Respira, conecta y supera tus límites.',
-    foto: profesoraImg,
-  },
-  {
-    nombre: 'Carlos Ruiz',
-    especialidad: 'Cardio y HIIT',
-    frase: 'El sudor de hoy es la fuerza de mañana.',
-    foto: profesorImg,
-  },
-];
+interface Entrenador {
+  id: number;
+  nombre: string;
+  //especialidad: string;
+  frase: string;
+  fotoUrl: string;
+}
 
 export default function ConocenosPage(): React.JSX.Element {
+  const [entrenadores, setEntrenadores] = useState<Entrenador[]>([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5500/api/entrenadores')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('📦 Data del backend:', data);
+        setEntrenadores(data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <main className="conocenos-container">
       {/* HERO */}
       <section className="hero">
         <div className="hero__text">
-          <h1>DESAFIA TUS LIMITES </h1>
+          <h1>DESAFÍA TUS LÍMITES</h1>
           <p>
             En Fitness Prime, transformamos tu cuerpo y tu mente. Clases de
             fuerza, boxeo, HIIT, yoga y entrenamiento personalizado para que
@@ -45,25 +41,27 @@ export default function ConocenosPage(): React.JSX.Element {
         </div>
       </section>
 
-      {/* CARRUSEL DE ENTRENADORES */}
       <section className="trainers-section">
         <h2>Nuestros Entrenadores</h2>
         <div className="trainers-carousel">
-          {entrenadores.map((entrenador) => (
-            <div
-              key={entrenador.nombre}
-              className="trainer-card"
-              style={{
-                backgroundImage: `url(${entrenador.foto})`,
-              }}
-            >
-              <div className="trainer-info">
-                <h3>{entrenador.nombre}</h3>
-                <p className="trainer-activity">{entrenador.especialidad}</p>
-                <p className="trainer-phrase">“{entrenador.frase}”</p>
+          {entrenadores.map((entrenador) => {
+            const fullUrl = `http://localhost:5500${entrenador.fotoUrl}`;
+            console.log('🖼️ URL final:', fullUrl);
+            return (
+              <div
+                key={entrenador.id}
+                className="trainer-card"
+                style={{
+                  backgroundImage: `url(${fullUrl})`,
+                }}
+              >
+                <div className="trainer-info">
+                  <h3>{entrenador.nombre}</h3>
+                  <p className="trainer-phrase">“{entrenador.frase}”</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </main>
