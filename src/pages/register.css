@@ -48,7 +48,7 @@
   border: 1px solid #00bfff;
 }
 
-/* Grupo para input y botón mostrar/ocultar */
+
 .input-group {
   position: relative;
   display: flex;
@@ -94,5 +94,16 @@ button[type='submit']:hover {
 }
 
 .redirect a:hover {
+  text-decoration: underline;
+}
+.form a.home-link {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #00bfff;
+  font-weight: bold;
+}
+
+.form a.home-link:hover {
   text-decoration: underline;
 }

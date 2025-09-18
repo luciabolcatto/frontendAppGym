@@ -1,0 +1,102 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+
+.navbar {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  position: sticky; /* se queda en top al hacer scroll */
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #00bfff;
+}
+
+.navbar button {
+  margin-left: 10px;
+  background-color: transparent;
+  color: white;
+  border: 1px solid #00bfff;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.navbar button:hover {
+  background-color: #00bfff;
+  color: black;
+}
+
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: white;
+}
+
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00bfff;
+  transition: border-color 0.2s;
+}
+
+.avatar:hover {
+  border-color: #0099cc;
+}
+
+
+.usuario-nombre {
+  font-weight: bold;
+}
+
+/* Contenedor del contenido debajo de la navbar */
+.layout-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px; /* separa del navbar */
+}
+
+
+.footer {
+  background-color: #000;
+  color: white;
+  text-align: center;
+  padding: 30px 20px;
+  border-top: 1px solid #00bfff;
+}
+
+
+.footer-top, .footer-social, .footer-bottom {
+  margin-bottom: 15px;
+}
+
+.nav-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
