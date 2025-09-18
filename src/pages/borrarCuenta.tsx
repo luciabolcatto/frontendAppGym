@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './eliminarCuenta.css';
+import './borrarCuenta.css';
 
 export default function BorrarCuenta() {
   const navigate = useNavigate();
