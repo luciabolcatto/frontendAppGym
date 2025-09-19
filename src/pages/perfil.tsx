@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import type { Usuario } from '../types/usuario';
-import './Perfil.css';
+import './perfil.css';
 
 const API_BASE = (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:5500';
 
@@ -173,7 +173,7 @@ const Perfil = (): React.JSX.Element => {
               <button onClick={() => setEditMode(true)}>Editar</button>
             )}
 
-            
+            <button onClick={() => navigate('/mis-contratos')}>Mis Contratos</button>
             <button onClick={() => navigate('/cambiarContrasena')}>Cambiar contraseña</button>
             <button onClick={() => navigate('/borrarCuenta')} className="btn-danger">Eliminar cuenta</button>
             <button onClick={handleLogout} className="btn-danger">Cerrar sesión</button>

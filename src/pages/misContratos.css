@@ -1,0 +1,296 @@
+/* Mis Contratos Page */
+:root {
+  --celeste: #00bfff;
+  --negro: #0a0a0a;
+  --blanco: #ffffff;
+}
+
+.mis-contratos-page {
+  min-height: 100vh;
+  background: var(--negro);
+  color: var(--blanco);
+}
+
+.hero {
+  text-align: center;
+  padding: 80px 20px 60px;
+  background: transparent;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--blanco);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+/* Container */
+.contratos-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* Loading y Error */
+.loading, .error-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.error-message {
+  background-color: rgba(239, 68, 68, 0.9);
+  border-radius: 8px;
+  margin: 20px;
+}
+
+/* No Contratos */
+.no-contratos {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 60px 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  margin: 40px auto;
+  max-width: 500px;
+  border: 1px solid rgba(0, 191, 255, 0.2);
+}
+
+.no-contratos h3 {
+  color: var(--blanco);
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.no-contratos p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* Grid de Contratos */
+.contratos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+/* Tarjeta de Contrato */
+.contrato-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 191, 255, 0.2);
+}
+
+.contrato-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  border-color: var(--celeste);
+}
+
+/* Header del Contrato */
+.contrato-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.membresia-nombre {
+  color: var(--blanco);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  margin-right: 16px;
+}
+
+/* Estado Badge */
+.estado-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.estado-pagado {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.estado-pendiente {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fed7aa;
+}
+
+.estado-cancelado {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.estado-vencido {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+/* Detalles del Contrato */
+.contrato-details {
+  margin-bottom: 24px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item label {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  min-width: 120px;
+}
+
+.detail-item span {
+  color: var(--blanco);
+  font-weight: 500;
+  text-align: right;
+  flex: 1;
+  margin-left: 16px;
+}
+
+.detail-item .precio {
+  color: #059669;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Acciones del Contrato */
+.contrato-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.btn-primary, .btn-danger {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+  min-width: 120px;
+  text-decoration: none;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--celeste) 0%, #0084cc 100%);
+  color: var(--blanco);
+  box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0084cc 0%, #006699 100%);
+  box-shadow: 0 6px 16px rgba(0, 191, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled,
+.btn-danger:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .contratos-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .contrato-card {
+    padding: 20px;
+  }
+  
+  .contrato-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .membresia-nombre {
+    margin-right: 0;
+  }
+  
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .detail-item span {
+    text-align: left;
+    margin-left: 0;
+  }
+  
+  .contrato-actions {
+    flex-direction: column;
+  }
+  
+  .btn-primary,
+  .btn-danger {
+    width: 100%;
+  }
+  
+  .no-contratos {
+    margin: 20px;
+    padding: 40px 20px;
+  }
+}

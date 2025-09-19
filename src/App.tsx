@@ -8,6 +8,7 @@ import Reserva from './pages/reservas';
 import ActividadesPage from './pages/actividades';
 import ConocenosPage from './pages/conocenos';
 import PlanesPage from './pages/planes';
+import MisContratosPage from './pages/misContratos';
 import CambiarContrasena from './pages/cambiarContrasena';
 import BorrarCuenta from './pages/borrarCuenta';
 
@@ -21,6 +22,7 @@ function App(): React.JSX.Element {
         <Route path="perfil" element={<Perfil />} />
         <Route path="reserva" element={<Reserva />} />
         <Route path="planes" element={<PlanesPage />} />
+        <Route path="mis-contratos" element={<MisContratosPage />} />
         <Route path="actividades" element={<ActividadesPage />} />
         <Route path="conocenos" element={<ConocenosPage />} />
         <Route path="cambiarContrasena" element={<CambiarContrasena />} />
