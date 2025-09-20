@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Actividad } from "../types/actividad";
-import "./actividades.css";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Actividad } from '../types/actividad';
+import './actividades.css';
 
-const API_BASE = (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, "") || "http://localhost:5500";
+const API_BASE =
+  (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') ||
+  'http://localhost:5500';
 
 function resolveImageUrl(a: Actividad): string | undefined {
   if (a.imagenUrl) {
     if (/^https?:\/\//i.test(a.imagenUrl)) return a.imagenUrl;
-    const path = a.imagenUrl.startsWith("/") ? a.imagenUrl : `/${a.imagenUrl}`;
+    const path = a.imagenUrl.startsWith('/') ? a.imagenUrl : `/${a.imagenUrl}`;
     return `${API_BASE}${path}`;
   }
   return undefined;
@@ -32,7 +34,7 @@ const ActividadesPage: React.FC = () => {
         setItems(json?.data ?? []);
       } catch (e: any) {
         if (!mounted) return;
-        setError("Error al cargar actividades.");
+        setError('Error al cargar actividades.');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -82,7 +84,12 @@ const ActividadesPage: React.FC = () => {
           return (
             <article key={a.id} className="card">
               {img ? (
-                <img src={img} alt={a.nombre} className="card-img" loading="lazy" />
+                <img
+                  src={img}
+                  alt={a.nombre}
+                  className="card-img"
+                  loading="lazy"
+                />
               ) : (
                 <div className="card-img placeholder rounded-[18px]">
                   <span className="opacity-70">Sin imagen</span>
@@ -96,7 +103,11 @@ const ActividadesPage: React.FC = () => {
               <div className="meta">
                 <button
                   className="btn-pill"
-                  onClick={() => navigate("/clases")}
+                  onClick={() =>
+                    navigate('/clases', {
+                      state: { actividadId: a.id, actividadNombre: a.nombre },
+                    })
+                  }
                   aria-label={`Ver clases de ${a.nombre}`}
                 >
                   Clases

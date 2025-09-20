@@ -11,6 +11,7 @@ import PlanesPage from './pages/planes';
 import MisContratosPage from './pages/misContratos';
 import CambiarContrasena from './pages/cambiarContrasena';
 import BorrarCuenta from './pages/borrarCuenta';
+import ClasesPage from './pages/clases';
 
 function App(): React.JSX.Element {
   return (
@@ -27,6 +28,7 @@ function App(): React.JSX.Element {
         <Route path="conocenos" element={<ConocenosPage />} />
         <Route path="cambiarContrasena" element={<CambiarContrasena />} />
         <Route path="borrarCuenta" element={<BorrarCuenta />} />
+        <Route path="clases" element={<ClasesPage />} />
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
