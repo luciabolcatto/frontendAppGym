@@ -10,6 +10,9 @@ import ConocenosPage from './pages/conocenos';
 import PlanesPage from './pages/planes';
 import CambiarContrasena from './pages/cambiarContrasena';
 import BorrarCuenta from './pages/borrarCuenta';
+import AdminLogin from './pages/adminLogin';
+import AdminMenu from './pages/adminMenu';
+import UsuariosPorEstado from './pages/usuariosPorEstado';
 
 function App(): React.JSX.Element {
   return (
@@ -28,6 +31,9 @@ function App(): React.JSX.Element {
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/admin" element={<AdminMenu />} />
+      <Route path="/admin/usuarios-por-estado" element={<UsuariosPorEstado />} />
     </Routes>
   );
 }

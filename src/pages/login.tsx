@@ -101,6 +101,12 @@ const Login = (): React.JSX.Element => {
           </p>
 
           <p>
+            <Link to="/admin-login" className="admin-link">
+              Ingresar como Admin
+            </Link>
+          </p>
+
+          <p>
             <Link to="/" className="home-link">Volver al Home</Link>
           </p>
         </form>
