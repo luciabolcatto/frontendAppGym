@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './adminMenu.css';
 
 const AdminMenu = (): React.JSX.Element => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      alert('Acceso denegado. Debes ser administrador para acceder a esta página.');
+      navigate('/admin-login');
+    }
+  }, [navigate]);
+
   const handleLogout = () => {
     const confirmLogout = window.confirm("¿Estás seguro que querés cerrar sesión?");
-    if (!confirmLogout) return; // Si el usuario cancela, no hace nada
+    if (!confirmLogout) return; 
 
-    localStorage.removeItem('adminToken'); // Borrar sesión de admin
+    localStorage.removeItem('adminToken'); 
     alert('Sesión de administrador cerrada');
-    navigate('/'); // Volver al home
+    navigate('/'); 
   };
 
   return (

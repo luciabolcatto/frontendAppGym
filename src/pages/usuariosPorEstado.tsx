@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './usuariosPorEstado.css';
 
 interface UsuarioEstado {
   idUsuario: number;
   nombre: string;
   apellido: string;
-  fecha_hora_ini: string;
-  fecha_hora_fin: string;
+  fecha_hora_ini: string | null;
+  fecha_hora_fin: string | null;
   estado: string;
   membresia: string;
 }
@@ -15,11 +15,23 @@ interface UsuarioEstado {
 const UsuariosPorEstado = (): React.JSX.Element => {
   const [estado, setEstado] = useState<string>('');
   const [usuarios, setUsuarios] = useState<UsuarioEstado[]>([]);
+  const navigate = useNavigate();
+
+  // Verificar permisos de admin
+  useEffect(() => {
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      alert('Acceso denegado. Debes ser administrador para acceder a esta página.');
+      navigate('/admin-login');
+    }
+  }, [navigate]);
 
   useEffect(() => {
-    // Limpiar tabla si no hay estado seleccionado
+    // Limpiar tabla primero cuando cambia el estado
+    setUsuarios([]);
+    
+    // Si no hay estado seleccionado, mantener tabla vacía
     if (!estado) {
-      setUsuarios([]);
       return;
     }
 
@@ -35,6 +47,7 @@ const UsuariosPorEstado = (): React.JSX.Element => {
       } catch (error) {
         console.error(error);
         alert('Error al conectar con el servidor');
+        setUsuarios([]); // Limpiar en caso de error también
       }
     };
 
@@ -53,6 +66,7 @@ const UsuariosPorEstado = (): React.JSX.Element => {
           <option value="pagado">Pagado</option>
           <option value="cancelado">Cancelado</option>
           <option value="terminado">Terminado</option>
+          <option value="sin-contrato">Sin contrato</option>
         </select>
       </div>
 
@@ -74,8 +88,8 @@ const UsuariosPorEstado = (): React.JSX.Element => {
                 <td>{u.nombre}</td>
                 <td>{u.apellido}</td>
                 <td>{u.membresia}</td>
-                <td>{new Date(u.fecha_hora_ini).toLocaleString()}</td>
-                <td>{new Date(u.fecha_hora_fin).toLocaleString()}</td>
+                <td>{u.fecha_hora_ini ? new Date(u.fecha_hora_ini).toLocaleString() : 'N/A'}</td>
+                <td>{u.fecha_hora_fin ? new Date(u.fecha_hora_fin).toLocaleString() : 'N/A'}</td>
                 <td>{u.estado}</td>
               </tr>
             ))}

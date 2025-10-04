@@ -13,6 +13,8 @@ import BorrarCuenta from './pages/borrarCuenta';
 import AdminLogin from './pages/adminLogin';
 import AdminMenu from './pages/adminMenu';
 import UsuariosPorEstado from './pages/usuariosPorEstado';
+import ReservasPorClase1 from './pages/reservasPorClase1';
+import ReservasPorClase2 from './pages/reservasPorClase2';
 
 function App(): React.JSX.Element {
   return (
@@ -34,6 +36,8 @@ function App(): React.JSX.Element {
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminMenu />} />
       <Route path="/admin/usuarios-por-estado" element={<UsuariosPorEstado />} />
+      <Route path="/admin/informe-reservas" element={<ReservasPorClase1 />} />
+      <Route path="/admin/informe-reservas/clase/:claseId" element={<ReservasPorClase2 />} />
     </Routes>
   );
 }

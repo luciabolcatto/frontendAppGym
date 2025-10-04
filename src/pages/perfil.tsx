@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import type { Usuario } from '../types/usuario';
 import './Perfil.css';
+import { notifyUsuarioUpdated } from '../hooks/useUsuario';
 
 const API_BASE = (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:5500';
 
@@ -102,6 +103,7 @@ const Perfil = (): React.JSX.Element => {
       };
 
       localStorage.setItem('usuario', JSON.stringify(newUsuario));
+      notifyUsuarioUpdated(); // Notificar al layout que se actualizó el usuario
       setUsuario(newUsuario);
       setEditMode(false);
       setFotoFile(null);
