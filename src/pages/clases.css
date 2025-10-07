@@ -36,6 +36,111 @@
   color: #cfeffd;
 }
 
+/* Estilos para filtros */
+.filtros-container {
+  max-width: 1200px;
+  margin: 1rem auto 2rem;
+  padding: 0 1rem;
+}
+
+.filtros-row {
+  background: #0d0d0d;
+  border: 1px solid #1f1f1f;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 180px;
+}
+
+.filtro-grupo label {
+  color: var(--celeste);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.filtro-grupo input,
+.filtro-grupo select {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  color: var(--blanco);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.filtro-grupo input:focus,
+.filtro-grupo select:focus {
+  outline: none;
+  border-color: var(--celeste);
+}
+
+.filtros-botones {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  margin-top: auto;
+}
+
+.btn-filtrar {
+  background: var(--celeste);
+  border: 1px solid var(--celeste);
+  color: #000;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-filtrar:hover {
+  background: #0099cc;
+  border-color: #0099cc;
+  transform: translateY(-1px);
+}
+
+.btn-limpiar {
+  background: transparent;
+  border: 1px solid #666;
+  color: var(--blanco);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-limpiar:hover {
+  background: #333;
+  border-color: #888;
+}
+
+@media (max-width: 768px) {
+  .filtros-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filtro-grupo {
+    min-width: unset;
+  }
+  
+  .filtros-botones {
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+}
+
 .clases-grid {
   width: 100%;
   max-width: 1200px;
@@ -113,9 +218,7 @@
   color: #d1eaff;
 }
 
-.meta-right {
-  /* right-side container for actions (kept for layout) */
-}
+/* .meta-right: right-side container for actions (kept for layout) */
 .btn-pill {
   border: 2px solid var(--celeste);
   color: var(--blanco);

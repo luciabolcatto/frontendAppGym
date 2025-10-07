@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import { EstadoContrato } from '../types/contrato';
 import './usuariosPorEstado.css';
 
 interface UsuarioEstado {
@@ -10,6 +11,7 @@ interface UsuarioEstado {
   fecha_hora_fin: string | null;
   estado: string;
   membresia: string;
+  metodoPago: string;
 }
 
 const UsuariosPorEstado = (): React.JSX.Element => {
@@ -62,10 +64,10 @@ const UsuariosPorEstado = (): React.JSX.Element => {
         <label>Filtrar por estado:</label>
         <select value={estado} onChange={(e) => setEstado(e.target.value)}>
           <option value="">-- Selecciona un estado --</option>
-          <option value="pendiente">Pendiente</option>
-          <option value="pagado">Pagado</option>
-          <option value="cancelado">Cancelado</option>
-          <option value="terminado">Terminado</option>
+          <option value={EstadoContrato.PENDIENTE}>Pendiente</option>
+          <option value={EstadoContrato.PAGADO}>Pagado</option>
+          <option value={EstadoContrato.CANCELADO}>Cancelado</option>
+          <option value={EstadoContrato.VENCIDO}>Vencido</option>
           <option value="sin-contrato">Sin contrato</option>
         </select>
       </div>
@@ -80,6 +82,7 @@ const UsuariosPorEstado = (): React.JSX.Element => {
               <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
               <th>Estado</th>
+              <th>Método de Pago</th>
             </tr>
           </thead>
           <tbody>
@@ -91,6 +94,7 @@ const UsuariosPorEstado = (): React.JSX.Element => {
                 <td>{u.fecha_hora_ini ? new Date(u.fecha_hora_ini).toLocaleString() : 'N/A'}</td>
                 <td>{u.fecha_hora_fin ? new Date(u.fecha_hora_fin).toLocaleString() : 'N/A'}</td>
                 <td>{u.estado}</td>
+                <td>{u.metodoPago}</td>
               </tr>
             ))}
           </tbody>
