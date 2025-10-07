@@ -120,7 +120,7 @@ const PlanesPage: React.FC = () => {
       
       // Manejar error específico de límite de contratos
       if (error?.response?.data?.error === 'LIMITE_CONTRATOS_EXCEDIDO') {
-        alert(`❌ ${error.response.data.message}\n\n📊 Contratos pendientes: ${error.response.data.contratosPendientesActuales}/${error.response.data.limite}`);
+        alert(` ${error.response.data.message}\n\n📊 Contratos pendientes: ${error.response.data.contratosPendientesActuales}/${error.response.data.limite}`);
       } else {
         alert(error instanceof Error ? error.message : "Error al contratar el plan");
       }
@@ -138,19 +138,19 @@ const PlanesPage: React.FC = () => {
         <div className="contratos-info">
           {contratosPendientes === 0 && (
             <div className="info-card success">
-              <span className="info-icon">✅</span>
+              <span className="info-icon"></span>
               <span>No tienes contratos pendientes. Puedes contratar hasta 2 membresías.</span>
             </div>
           )}
           {contratosPendientes === 1 && (
             <div className="info-card warning">
-              <span className="info-icon">⚠️</span>
+              <span className="info-icon"></span>
               <span>Tienes 1 contrato pendiente de pago. Puedes contratar 1 membresía más.</span>
             </div>
           )}
           {contratosPendientes >= 2 && (
             <div className="info-card danger">
-              <span className="info-icon">❌</span>
+              <span className="info-icon"></span>
               <span>Tienes {contratosPendientes} contratos pendientes. No puedes contratar más hasta completar los pagos.</span>
             </div>
           )}
