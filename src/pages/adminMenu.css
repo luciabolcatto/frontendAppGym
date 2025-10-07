@@ -1,0 +1,87 @@
+body,
+html {
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Caja más compacta */
+.admin-menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  /* evita que se expanda demasiado */
+  min-height: auto;
+  /* ya no fuerza el 100vh */
+  margin: 100px auto;
+  /* centrado con espacio arriba y abajo */
+  padding: 25px 20px;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border-radius: 12px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  /* caja más angosta */
+}
+
+.admin-menu-title {
+  font-size: 1.6rem;
+  color: #00bfff;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.admin-menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+.admin-menu-buttons button {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #00bfff;
+  color: #fff;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.admin-menu-buttons button:hover {
+  background-color: #0099cc;
+  transform: translateY(-2px);
+}
+
+.admin-menu-buttons button:active {
+  transform: translateY(0);
+}
+
+/* Botón de cerrar sesión en rojo */
+.admin-menu-buttons .btn-danger {
+  background-color: #ff5555;
+}
+
+.admin-menu-buttons .btn-danger:hover {
+  background-color: #cc4444;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-menu-container {
+    margin: 50px auto;
+    padding: 20px 15px;
+  }
+
+  .admin-menu-buttons button {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+}

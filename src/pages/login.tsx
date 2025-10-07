@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import type { Usuario } from '../types/usuario';
 import './Login.css';
+import { notifyUsuarioUpdated } from '../hooks/useUsuario';
 
 const Login = (): React.JSX.Element => {
   const [mail, setMail] = useState<string>('');
@@ -53,6 +54,7 @@ const Login = (): React.JSX.Element => {
 
       
       localStorage.setItem('usuario', JSON.stringify(usuarioData.data));
+      notifyUsuarioUpdated(); // Notificar al layout que se actualizó el usuario
 
       alert(`Bienvenido ${usuarioData.data.nombre} ${usuarioData.data.apellido}`);
       navigate('/home');
@@ -98,6 +100,12 @@ const Login = (): React.JSX.Element => {
 
           <p>
             ¿No tenés cuenta? <Link to="/register">Registrate</Link>
+          </p>
+
+          <p>
+            <Link to="/admin-login" className="admin-link">
+              Ingresar como Admin
+            </Link>
           </p>
 
           <p>

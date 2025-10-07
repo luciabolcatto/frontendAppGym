@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import type { Usuario } from '../types/usuario';
 import './Register.css';
+import { notifyUsuarioUpdated } from '../hooks/useUsuario';
 
 const Register = (): React.JSX.Element => {
   const [nombre, setNombre] = useState<string>('');
@@ -84,6 +85,7 @@ const Register = (): React.JSX.Element => {
       }
     
       localStorage.setItem('usuario', JSON.stringify(usuarioData.data));
+      notifyUsuarioUpdated(); // Notificar al layout que se actualizó el usuario
       
       // Mensaje de bienvenida
       alert(`¡Bienvenido ${usuarioData.data.nombre} ${usuarioData.data.apellido}!`);
