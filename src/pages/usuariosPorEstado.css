@@ -1,5 +1,5 @@
 .usuarios-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 40px auto;
   padding: 20px;
   background-color: #1e1e1e;
@@ -49,9 +49,11 @@
 
 .usuarios-table th,
 .usuarios-table td {
-  padding: 10px 12px;
+  padding: 10px 8px;
   border: 1px solid #444;
   text-align: left;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .usuarios-table th {

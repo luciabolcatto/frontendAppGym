@@ -12,6 +12,8 @@ interface UsuarioEstado {
   estado: string;
   membresia: string;
   metodoPago: string;
+  fechaPago: string | null;
+  fechaCancelacion: string | null;
 }
 
 const UsuariosPorEstado = (): React.JSX.Element => {
@@ -83,6 +85,8 @@ const UsuariosPorEstado = (): React.JSX.Element => {
               <th>Fecha Fin</th>
               <th>Estado</th>
               <th>Método de Pago</th>
+              <th>Fecha de Pago</th>
+              <th>Fecha de Cancelación</th>
             </tr>
           </thead>
           <tbody>
@@ -95,6 +99,8 @@ const UsuariosPorEstado = (): React.JSX.Element => {
                 <td>{u.fecha_hora_fin ? new Date(u.fecha_hora_fin).toLocaleString() : 'N/A'}</td>
                 <td>{u.estado}</td>
                 <td>{u.metodoPago}</td>
+                <td>{u.fechaPago ? new Date(u.fechaPago).toLocaleString() : 'N/A'}</td>
+                <td>{u.fechaCancelacion ? new Date(u.fechaCancelacion).toLocaleString() : 'N/A'}</td>
               </tr>
             ))}
           </tbody>
