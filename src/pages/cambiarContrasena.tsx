@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Usuario } from "../types/usuario";
 import "./cambiarContrasena.css";
-import { notifyUsuarioUpdated } from '../hooks/useUsuario';
 
 const API_BASE =
   (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, "") ||
@@ -87,7 +86,6 @@ export default function CambiarContrasena() {
 
       const data = await updateRes.json();
       localStorage.setItem("usuario", JSON.stringify(data.data));
-      notifyUsuarioUpdated(); // Notificar al layout que se actualizó el usuario
 
       alert("✅ Contraseña cambiada correctamente.");
       setContrasenaAnterior("");
