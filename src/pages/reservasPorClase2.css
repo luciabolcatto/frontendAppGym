@@ -1,0 +1,206 @@
+.reservas-por-clase2-container {
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: #fff;
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
+}
+
+.loading {
+  text-align: center;
+  color: #00bfff;
+  font-size: 1.5rem;
+  padding: 50px;
+}
+
+.reservas-header {
+  margin-bottom: 30px;
+}
+
+.reservas-title {
+  text-align: center;
+  color: #00bfff;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.clase-info {
+  background-color: #2c2c2c;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  text-align: center;
+}
+
+.clase-info h2 {
+  color: #00bfff;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.clase-info p {
+  margin-bottom: 8px;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+.clase-info strong {
+  color: #fff;
+}
+
+.navegacion-botones {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+.btn-volver-clases {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+}
+
+.btn-volver-clases:hover {
+  background-color: #5a6268;
+}
+
+
+.tabla-container {
+  overflow-x: auto;
+  margin-bottom: 30px;
+}
+
+.reservas-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #2c2c2c;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.reservas-table th {
+  background-color: #1e1e1e;
+  color: #00bfff;
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #444;
+}
+
+.reservas-table td {
+  padding: 12px;
+  border-bottom: 1px solid #444;
+  color: #ccc;
+}
+
+.reservas-table tr:nth-child(even) {
+  background-color: #262626;
+}
+
+.reservas-table tr:hover {
+  background-color: #333;
+}
+
+.reservas-table tr:last-child td {
+  border-bottom: none;
+}
+
+.estado {
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  display: inline-block;
+  background-color: #444;
+  color: #fff;
+  border: 1px solid #666;
+}
+
+
+.no-reservas {
+  background-color: #2c2c2c;
+  padding: 40px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #444;
+}
+
+.no-reservas p {
+  color: #999;
+  font-size: 1.2rem;
+  font-style: italic;
+  margin: 0;
+}
+
+
+.volver-admin {
+  margin-top: 30px;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 2px solid #444;
+}
+
+.volver-admin a {
+  color: #00bfff; 
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.volver-admin a:hover {
+  text-decoration: underline;
+  color: #00a5dd; 
+}
+
+
+@media (max-width: 1200px) {
+  .reservas-por-clase2-container {
+    margin: 20px;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reservas-title {
+    font-size: 1.5rem;
+  }
+  
+  .clase-info h2 {
+    font-size: 1.2rem;
+  }
+  
+  .reservas-table {
+    font-size: 0.85rem;
+  }
+  
+  .reservas-table th,
+  .reservas-table td {
+    padding: 8px 6px;
+  }
+  
+  .navegacion-botones {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .reservas-table th,
+  .reservas-table td {
+    padding: 6px 4px;
+    font-size: 0.8rem;
+  }
+  
+  .estado {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+  }
+}

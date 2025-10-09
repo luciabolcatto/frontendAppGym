@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import './layout.css';
 import { FaInstagram, FaFacebookF, FaTwitter, FaUserCircle } from 'react-icons/fa';
 import type { Usuario } from '../types/usuario';
+import { useUsuario } from '../hooks/useUsuario';
 
 const API_BASE = (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:5500';
 
@@ -17,12 +18,7 @@ function resolveImageUrl(u: Usuario): string | undefined {
 
 export default function Layout(): React.JSX.Element {
   const navigate = useNavigate();
-  const [usuario, setUsuario] = useState<Usuario | null>(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('usuario');
-    if (storedUser) setUsuario(JSON.parse(storedUser));
-  }, []);
+  const usuario = useUsuario(); // Ahora usa el hook con recarga automática
 
   const handleProfileClick = () => {
     if (!usuario) {

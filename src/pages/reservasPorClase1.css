@@ -1,0 +1,204 @@
+.reservas-por-clase1-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: #fff;
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
+}
+
+.reservas-title {
+  text-align: center;
+  color: #00bfff;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+
+.filtros-container {
+  background-color: #2c2c2c;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  display: flex;
+  gap: 20px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filtro-grupo label {
+  font-weight: bold;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.filtro-grupo input,
+.filtro-grupo select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #1e1e1e;
+  color: #fff;
+  font-size: 1rem;
+  min-width: 150px;
+}
+
+.filtro-grupo input:focus,
+.filtro-grupo select:focus {
+  outline: none;
+  border-color: #00bfff;
+}
+
+.filtros-botones {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.btn-filtrar,
+.btn-limpiar {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-filtrar {
+  background-color: #00bfff;
+  color: #fff;
+}
+
+.btn-filtrar:hover {
+  background-color: #00a5dd;
+}
+
+.btn-limpiar {
+  background-color: #666;
+  color: #fff;
+}
+
+.btn-limpiar:hover {
+  background-color: #555;
+}
+
+/* Clases Container */
+.clases-container h2 {
+  color: #00bfff;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.clases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.clase-card {
+  background-color: #2c2c2c;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #444;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.clase-card:hover {
+  transform: translateY(-2px);
+  border-color: #00bfff;
+}
+
+.clase-header h3 {
+  color: #00bfff;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #444;
+  padding-bottom: 8px;
+}
+
+.clase-info p {
+  margin-bottom: 8px;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+.clase-info strong {
+  color: #fff;
+}
+
+.btn-ver-reservas {
+  background-color: #17a2b8;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 15px;
+  width: 100%;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+}
+
+.btn-ver-reservas:hover {
+  background-color: #138496;
+}
+
+.no-clases {
+  text-align: center;
+  color: #999;
+  font-size: 1.2rem;
+  padding: 40px;
+  font-style: italic;
+}
+
+
+.volver-admin {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.volver-admin a {
+  color: #00bfff; 
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.volver-admin a:hover {
+  text-decoration: underline;
+  color: #00a5dd; 
+}
+
+@media (max-width: 768px) {
+  .reservas-por-clase1-container {
+    margin: 20px;
+    padding: 15px;
+  }
+  
+  .reservas-title {
+    font-size: 1.5rem;
+  }
+  
+  .filtros-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filtros-botones {
+    justify-content: center;
+  }
+  
+  .clases-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './clases.css';
 
+interface Actividad {
+  id: string;
+  nombre: string;
+}
+
 const API_BASE =
   (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') ||
   'http://localhost:5500';
@@ -31,6 +36,12 @@ const ClasesPage: React.FC = () => {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [actividades, setActividades] = useState<Actividad[]>([]);
+  
+  // Estados para filtros
+  const [fecha, setFecha] = useState<string>('');
+  const [selectedActividadId, setSelectedActividadId] = useState<string>('');
+  
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,22 +52,47 @@ const ClasesPage: React.FC = () => {
   const actividadNombre =
     state?.actividadNombre || params.get('actividadNombre') || undefined;
 
+  // Cargar actividades al montar el componente
+  useEffect(() => {
+    const fetchActividades = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/actividad`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Error al cargar actividades');
+        setActividades(data.data);
+      } catch (error) {
+        console.error('Error cargando actividades:', error);
+      }
+    };
+
+    fetchActividades();
+  }, []);
+
+  // Inicializar filtros con valores de URL si existen y aplicar filtro automáticamente
+  useEffect(() => {
+    if (actividadId && actividades.length > 0) {
+      setSelectedActividadId(actividadId);
+      // Aplicar filtro automáticamente cuando viene de actividades
+      // Pequeño delay para asegurar que el estado se actualice
+      setTimeout(() => {
+        filtrarClases();
+      }, 50);
+    }
+  }, [actividadId, actividades]);
+
+  // Cargar todas las clases al inicio (sin filtros)
   useEffect(() => {
     let mounted = true;
-    (async () => {
+    
+    const fetchClasesIniciales = async () => {
       try {
         setLoading(true);
-        // Agrega este log:
-        console.log('Frontend actividadId:', actividadId);
-        const url = actividadId
-          ? `${API_BASE}/api/clases?actividadId=${encodeURIComponent(
-              actividadId as string
-            )}`
-          : `${API_BASE}/api/clases`;
-        const res = await fetch(url);
+        
+        const res = await fetch(`${API_BASE}/api/clases/todas-ordenadas`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (!mounted) return;
+        
         let clases: any[] = json?.data ?? [];
 
         const normalized = clases.map((c) => {
@@ -87,15 +123,119 @@ const ClasesPage: React.FC = () => {
       } catch (e: any) {
         if (!mounted) return;
         setError('Error al cargar las clases.');
+        console.error('Error:', e);
       } finally {
         if (mounted) setLoading(false);
       }
-    })();
+    };
+
+    fetchClasesIniciales();
 
     return () => {
       mounted = false;
     };
-  }, [actividadId, actividadNombre]);
+  }, []); // Solo se ejecuta una vez al montar
+
+
+
+  const filtrarClases = async () => {
+    try {
+      setLoading(true);
+      
+      let url = `${API_BASE}/api/clases/todas-ordenadas?`;
+      const params = new URLSearchParams();
+      
+      // Aplicar filtros
+      if (fecha) params.append('fecha', fecha);
+      if (selectedActividadId) params.append('actividadId', selectedActividadId);
+      
+      const finalUrl = url + params.toString();
+      console.log('Filtrando clases:', finalUrl);
+      
+      const res = await fetch(finalUrl);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      
+      let clases: any[] = json?.data ?? [];
+
+      const normalized = clases.map((c) => {
+        const id = c._id ?? c.id;
+        const fecha_hora_ini = c.fecha_hora_ini ?? null;
+        const fecha_hora_fin = c.fecha_hora_fin ?? null;
+        const cupo_disp = c.cupo_disp ?? null;
+        const entrenador = c.entrenador ?? null;
+        const actividad = c.actividad ?? null;
+        const reservas = Array.isArray(c.reservas)
+          ? c.reservas
+          : c.reservas
+          ? [c.reservas]
+          : [];
+        return {
+          ...c,
+          id,
+          fecha_hora_ini,
+          fecha_hora_fin,
+          cupo_disp,
+          entrenador,
+          actividad,
+          reservas,
+        };
+      });
+
+      setItems(normalized);
+    } catch (e: any) {
+      setError('Error al filtrar las clases.');
+      console.error('Error:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const limpiarFiltros = async () => {
+    setFecha('');
+    setSelectedActividadId('');
+    
+    // Recargar todas las clases sin filtros
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_BASE}/api/clases/todas-ordenadas`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      
+      let clases: any[] = json?.data ?? [];
+
+      const normalized = clases.map((c) => {
+        const id = c._id ?? c.id;
+        const fecha_hora_ini = c.fecha_hora_ini ?? null;
+        const fecha_hora_fin = c.fecha_hora_fin ?? null;
+        const cupo_disp = c.cupo_disp ?? null;
+        const entrenador = c.entrenador ?? null;
+        const actividad = c.actividad ?? null;
+        const reservas = Array.isArray(c.reservas)
+          ? c.reservas
+          : c.reservas
+          ? [c.reservas]
+          : [];
+        return {
+          ...c,
+          id,
+          fecha_hora_ini,
+          fecha_hora_fin,
+          cupo_disp,
+          entrenador,
+          actividad,
+          reservas,
+        };
+      });
+
+      setItems(normalized);
+    } catch (e: any) {
+      setError('Error al recargar las clases.');
+      console.error('Error:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -136,6 +276,46 @@ const ClasesPage: React.FC = () => {
           Actividad: <strong>{actividadNombre}</strong>
         </p>
       )}
+
+      {/* Filtros */}
+      <div className="filtros-container">
+        <div className="filtros-row">
+          <div className="filtro-grupo">
+            <label htmlFor="fecha-filtro">Fecha:</label>
+            <input
+              id="fecha-filtro"
+              type="date"
+              value={fecha}
+              onChange={(e) => setFecha(e.target.value)}
+            />
+          </div>
+          
+          <div className="filtro-grupo">
+            <label htmlFor="actividad-filtro">Actividad:</label>
+            <select 
+              id="actividad-filtro"
+              value={selectedActividadId} 
+              onChange={(e) => setSelectedActividadId(e.target.value)}
+            >
+              <option value="">-- Todas las actividades --</option>
+              {actividades.map((actividad) => (
+                <option key={actividad.id} value={actividad.id}>
+                  {actividad.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="filtros-botones">
+            <button className="btn-filtrar" onClick={filtrarClases}>
+              Filtrar Clases
+            </button>
+            <button className="btn-limpiar" onClick={limpiarFiltros}>
+              Limpiar Filtros
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div className="clases-grid">
         {items.length === 0 && (
