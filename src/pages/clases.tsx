@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useUsuario } from '../hooks/useUsuario';
 import './clases.css';
 
 interface Actividad {
@@ -44,6 +45,18 @@ const ClasesPage: React.FC = () => {
   
   const location = useLocation();
   const navigate = useNavigate();
+  const usuario = useUsuario();
+
+  const handleReservar = (claseId: string, claseNombre: string) => {
+    if (!usuario) {
+      alert('Debes iniciar sesión para reservar una clase');
+      navigate('/login');
+      return;
+    }
+    navigate('/reserva', {
+      state: { claseId, claseNombre },
+    });
+  };
 
   const state: any = (location && (location as any).state) || {};
   const params = new URLSearchParams(location.search || '');
@@ -79,6 +92,28 @@ const ClasesPage: React.FC = () => {
       }, 50);
     }
   }, [actividadId, actividades]);
+
+  // Función para filtrar y ordenar clases por tiempo
+  const filterAndSortClases = (clases: any[]) => {
+    const now = new Date();
+    const thirtyMinutesFromNow = new Date(now.getTime() + 30 * 60 * 1000);
+
+    return clases
+      .filter((c) => {
+        const fechaInicio = c.fecha_hora_ini?.$date ? new Date(c.fecha_hora_ini.$date) : new Date(c.fecha_hora_ini);
+        if (isNaN(fechaInicio.getTime())) return false;
+        
+        // Solo mostrar clases que empiecen después de 30 minutos desde ahora
+        return fechaInicio > thirtyMinutesFromNow;
+      })
+      .sort((a, b) => {
+        const fechaA = a.fecha_hora_ini?.$date ? new Date(a.fecha_hora_ini.$date) : new Date(a.fecha_hora_ini);
+        const fechaB = b.fecha_hora_ini?.$date ? new Date(b.fecha_hora_ini.$date) : new Date(b.fecha_hora_ini);
+        
+        // Ordenar de menor a mayor (más próximas primero)
+        return fechaA.getTime() - fechaB.getTime();
+      });
+  };
 
   // Cargar todas las clases al inicio (sin filtros)
   useEffect(() => {
@@ -119,7 +154,9 @@ const ClasesPage: React.FC = () => {
           };
         });
 
-        setItems(normalized);
+        // Filtrar y ordenar las clases
+        const clasesDisponibles = filterAndSortClases(normalized);
+        setItems(clasesDisponibles);
       } catch (e: any) {
         if (!mounted) return;
         setError('Error al cargar las clases.');
@@ -182,7 +219,9 @@ const ClasesPage: React.FC = () => {
         };
       });
 
-      setItems(normalized);
+      // Filtrar y ordenar las clases
+      const clasesDisponibles = filterAndSortClases(normalized);
+      setItems(clasesDisponibles);
     } catch (e: any) {
       setError('Error al filtrar las clases.');
       console.error('Error:', e);
@@ -228,7 +267,9 @@ const ClasesPage: React.FC = () => {
         };
       });
 
-      setItems(normalized);
+      // Filtrar y ordenar las clases
+      const clasesDisponibles = filterAndSortClases(normalized);
+      setItems(clasesDisponibles);
     } catch (e: any) {
       setError('Error al recargar las clases.');
       console.error('Error:', e);
@@ -342,9 +383,17 @@ const ClasesPage: React.FC = () => {
           const horaInicio = formatTime(c.fecha_hora_ini);
           const horaFin = formatTime(c.fecha_hora_fin);
           const cupo = c.cupo_disp ?? 'N/A';
-          const reservasCount = Array.isArray(c.reservas)
-            ? c.reservas.length
-            : Number(c.reservas ?? 0);
+          
+          // Calcular reservas ocupadas (solo PENDIENTE y CERRADA)
+          const reservasOcupadas = Array.isArray(c.reservas)
+            ? c.reservas.filter((reserva: any) => 
+                reserva.estado === 'pendiente' || reserva.estado === 'cerrada'
+              ).length
+            : 0;
+          
+          // Calcular cupo disponible
+          const cupoTotal = typeof cupo === 'number' ? cupo : parseInt(cupo) || 0;
+          const cupoDisponible = cupoTotal - reservasOcupadas;
 
           return (
             <article key={c.id ?? c._id} className="class-card card">
@@ -386,22 +435,19 @@ const ClasesPage: React.FC = () => {
                     </div>
                     <div className="meta-item">
                       Cupo:{' '}
-                      <strong>
-                        {reservasCount}/{cupo}
+                      <strong className={cupoDisponible === 0 ? 'text-red-500' : cupoDisponible <= 3 ? 'text-yellow-500' : 'text-green-500'}>
+                        {reservasOcupadas}/{cupo} (Disponibles: {cupoDisponible})
                       </strong>
                     </div>
                   </div>
                   <div className="meta-right">
                     <button
-                      className="btn-pill"
-                      onClick={() =>
-                        navigate('/reservas', {
-                          state: { claseId: c.id ?? c._id, claseNombre: title },
-                        })
-                      }
+                      className={`btn-pill ${cupoDisponible === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      onClick={() => cupoDisponible > 0 ? handleReservar(c.id ?? c._id, title) : null}
+                      disabled={cupoDisponible === 0}
                       aria-label={`Reservar ${title}`}
                     >
-                      Reservar
+                      {cupoDisponible === 0 ? 'Sin Cupo' : 'Reservar'}
                     </button>
                   </div>
                 </div>

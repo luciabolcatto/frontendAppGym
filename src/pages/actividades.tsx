@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Actividad } from '../types/actividad';
+import { useUsuario } from '../hooks/useUsuario';
 import './actividades.css';
 
 const API_BASE =
@@ -21,6 +22,18 @@ const ActividadesPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const usuario = useUsuario();
+
+  const handleVerClases = (actividadId: string, actividadNombre: string) => {
+    if (!usuario) {
+      alert('Debes iniciar sesión para ver las clases disponibles');
+      navigate('/login');
+      return;
+    }
+    navigate('/clases', {
+      state: { actividadId, actividadNombre },
+    });
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -103,11 +116,7 @@ const ActividadesPage: React.FC = () => {
               <div className="meta">
                 <button
                   className="btn-pill"
-                  onClick={() =>
-                    navigate('/clases', {
-                      state: { actividadId: a.id, actividadNombre: a.nombre },
-                    })
-                  }
+                  onClick={() => handleVerClases(a.id, a.nombre)}
                   aria-label={`Ver clases de ${a.nombre}`}
                 >
                   Clases
