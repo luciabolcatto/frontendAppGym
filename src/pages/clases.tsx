@@ -37,11 +37,11 @@ const ClasesPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actividades, setActividades] = useState<Actividad[]>([]);
-  
+
   // Estados para filtros
   const [fecha, setFecha] = useState<string>('');
   const [selectedActividadId, setSelectedActividadId] = useState<string>('');
-  
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -58,7 +58,8 @@ const ClasesPage: React.FC = () => {
       try {
         const res = await fetch(`${API_BASE}/api/actividad`);
         const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Error al cargar actividades');
+        if (!res.ok)
+          throw new Error(data.message || 'Error al cargar actividades');
         setActividades(data.data);
       } catch (error) {
         console.error('Error cargando actividades:', error);
@@ -83,16 +84,16 @@ const ClasesPage: React.FC = () => {
   // Cargar todas las clases al inicio (sin filtros)
   useEffect(() => {
     let mounted = true;
-    
+
     const fetchClasesIniciales = async () => {
       try {
         setLoading(true);
-        
+
         const res = await fetch(`${API_BASE}/api/clases/todas-ordenadas`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (!mounted) return;
-        
+
         let clases: any[] = json?.data ?? [];
 
         const normalized = clases.map((c) => {
@@ -136,26 +137,25 @@ const ClasesPage: React.FC = () => {
     };
   }, []); // Solo se ejecuta una vez al montar
 
-
-
   const filtrarClases = async () => {
     try {
       setLoading(true);
-      
+
       let url = `${API_BASE}/api/clases/todas-ordenadas?`;
       const params = new URLSearchParams();
-      
+
       // Aplicar filtros
       if (fecha) params.append('fecha', fecha);
-      if (selectedActividadId) params.append('actividadId', selectedActividadId);
-      
+      if (selectedActividadId)
+        params.append('actividadId', selectedActividadId);
+
       const finalUrl = url + params.toString();
       console.log('Filtrando clases:', finalUrl);
-      
+
       const res = await fetch(finalUrl);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      
+
       let clases: any[] = json?.data ?? [];
 
       const normalized = clases.map((c) => {
@@ -194,14 +194,14 @@ const ClasesPage: React.FC = () => {
   const limpiarFiltros = async () => {
     setFecha('');
     setSelectedActividadId('');
-    
+
     // Recargar todas las clases sin filtros
     try {
       setLoading(true);
       const res = await fetch(`${API_BASE}/api/clases/todas-ordenadas`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      
+
       let clases: any[] = json?.data ?? [];
 
       const normalized = clases.map((c) => {
@@ -289,12 +289,12 @@ const ClasesPage: React.FC = () => {
               onChange={(e) => setFecha(e.target.value)}
             />
           </div>
-          
+
           <div className="filtro-grupo">
             <label htmlFor="actividad-filtro">Actividad:</label>
-            <select 
+            <select
               id="actividad-filtro"
-              value={selectedActividadId} 
+              value={selectedActividadId}
               onChange={(e) => setSelectedActividadId(e.target.value)}
             >
               <option value="">-- Todas las actividades --</option>
@@ -305,7 +305,7 @@ const ClasesPage: React.FC = () => {
               ))}
             </select>
           </div>
-          
+
           <div className="filtros-botones">
             <button className="btn-filtrar" onClick={filtrarClases}>
               Filtrar Clases
@@ -395,7 +395,7 @@ const ClasesPage: React.FC = () => {
                     <button
                       className="btn-pill"
                       onClick={() =>
-                        navigate('/reservas', {
+                        navigate('/reservarClase', {
                           state: { claseId: c.id ?? c._id, claseNombre: title },
                         })
                       }

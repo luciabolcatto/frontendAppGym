@@ -17,6 +17,7 @@ import AdminMenu from './pages/adminMenu';
 import UsuariosPorEstado from './pages/usuariosPorEstado';
 import ReservasPorClase1 from './pages/reservasPorClase1';
 import ReservasPorClase2 from './pages/reservasPorClase2';
+import ReservarClase from './pages/reservarClase';
 
 function App(): React.JSX.Element {
   return (
@@ -34,14 +35,21 @@ function App(): React.JSX.Element {
         <Route path="cambiarContrasena" element={<CambiarContrasena />} />
         <Route path="borrarCuenta" element={<BorrarCuenta />} />
         <Route path="clases" element={<ClasesPage />} />
+        <Route path="reservarClase" element={<ReservarClase />} />
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminMenu />} />
-      <Route path="/admin/usuarios-por-estado" element={<UsuariosPorEstado />} />
+      <Route
+        path="/admin/usuarios-por-estado"
+        element={<UsuariosPorEstado />}
+      />
       <Route path="/admin/informe-reservas" element={<ReservasPorClase1 />} />
-      <Route path="/admin/informe-reservas/clase/:claseId" element={<ReservasPorClase2 />} />
+      <Route
+        path="/admin/informe-reservas/clase/:claseId"
+        element={<ReservasPorClase2 />}
+      />
     </Routes>
   );
 }

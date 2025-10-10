@@ -1,0 +1,99 @@
+:root {
+  --celeste: #00bfff;
+  --negro: #0a0a0a;
+  --blanco: #ffffff;
+}
+
+.reservar-clase-page {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--negro);
+  color: var(--blanco);
+  padding: 1rem;
+}
+
+.reservar-card {
+  background: #0d0d0d;
+  border: 1px solid #1f1f1f;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  padding: 2rem 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+.reservar-info {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+  color: #e9e9e9;
+}
+
+.reservar-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+/* Botón confirmar */
+.btn-confirmar {
+  border: 2px solid var(--celeste);
+  color: var(--blanco);
+  background: transparent;
+  border-radius: 9999px;
+  padding: 0.7rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.btn-confirmar:hover:not(:disabled) {
+  background: var(--celeste);
+  color: #000;
+  transform: translateY(-1px);
+}
+.btn-confirmar:disabled {
+  border-color: #444;
+  color: #777;
+  background: #1a1a1a;
+  cursor: not-allowed;
+}
+
+/* Botón cancelar */
+.btn-cancelar {
+  border: 2px solid #c62828;
+  color: #ffdddd;
+  background: transparent;
+  border-radius: 9999px;
+  padding: 0.7rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.btn-cancelar:hover:not(:disabled) {
+  background: #c62828;
+  color: #fff;
+  transform: translateY(-1px);
+}
+.btn-cancelar:disabled {
+  border-color: #444;
+  color: #777;
+  background: #1a1a1a;
+  cursor: not-allowed;
+}
+
+/* Mensajes */
+.error {
+  color: #ff6b6b;
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+.success {
+  color: var(--celeste);
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
