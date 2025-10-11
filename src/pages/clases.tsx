@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useUsuario } from '../hooks/useUsuario';
 import './clases.css';
 
 interface Actividad {
@@ -38,14 +37,33 @@ const ClasesPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actividades, setActividades] = useState<Actividad[]>([]);
-  
+  const [usuario, setUsuario] = useState<any>(null);
+
   // Estados para filtros
   const [fecha, setFecha] = useState<string>('');
   const [selectedActividadId, setSelectedActividadId] = useState<string>('');
-  
+
   const location = useLocation();
   const navigate = useNavigate();
-  const usuario = useUsuario();
+
+  // Obtener usuario directamente desde localStorage
+  useEffect(() => {
+    const getUsuarioFromStorage = () => {
+      try {
+        const usuarioLocal = localStorage.getItem('usuario');
+        if (usuarioLocal) {
+          const parsed = JSON.parse(usuarioLocal);
+          return parsed;
+        }
+      } catch (error) {
+        console.error('Clases - Error al parsear usuario:', error);
+      }
+      return null;
+    };
+
+    const usuarioData = getUsuarioFromStorage();
+    setUsuario(usuarioData);
+  }, []);
 
   const handleReservar = (claseId: string, claseNombre: string) => {
     if (!usuario) {
@@ -71,7 +89,8 @@ const ClasesPage: React.FC = () => {
       try {
         const res = await fetch(`${API_BASE}/api/actividad`);
         const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Error al cargar actividades');
+        if (!res.ok)
+          throw new Error(data.message || 'Error al cargar actividades');
         setActividades(data.data);
       } catch (error) {
         console.error('Error cargando actividades:', error);
@@ -115,19 +134,25 @@ const ClasesPage: React.FC = () => {
       });
   };
 
-  // Cargar todas las clases al inicio (sin filtros)
+  // Cargar todas las clases al inicio y cuando el usuario cambie
   useEffect(() => {
     let mounted = true;
-    
+
     const fetchClasesIniciales = async () => {
       try {
         setLoading(true);
+
+        // Usar el endpoint que incluye reservas del usuario si está logueado
+        let url = `${API_BASE}/api/clases/todas-ordenadas`;
+        if (usuario) {
+          url = `${API_BASE}/api/clases/con-reservas-usuario?usuarioId=${usuario.id}`;
+        }
         
-        const res = await fetch(`${API_BASE}/api/clases/todas-ordenadas`);
+        const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (!mounted) return;
-        
+
         let clases: any[] = json?.data ?? [];
 
         const normalized = clases.map((c) => {
@@ -171,28 +196,53 @@ const ClasesPage: React.FC = () => {
     return () => {
       mounted = false;
     };
-  }, []); // Solo se ejecuta una vez al montar
+  }, [usuario]); // Se ejecuta cuando cambie el usuario
 
+  // Recargar cuando la página se vuelve visible (ej: regresa de hacer una reserva)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && usuario) {
+        recargarClases();
+      }
+    };
 
+    const handleFocus = () => {
+      if (usuario) {
+        recargarClases();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [usuario]);
 
   const filtrarClases = async () => {
     try {
       setLoading(true);
+
+      // Usar el endpoint correcto según si hay usuario
+      let url = usuario 
+        ? `${API_BASE}/api/clases/con-reservas-usuario?` 
+        : `${API_BASE}/api/clases/todas-ordenadas?`;
       
-      let url = `${API_BASE}/api/clases/todas-ordenadas?`;
       const params = new URLSearchParams();
-      
+
       // Aplicar filtros
       if (fecha) params.append('fecha', fecha);
       if (selectedActividadId) params.append('actividadId', selectedActividadId);
-      
+      if (usuario) params.append('usuarioId', usuario.id);
+
       const finalUrl = url + params.toString();
-      console.log('Filtrando clases:', finalUrl);
-      
+
       const res = await fetch(finalUrl);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      
+
       let clases: any[] = json?.data ?? [];
 
       const normalized = clases.map((c) => {
@@ -230,17 +280,18 @@ const ClasesPage: React.FC = () => {
     }
   };
 
-  const limpiarFiltros = async () => {
-    setFecha('');
-    setSelectedActividadId('');
-    
-    // Recargar todas las clases sin filtros
+  const recargarClases = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_BASE}/api/clases/todas-ordenadas`);
+      // Usar el endpoint correcto
+      let url = usuario 
+        ? `${API_BASE}/api/clases/con-reservas-usuario?usuarioId=${usuario.id}` 
+        : `${API_BASE}/api/clases/todas-ordenadas`;
+      
+      const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      
+
       let clases: any[] = json?.data ?? [];
 
       const normalized = clases.map((c) => {
@@ -276,6 +327,12 @@ const ClasesPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const limpiarFiltros = async () => {
+    setFecha('');
+    setSelectedActividadId('');
+    await recargarClases();
   };
 
   if (loading) {
@@ -330,12 +387,12 @@ const ClasesPage: React.FC = () => {
               onChange={(e) => setFecha(e.target.value)}
             />
           </div>
-          
+
           <div className="filtro-grupo">
             <label htmlFor="actividad-filtro">Actividad:</label>
-            <select 
+            <select
               id="actividad-filtro"
-              value={selectedActividadId} 
+              value={selectedActividadId}
               onChange={(e) => setSelectedActividadId(e.target.value)}
             >
               <option value="">-- Todas las actividades --</option>
@@ -346,7 +403,7 @@ const ClasesPage: React.FC = () => {
               ))}
             </select>
           </div>
-          
+
           <div className="filtros-botones">
             <button className="btn-filtrar" onClick={filtrarClases}>
               Filtrar Clases
@@ -357,6 +414,15 @@ const ClasesPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Botón Mis Reservas fuera del recuadro */}
+      {usuario && (
+        <div className="navigation-section">
+          <button className="btn-navigation" onClick={() => navigate('/mis-reservas')}>
+            Mis Reservas
+          </button>
+        </div>
+      )}
 
       <div className="clases-grid">
         {items.length === 0 && (
@@ -384,16 +450,19 @@ const ClasesPage: React.FC = () => {
           const horaFin = formatTime(c.fecha_hora_fin);
           const cupo = c.cupo_disp ?? 'N/A';
           
-          // Calcular reservas ocupadas (solo PENDIENTE y CERRADA)
-          const reservasOcupadas = Array.isArray(c.reservas)
-            ? c.reservas.filter((reserva: any) => 
-                reserva.estado === 'pendiente' || reserva.estado === 'cerrada'
-              ).length
-            : 0;
-          
-          // Calcular cupo disponible
-          const cupoTotal = typeof cupo === 'number' ? cupo : parseInt(cupo) || 0;
-          const cupoDisponible = cupoTotal - reservasOcupadas;
+          // Usar directamente el cupo disponible del backend
+          // El backend ya maneja las cancelaciones actualizando cupo_disp automáticamente
+          const cupoDisponible = typeof cupo === 'number' ? cupo : parseInt(cupo) || 0;
+
+          // Verificar si el usuario tiene una reserva PENDIENTE para esta clase
+          // Solo considerar reservas pendientes, NO las cerradas ni canceladas
+          // Las cerradas no deberían aparecer porque esas clases ya no se muestran (pasaron o están por empezar)
+          const reservaUsuario = usuario ? (
+            (c.reservaUsuario && c.reservaUsuario.estado === 'pendiente') ? c.reservaUsuario :
+            c.reservas?.find((reserva: any) => 
+              reserva.usuario === usuario.id && reserva.estado === 'pendiente'
+            )
+          ) : null;
 
           return (
             <article key={c.id ?? c._id} className="class-card card">
@@ -434,21 +503,75 @@ const ClasesPage: React.FC = () => {
                       </strong>
                     </div>
                     <div className="meta-item">
-                      Cupo:{' '}
+                      Cupo disponible:{' '}
                       <strong className={cupoDisponible === 0 ? 'text-red-500' : cupoDisponible <= 3 ? 'text-yellow-500' : 'text-green-500'}>
-                        {reservasOcupadas}/{cupo} (Disponibles: {cupoDisponible})
+                        {cupoDisponible}
                       </strong>
                     </div>
                   </div>
                   <div className="meta-right">
-                    <button
-                      className={`btn-pill ${cupoDisponible === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                      onClick={() => cupoDisponible > 0 ? handleReservar(c.id ?? c._id, title) : null}
-                      disabled={cupoDisponible === 0}
-                      aria-label={`Reservar ${title}`}
-                    >
-                      {cupoDisponible === 0 ? 'Sin Cupo' : 'Reservar'}
-                    </button>
+                    {reservaUsuario ? (
+                      <button
+                        className="btn-pill btn-cancelar-reserva"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          
+                          if (!window.confirm('¿Estás seguro de que quieres cancelar esta reserva?')) {
+                            return;
+                          }
+                          
+                          try {
+                            const response = await fetch(`${API_BASE}/api/Reservas/${reservaUsuario.id}`, {
+                              method: 'PATCH',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+                                estado: 'cancelada'
+                              }),
+                            });
+                            
+                            if (response.ok) {
+                              alert('Reserva cancelada exitosamente. El cupo ha sido liberado para otros usuarios.');
+                              // Recargar las clases para actualizar el estado inmediatamente
+                              await recargarClases(); // Esto recargará todas las clases con el estado actualizado
+                            } else {
+                              throw new Error('Error al cancelar la reserva');
+                            }
+                          } catch (error) {
+                            alert('Error al cancelar la reserva');
+                            console.error('Error:', error);
+                          }
+                        }}
+                        aria-label={`Cancelar reserva de ${title}`}
+                      >
+                        Cancelar Reserva
+                      </button>
+                    ) : (
+                      <button
+                        className={`btn-pill ${cupoDisponible === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          
+                          if (cupoDisponible === 0) return;
+                          
+                          if (!usuario) {
+                            alert('Debes iniciar sesión para reservar una clase');
+                            navigate('/login');
+                            return;
+                          }
+                          
+                          // Navegar a la página de reservar clase
+                          navigate('/reservarClase', {
+                            state: { claseId: c.id ?? c._id, claseNombre: title },
+                          });
+                        }}
+                        disabled={cupoDisponible === 0}
+                        aria-label={`Reservar ${title}`}
+                      >
+                        {cupoDisponible === 0 ? 'Sin Cupo' : 'Reservar'}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

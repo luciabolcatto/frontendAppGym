@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Actividad } from '../types/actividad';
-import { useUsuario } from '../hooks/useUsuario';
 import './actividades.css';
 
 const API_BASE =
@@ -21,8 +20,26 @@ const ActividadesPage: React.FC = () => {
   const [items, setItems] = useState<Actividad[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [usuario, setUsuario] = useState<any>(null);
   const navigate = useNavigate();
-  const usuario = useUsuario();
+
+  // Obtener usuario desde localStorage
+  useEffect(() => {
+    const getUsuarioFromStorage = () => {
+      try {
+        const usuarioLocal = localStorage.getItem('usuario');
+        if (usuarioLocal) {
+          return JSON.parse(usuarioLocal);
+        }
+      } catch (error) {
+        console.error('Actividades - Error al parsear usuario:', error);
+      }
+      return null;
+    };
+
+    const usuarioData = getUsuarioFromStorage();
+    setUsuario(usuarioData);
+  }, []);
 
   const handleVerClases = (actividadId: string, actividadNombre: string) => {
     if (!usuario) {

@@ -176,6 +176,7 @@ const Perfil = (): React.JSX.Element => {
             )}
 
             <button onClick={() => navigate('/mis-contratos')}>Mis Contratos</button>
+            <button onClick={() => navigate('/mis-reservas')}>Mis Reservas</button>
             <button onClick={() => navigate('/cambiarContrasena')}>Cambiar contraseña</button>
             <button onClick={() => navigate('/borrarCuenta')} className="btn-danger">Eliminar cuenta</button>
             <button onClick={handleLogout} className="btn-danger">Cerrar sesión</button>

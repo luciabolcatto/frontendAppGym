@@ -308,6 +308,22 @@ const MisContratosPage: React.FC = () => {
           onPagoExitoso={handlePagoExitoso}
         />
       )}
+
+      {/* Botones de navegación */}
+      <div className="navigation-actions">
+        <button 
+          className="btn-secondary" 
+          onClick={() => window.location.href = '/perfil'}
+        >
+          Volver al Perfil
+        </button>
+        <button 
+          className="btn-primary" 
+          onClick={() => window.location.href = '/planes'}
+        >
+          Ver Planes
+        </button>
+      </div>
     </div>
   );
 };

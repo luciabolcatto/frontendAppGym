@@ -2,6 +2,7 @@
   --celeste: #00bfff;
   --negro: #0a0a0a;
   --blanco: #ffffff;
+  --rojo: #f44336;
 }
 
 .clases-page {
@@ -41,6 +42,8 @@
   max-width: 1200px;
   margin: 1rem auto 2rem;
   padding: 0 1rem;
+  display: flex;
+  justify-content: center;
 }
 
 .filtros-row {
@@ -52,6 +55,9 @@
   flex-wrap: wrap;
   gap: 1rem;
   align-items: end;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
 }
 
 .filtro-grupo {
@@ -88,7 +94,9 @@
   display: flex;
   gap: 0.8rem;
   align-items: center;
+  justify-content: center;
   margin-top: auto;
+  flex: 1 0 100%;
 }
 
 .btn-filtrar {
@@ -246,6 +254,84 @@
 .muted {
   color: #94a3b8;
   text-align: center;
+}
+
+.btn-cancelar-reserva {
+  background: transparent !important;
+  border: 2px solid var(--rojo) !important;
+  color: var(--rojo) !important;
+  padding: 0.7rem 1.2rem !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  font-size: 0.85rem !important;
+}
+
+.btn-cancelar-reserva:hover {
+  background: var(--rojo) !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-no-disponible {
+  background: transparent !important;
+  border: 2px solid #666 !important;
+  color: #999 !important;
+  padding: 0.7rem 1.2rem !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  cursor: not-allowed !important;
+  font-size: 0.85rem !important;
+  opacity: 0.7 !important;
+}
+
+/* Navigation section */
+.navigation-section {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.btn-navigation {
+  background: var(--celeste);
+  color: #000;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 250px;
+}
+
+.btn-navigation:hover {
+  background: #0099cc;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 191, 255, 0.3);
+}
+
+/* Responsive para filtros */
+@media (max-width: 768px) {
+  .filtros-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .filtro-grupo {
+    width: 100%;
+    max-width: 300px;
+    align-items: center;
+  }
+  
+  .filtros-botones {
+    justify-content: center;
+    width: 100%;
+  }
 }
 
 @media (min-width: 640px) {
