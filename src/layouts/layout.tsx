@@ -18,7 +18,7 @@ function resolveImageUrl(u: Usuario): string | undefined {
 
 export default function Layout(): React.JSX.Element {
   const navigate = useNavigate();
-  const usuario = useUsuario(); // Ahora usa el hook con recarga automática
+  const usuario = useUsuario(); // usa el hook con recarga automática
 
   const handleProfileClick = () => {
     if (!usuario) {

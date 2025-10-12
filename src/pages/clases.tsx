@@ -449,9 +449,8 @@ const ClasesPage: React.FC = () => {
           const horaInicio = formatTime(c.fecha_hora_ini);
           const horaFin = formatTime(c.fecha_hora_fin);
           const cupo = c.cupo_disp ?? 'N/A';
-          
-          // Usar directamente el cupo disponible del backend
-          // El backend ya maneja las cancelaciones actualizando cupo_disp automáticamente
+
+          // Usar directamente el cupo disponible del backend (ya maneja las cancelaciones actualizando cupo_disp automáticamente)
           const cupoDisponible = typeof cupo === 'number' ? cupo : parseInt(cupo) || 0;
 
           // Verificar si el usuario tiene una reserva PENDIENTE para esta clase
@@ -561,7 +560,7 @@ const ClasesPage: React.FC = () => {
                             return;
                           }
                           
-                          // Navegar a la página de reservar clase
+                         
                           navigate('/reservarClase', {
                             state: { claseId: c.id ?? c._id, claseNombre: title },
                           });

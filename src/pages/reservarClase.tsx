@@ -90,13 +90,13 @@ const ReservarClase: React.FC = () => {
     setError(null);
     setSuccess(null);
     try {
-      // 1. Registrar la reserva
+      //  Registrar la reserva
       const reservaRes = await fetch(`${API_BASE}/api/Reservas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fecha_hora: new Date().toISOString(),
-          estado: 'pendiente', // Usar 'pendiente' en lugar de 'confirmada'
+          estado: 'pendiente', 
           usuario: usuario.id,
           clase: claseId,
         }),
@@ -105,7 +105,7 @@ const ReservarClase: React.FC = () => {
       if (!reservaRes.ok)
         throw new Error(reservaData.message || 'Error al reservar');
 
-      // 2. Actualizar el cupo de la clase
+      //  Actualizar el cupo de la clase
       const cupoRes = await fetch(
         `${API_BASE}/api/clases/${claseId}/actualizar-cupo`,
         {

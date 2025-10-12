@@ -87,7 +87,7 @@ export default function CambiarContrasena() {
       const data = await updateRes.json();
       localStorage.setItem("usuario", JSON.stringify(data.data));
 
-      alert("✅ Contraseña cambiada correctamente.");
+      alert(" Contraseña cambiada correctamente.");
       setContrasenaAnterior("");
       setContrasenaNueva("");
       setConfirmarContrasena("");

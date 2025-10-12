@@ -26,7 +26,7 @@ export default function BorrarCuenta() {
       return;
     }
 
-    if (!window.confirm("⚠️ Esta acción eliminará tu cuenta permanentemente. ¿Seguro?")) return;
+    if (!window.confirm(" Esta acción eliminará tu cuenta permanentemente. ¿Seguro?")) return;
 
     try {
       // Validar contraseña mediante login

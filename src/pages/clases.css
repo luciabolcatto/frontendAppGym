@@ -37,7 +37,7 @@
   color: #cfeffd;
 }
 
-/* Estilos para filtros */
+
 .filtros-container {
   max-width: 1200px;
   margin: 1rem auto 2rem;
@@ -226,7 +226,7 @@
   color: #d1eaff;
 }
 
-/* .meta-right: right-side container for actions (kept for layout) */
+
 .btn-pill {
   border: 2px solid var(--celeste);
   color: var(--blanco);
@@ -286,7 +286,7 @@
   opacity: 0.7 !important;
 }
 
-/* Navigation section */
+
 .navigation-section {
   display: flex;
   justify-content: center;
@@ -314,7 +314,7 @@
   box-shadow: 0 8px 20px rgba(0, 191, 255, 0.3);
 }
 
-/* Responsive para filtros */
+
 @media (max-width: 768px) {
   .filtros-row {
     flex-direction: column;

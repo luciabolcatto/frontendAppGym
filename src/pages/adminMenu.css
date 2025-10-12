@@ -7,17 +7,14 @@ html {
   font-family: Arial, sans-serif;
 }
 
-/* Caja más compacta */
+
 .admin-menu-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* evita que se expanda demasiado */
   min-height: auto;
-  /* ya no fuerza el 100vh */
   margin: 100px auto;
-  /* centrado con espacio arriba y abajo */
   padding: 25px 20px;
   background-color: #1e1e1e;
   color: #ffffff;
@@ -25,7 +22,7 @@ html {
   text-align: center;
   width: 90%;
   max-width: 400px;
-  /* caja más angosta */
+ 
 }
 
 .admin-menu-title {
@@ -64,7 +61,7 @@ html {
   transform: translateY(0);
 }
 
-/* Botón de cerrar sesión en rojo */
+
 .admin-menu-buttons .btn-danger {
   background-color: #ff5555;
 }
@@ -73,7 +70,7 @@ html {
   background-color: #cc4444;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .admin-menu-container {
     margin: 50px auto;

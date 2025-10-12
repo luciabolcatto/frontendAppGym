@@ -98,7 +98,7 @@
   place-items: center;
 }
 
-/* responsive 1/2/3 columnas (complementa a Tailwind si está presente) */
+
 @media (min-width: 640px) {
   .actividades-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

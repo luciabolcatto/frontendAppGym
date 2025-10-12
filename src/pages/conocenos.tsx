@@ -18,7 +18,7 @@ export default function ConocenosPage(): React.JSX.Element {
     fetch('http://localhost:5500/api/entrenadores')
       .then((res) => res.json())
       .then((data) => {
-        console.log('📦 Data del backend:', data);
+        console.log(' Data del backend:', data);
         setEntrenadores(data.data);
       })
       .catch((err) => console.error(err));
@@ -46,7 +46,7 @@ export default function ConocenosPage(): React.JSX.Element {
         <div className="trainers-carousel">
           {entrenadores.map((entrenador) => {
             const fullUrl = `http://localhost:5500${entrenador.fotoUrl}`;
-            console.log('🖼️ URL final:', fullUrl);
+            console.log(' URL final:', fullUrl);
             return (
               <div
                 key={entrenador.id}

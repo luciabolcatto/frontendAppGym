@@ -1,14 +1,14 @@
-/* Contenedor principal */
+
 .conocenos-container {
   display: flex;
   flex-direction: column;
   gap: 3rem;
   padding: 2rem;
-  background-color: #111; /* negro */
+  background-color: #111; 
   color: #fff;
 }
 
-/* HERO */
+
 .hero {
   display: flex;
   flex-wrap: wrap;
@@ -29,7 +29,7 @@
 }
 
 .hero__text h1 {
-  color: #1e90ff; /* azul fuerte */
+  color: #1e90ff; 
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -38,10 +38,10 @@
 .hero__text p {
   font-size: 1rem;
   line-height: 1.6;
-  color: #ccc; /* gris */
+  color: #ccc;
 }
 
-/* Sección entrenadores */
+
 .trainers-section {
   text-align: center;
   display: flex;
@@ -55,7 +55,7 @@
   color: #1e90ff;
 }
 
-/* Carrusel centrado y con ancho máximo */
+
 .trainers-carousel {
   display: flex;
   gap: 2rem;
@@ -66,10 +66,10 @@
   margin: 0 auto;
 }
 
-/* Tarjeta entrenador tipo carrusel */
+
 .trainer-photo {
   width: 100%;
-  height: 75%; /* o el porcentaje que quieras de la card */
+  height: 75%; 
   background-size: cover;
   background-position: center;
 }

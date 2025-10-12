@@ -30,7 +30,7 @@ const AdminLogin = (): React.JSX.Element => {
 
       localStorage.setItem('adminToken', data.token);
       alert('Bienvenido administrador');
-      navigate('/admin'); // ruta al menú de admin
+      navigate('/admin'); 
     } catch (error) {
       console.error(error);
       alert('Error al conectar con el servidor');

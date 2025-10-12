@@ -1,4 +1,4 @@
-/* Modal Overlay */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -13,7 +13,7 @@
   padding: 20px;
 }
 
-/* Modal Content */
+
 .modal-content {
   background: white;
   border-radius: 12px;
@@ -36,7 +36,7 @@
   }
 }
 
-/* Modal Header */
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -69,14 +69,14 @@
   background-color: #f3f4f6;
 }
 
-/* Modal Body */
+
 .modal-body {
   padding: 0 24px;
   max-height: 60vh;
   overflow-y: auto;
 }
 
-/* Contrato Info */
+
 .contrato-info {
   margin-bottom: 32px;
 }
@@ -127,7 +127,7 @@
   font-weight: 600;
 }
 
-/* Pago Form */
+
 .pago-form h3 {
   margin: 0 0 16px;
   color: #111827;
@@ -168,7 +168,7 @@
   cursor: not-allowed;
 }
 
-/* Error Message */
+
 .error-message {
   background-color: #fef2f2;
   border: 1px solid #fecaca;
@@ -179,7 +179,7 @@
   font-size: 14px;
 }
 
-/* Simulación Info */
+
 .simulacion-info {
   background-color: #eff6ff;
   border: 1px solid #bfdbfe;
@@ -195,7 +195,7 @@
   line-height: 1.5;
 }
 
-/* Modal Footer */
+
 .modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -254,7 +254,7 @@
   cursor: not-allowed;
 }
 
-/* Responsive */
+
 @media (max-width: 640px) {
   .modal-overlay {
     padding: 10px;

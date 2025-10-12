@@ -96,7 +96,7 @@ const MisReservas: React.FC = () => {
     try {
       setLoading(true);
       
-      // Usar el endpoint correcto con filtro por usuario
+     
       const response = await fetch(`${API_BASE}/api/Reservas?usuario=${usuario.id}`);
       const data = await response.json();
       
@@ -123,7 +123,7 @@ const MisReservas: React.FC = () => {
   const cancelarReserva = async (reservaId: string) => {
     if (!usuario || cancelando) return;
     
-    // Confirmar cancelación
+    
     if (!window.confirm('¿Estás seguro de que quieres cancelar esta reserva?')) {
       return;
     }
@@ -187,7 +187,7 @@ const MisReservas: React.FC = () => {
     const tiempoRestante = fechaClase.getTime() - ahora.getTime();
     const minutosRestantes = tiempoRestante / (1000 * 60);
     
-    // Se puede cancelar hasta 30 minutos antes de la clase (consistente con el backend)
+    // Se puede cancelar hasta 30 minutos antes de la clase 
     return minutosRestantes > 30;
   };
 

@@ -430,7 +430,7 @@
   color: inherit !important;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .reservas-grid {
     grid-template-columns: 1fr;

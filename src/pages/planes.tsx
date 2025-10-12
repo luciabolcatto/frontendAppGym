@@ -120,7 +120,7 @@ const PlanesPage: React.FC = () => {
       
       // Manejar error específico de límite de contratos
       if (error?.response?.data?.error === 'LIMITE_CONTRATOS_EXCEDIDO') {
-        alert(` ${error.response.data.message}\n\n📊 Contratos pendientes: ${error.response.data.contratosPendientesActuales}/${error.response.data.limite}`);
+        alert(` ${error.response.data.message}\n\n Contratos pendientes: ${error.response.data.contratosPendientesActuales}/${error.response.data.limite}`);
       } else {
         alert(error instanceof Error ? error.message : "Error al contratar el plan");
       }
