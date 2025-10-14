@@ -19,6 +19,12 @@
   padding: 2.5rem 1rem 1rem;
 }
 
+.hero-button-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
 .hero-title {
   font-weight: 900;
   letter-spacing: 2px;
@@ -348,4 +354,22 @@
   .class-card {
     flex-direction: column;
   }
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--celeste);
+  color: var(--celeste);
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.btn-secondary:hover {
+  background: var(--celeste);
+  color: var(--negro);
+  transform: translateY(-2px);
 }

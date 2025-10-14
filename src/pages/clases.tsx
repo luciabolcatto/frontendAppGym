@@ -368,6 +368,16 @@ const ClasesPage: React.FC = () => {
       <div className="hero">
         <h1 className="hero-title">CLASES</h1>
       </div>
+      {usuario && (
+        <div className="hero-button-section">
+          <button 
+            className="btn-secondary" 
+            onClick={() => navigate('/mis-reservas')}
+          >
+            Mis Reservas
+          </button>
+        </div>
+      )}
 
       {actividadNombre && (
         <p className="subhead">
@@ -415,14 +425,7 @@ const ClasesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Botón Mis Reservas fuera del recuadro */}
-      {usuario && (
-        <div className="navigation-section">
-          <button className="btn-navigation" onClick={() => navigate('/mis-reservas')}>
-            Mis Reservas
-          </button>
-        </div>
-      )}
+
 
       <div className="clases-grid">
         {items.length === 0 && (

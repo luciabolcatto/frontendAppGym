@@ -17,6 +17,12 @@
   padding: 2.5rem 1rem 1rem;
 }
 
+.hero-button-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
 
 .contratos-info {
   max-width: 800px;
@@ -83,7 +89,9 @@
   border-radius: 18px;
   padding: 1.5rem;
   box-shadow: 0 8px 24px rgba(0,0,0,.35);
-  height: 120%;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
 }
 
 .plan-name {
@@ -94,7 +102,7 @@
 .plan-desc {
   margin-top: .5rem;
   color: #e9e9e9;
-  height: 20%;
+  flex-grow: 1;
 }
 
 .plan-price {
@@ -109,7 +117,7 @@
 }
 
 .cta {
-  margin-top: 1rem;
+  margin-top: auto;
   border: 2px solid var(--celeste);
   color: var(--blanco);
   background: transparent;

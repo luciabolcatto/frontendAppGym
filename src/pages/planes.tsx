@@ -133,15 +133,17 @@ const PlanesPage: React.FC = () => {
     <div className="planes-page">
       <div className="hero">
         <h1 className="hero-title">PLANES</h1>
-        {usuario && (
+      </div>
+      {usuario && (
+        <div className="hero-button-section">
           <button 
             className="btn-secondary" 
             onClick={() => window.location.href = '/mis-contratos'}
           >
             Mis Contratos
           </button>
-        )}
-      </div>
+        </div>
+      )}
       
       {/* Mostrar información de contratos pendientes si el usuario está logueado */}
       {usuario && !loading && (
