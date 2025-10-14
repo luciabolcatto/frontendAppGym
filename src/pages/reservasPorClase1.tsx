@@ -184,7 +184,6 @@ const ReservasPorClase1 = (): React.JSX.Element => {
                 <div className="clase-info">
                   <p><strong>Entrenador:</strong> {clase.entrenador.nombre} {clase.entrenador.apellido}</p>
                   <p><strong>Fecha y hora:</strong> {new Date(clase.fecha_hora_ini).toLocaleString()}</p>
-                  <p><strong>Cupo disponible:</strong> {clase.cupo_disp}</p>
                 </div>
                 
                 <button 

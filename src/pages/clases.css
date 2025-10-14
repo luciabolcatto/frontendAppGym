@@ -175,12 +175,13 @@
   flex-direction: column;
 }
 
-.class-img {
+/* Comentado: estilos para imagen del entrenador/actividad */
+/* .class-img {
   width: 100%;
   height: 220px;
   object-fit: cover;
   display: block;
-}
+} */
 
 .class-body {
   padding: 1rem;
@@ -244,12 +245,13 @@
   transform: translateY(-1px);
 }
 
-.placeholder {
+/* Comentado: placeholder para cuando no hay imagen */
+/* .placeholder {
   background: radial-gradient(circle at 30% 20%, #0f172a, #0b0b0b 60%);
   color: #94a3b8;
   display: grid;
   place-items: center;
-}
+} */
 
 .muted {
   color: #94a3b8;

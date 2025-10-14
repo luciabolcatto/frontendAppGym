@@ -433,12 +433,14 @@ const ClasesPage: React.FC = () => {
           const actividad = c?.actividad;
           const entrenador = c?.entrenador;
 
-          const img = resolveImageUrl(
-            entrenador?.fotoUrl ??
-              actividad?.imagenUrl ??
-              entrenador?.foto ??
-              actividad?.imagen
-          );
+          // Comentado: mostrar foto del entrenador/actividad
+          // const img = resolveImageUrl(
+          //   entrenador?.fotoUrl ??
+          //     actividad?.imagenUrl ??
+          //     entrenador?.foto ??
+          //     actividad?.imagen
+          // );
+          const img = null; // Temporalmente deshabilitado para ver sin fotos
 
           const title =
             actividad?.nombre ??
@@ -465,7 +467,8 @@ const ClasesPage: React.FC = () => {
 
           return (
             <article key={c.id ?? c._id} className="class-card card">
-              {img ? (
+              {/* Comentado: sección de imagen del entrenador/actividad */}
+              {/* {img ? (
                 <img
                   src={img}
                   alt={title}
@@ -476,7 +479,7 @@ const ClasesPage: React.FC = () => {
                 <div className="class-img placeholder">
                   <span className="opacity-70">Sin imagen</span>
                 </div>
-              )}
+              )} */}
 
               <div className="class-body">
                 <h3 className="class-title">{title}</h3>

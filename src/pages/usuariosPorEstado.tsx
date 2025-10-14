@@ -83,7 +83,6 @@ const UsuariosPorEstado = (): React.JSX.Element => {
               <th>Membresía</th>
               <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
-              <th>Estado</th>
               <th>Método de Pago</th>
               <th>Fecha de Pago</th>
               <th>Fecha de Cancelación</th>
@@ -95,12 +94,11 @@ const UsuariosPorEstado = (): React.JSX.Element => {
                 <td>{u.nombre}</td>
                 <td>{u.apellido}</td>
                 <td>{u.membresia}</td>
-                <td>{u.fecha_hora_ini ? new Date(u.fecha_hora_ini).toLocaleString() : 'N/A'}</td>
-                <td>{u.fecha_hora_fin ? new Date(u.fecha_hora_fin).toLocaleString() : 'N/A'}</td>
-                <td>{u.estado}</td>
-                <td>{u.metodoPago}</td>
-                <td>{u.fechaPago ? new Date(u.fechaPago).toLocaleString() : 'N/A'}</td>
-                <td>{u.fechaCancelacion ? new Date(u.fechaCancelacion).toLocaleString() : 'N/A'}</td>
+                <td>{u.fecha_hora_ini ? new Date(u.fecha_hora_ini).toLocaleString() : '-'}</td>
+                <td>{u.fecha_hora_fin ? new Date(u.fecha_hora_fin).toLocaleString() : '-'}</td>
+                <td>{u.metodoPago === 'N/A' ? '-' : u.metodoPago}</td>
+                <td>{u.fechaPago ? new Date(u.fechaPago).toLocaleString() : '-'}</td>
+                <td>{u.fechaCancelacion ? new Date(u.fechaCancelacion).toLocaleString() : '-'}</td>
               </tr>
             ))}
           </tbody>

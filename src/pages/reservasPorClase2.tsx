@@ -95,6 +95,7 @@ const ReservasPorClase2 = (): React.JSX.Element => {
         {reservas.length > 0 && (
           <div className="clase-info">
             <h2>{reservas[0].nombreActividad}</h2>
+            <p><strong>ID Actividad:</strong> {reservas[0].idActividad}</p>
             <p><strong>Horario:</strong> {formatearFecha(reservas[0].fecha_hora_ini)} - {formatearFecha(reservas[0].fecha_hora_fin)}</p>
             <p><strong>Total de reservas:</strong> {reservas.length}</p>
           </div>
@@ -120,8 +121,6 @@ const ReservasPorClase2 = (): React.JSX.Element => {
                 <th>Apellido</th>
                 <th>Fecha de Reserva</th>
                 <th>Estado</th>
-                <th>Actividad</th>
-                <th>Horario Clase</th>
               </tr>
             </thead>
             <tbody>
@@ -135,10 +134,6 @@ const ReservasPorClase2 = (): React.JSX.Element => {
                     <span className={`estado ${obtenerClaseEstado(reserva.estado_reserva)}`}>
                       {reserva.estado_reserva}
                     </span>
-                  </td>
-                  <td>{reserva.nombreActividad}</td>
-                  <td>
-                    {formatearFecha(reserva.fecha_hora_ini)} - {formatearFecha(reserva.fecha_hora_fin)}
                   </td>
                 </tr>
               ))}
