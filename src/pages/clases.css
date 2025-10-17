@@ -1,3 +1,18 @@
+/* Botón pasivo para Sin Cupo */
+.btn-sin-cupo {
+  background: #bdbdbd;
+  border: 2px solid #bdbdbd;
+  color: #555;
+  border-radius: 9999px;
+  padding: 0.5rem 1.1rem;
+  font-weight: 600;
+  opacity: 1;
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+  font-size: 1rem;
+  display: inline-block;
+}
 :root {
   --celeste: #00bfff;
   --negro: #0a0a0a;

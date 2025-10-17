@@ -123,6 +123,20 @@ const MisReservas: React.FC = () => {
   const cancelarReserva = async (reservaId: string) => {
     if (!usuario || cancelando) return;
     
+    //  VALIDACIÓN DE 30 MINUTOS PARA CANCELACIÓN
+    const reserva = reservas.find(r => r.id === reservaId);
+    if (reserva) {
+      const ahora = new Date();
+      const treintaMinutosDesdeAhora = new Date(ahora.getTime() + 30 * 60 * 1000);
+      const fechaInicio = new Date(reserva.clase.fecha_hora_ini);
+      
+      if (fechaInicio <= treintaMinutosDesdeAhora) {
+        alert('No se puede cancelar esta reserva. Las cancelaciones no están permitidas dentro de los 30 minutos previos al inicio de la clase.');
+       
+        await cargarReservas();
+        return;
+      }
+    }
     
     if (!window.confirm('¿Estás seguro de que quieres cancelar esta reserva?')) {
       return;

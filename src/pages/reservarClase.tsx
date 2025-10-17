@@ -89,7 +89,34 @@ const ReservarClase: React.FC = () => {
     setLoading(true);
     setError(null);
     setSuccess(null);
+    
     try {
+      // Obtener datos actuales de la clase para validar
+      const claseRes = await fetch(`${API_BASE}/api/clases/${claseId}`);
+      if (!claseRes.ok) {
+        throw new Error('Error al obtener datos de la clase');
+      }
+      const claseData = await claseRes.json();
+      const clase = claseData.data || claseData;
+
+      // Validar cupo disponible
+      const cupoDisponible = typeof clase.cupo_disp === 'number' ? clase.cupo_disp : parseInt(clase.cupo_disp) || 0;
+      if (cupoDisponible === 0) {
+        setError('No se puede reservar esta clase. No hay cupo disponible.');
+        setLoading(false);
+        return;
+      }
+
+      // Validar tiempo (30 minutos antes del inicio)
+      const ahora = new Date();
+      const treintaMinutosDesdeAhora = new Date(ahora.getTime() + 30 * 60 * 1000);
+      const fechaInicio = clase.fecha_hora_ini?.$date ? new Date(clase.fecha_hora_ini.$date) : new Date(clase.fecha_hora_ini);
+      
+      if (fechaInicio <= treintaMinutosDesdeAhora) {
+        setError('No se puede reservar esta clase. Las reservas se cierran 30 minutos antes del inicio.');
+        setLoading(false);
+        return;
+      }
       //  Registrar la reserva
       const reservaRes = await fetch(`${API_BASE}/api/Reservas`, {
         method: 'POST',

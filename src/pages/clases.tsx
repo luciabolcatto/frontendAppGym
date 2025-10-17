@@ -65,13 +65,31 @@ const ClasesPage: React.FC = () => {
     setUsuario(usuarioData);
   }, []);
 
-  const handleReservar = (claseId: string, claseNombre: string) => {
+  const handleReservar = (claseId: string, claseNombre: string, clase: any) => {
     if (!usuario) {
       alert('Debes iniciar sesión para reservar una clase');
       navigate('/login');
       return;
     }
-    navigate('/reserva', {
+
+    // Validar cupo disponible
+    const cupoDisponible = typeof clase.cupo_disp === 'number' ? clase.cupo_disp : parseInt(clase.cupo_disp) || 0;
+    if (cupoDisponible === 0) {
+      alert('No se puede reservar esta clase. No hay cupo disponible.');
+      return;
+    }
+
+    // Validar tiempo (30 minutos antes del inicio)
+    const ahora = new Date();
+    const treintaMinutosDesdeAhora = new Date(ahora.getTime() + 30 * 60 * 1000);
+    const fechaInicio = clase.fecha_hora_ini?.$date ? new Date(clase.fecha_hora_ini.$date) : new Date(clase.fecha_hora_ini);
+    
+    if (fechaInicio <= treintaMinutosDesdeAhora) {
+      alert('No se puede reservar esta clase. Las reservas se cierran 30 minutos antes del inicio.');
+      return;
+    }
+
+    navigate('/reservarClase', {
       state: { claseId, claseNombre },
     });
   };
@@ -521,6 +539,18 @@ const ClasesPage: React.FC = () => {
                         onClick={async (e) => {
                           e.preventDefault();
                           
+                          //  VALIDACIÓN DE 30 MINUTOS PARA CANCELACIÓN
+                          const ahora = new Date();
+                          const treintaMinutosDesdeAhora = new Date(ahora.getTime() + 30 * 60 * 1000);
+                          const fechaInicio = c.fecha_hora_ini?.$date ? new Date(c.fecha_hora_ini.$date) : new Date(c.fecha_hora_ini);
+                          
+                          if (fechaInicio <= treintaMinutosDesdeAhora) {
+                            alert('No se puede cancelar esta reserva. Las cancelaciones no están permitidas dentro de los 30 minutos previos al inicio de la clase.');
+                            
+                            await recargarClases();
+                            return;
+                          }
+                          
                           if (!window.confirm('¿Estás seguro de que quieres cancelar esta reserva?')) {
                             return;
                           }
@@ -552,29 +582,18 @@ const ClasesPage: React.FC = () => {
                       >
                         Cancelar Reserva
                       </button>
+                    ) : cupoDisponible === 0 ? (
+                      <span className="btn-sin-cupo">Sin Cupo</span>
                     ) : (
                       <button
-                        className={`btn-pill ${cupoDisponible === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className="btn-pill"
                         onClick={(e) => {
                           e.preventDefault();
-                          
-                          if (cupoDisponible === 0) return;
-                          
-                          if (!usuario) {
-                            alert('Debes iniciar sesión para reservar una clase');
-                            navigate('/login');
-                            return;
-                          }
-                          
-                         
-                          navigate('/reservarClase', {
-                            state: { claseId: c.id ?? c._id, claseNombre: title },
-                          });
+                          handleReservar(c.id ?? c._id, title, c);
                         }}
-                        disabled={cupoDisponible === 0}
                         aria-label={`Reservar ${title}`}
                       >
-                        {cupoDisponible === 0 ? 'Sin Cupo' : 'Reservar'}
+                        Reservar
                       </button>
                     )}
                   </div>
