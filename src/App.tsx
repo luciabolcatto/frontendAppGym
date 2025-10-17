@@ -4,7 +4,6 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Register from './pages/register';
 import Perfil from './pages/perfil';
-import Reserva from './pages/reservas';
 import ActividadesPage from './pages/actividades';
 import ConocenosPage from './pages/conocenos';
 import PlanesPage from './pages/planes';
@@ -28,7 +27,6 @@ function App(): React.JSX.Element {
         <Route index element={<Home />} /> {/* / */}
         <Route path="home" element={<Home />} /> {/* /home */}
         <Route path="perfil" element={<Perfil />} />
-        <Route path="reserva" element={<Reserva />} />
         <Route path="planes" element={<PlanesPage />} />
         <Route path="mis-contratos" element={<MisContratosPage />} />
         <Route path="actividades" element={<ActividadesPage />} />
