@@ -51,7 +51,12 @@ const PlanesPage: React.FC = () => {
 
   const verificarContratosPendientes = async (usuarioId: string): Promise<number> => {
     try {
-      const response = await fetch(`${API_BASE}/api/contratos/usuario/${usuarioId}`);
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE}/api/contratos/usuario/${usuarioId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       if (!response.ok) throw new Error('Error al obtener contratos');
       
       const data = await response.json();

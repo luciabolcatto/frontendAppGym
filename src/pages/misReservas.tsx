@@ -96,8 +96,12 @@ const MisReservas: React.FC = () => {
     try {
       setLoading(true);
       
-     
-      const response = await fetch(`${API_BASE}/api/Reservas?usuario=${usuario.id}`);
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE}/api/Reservas?usuario=${usuario.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       
       if (!response.ok) {
@@ -144,10 +148,12 @@ const MisReservas: React.FC = () => {
     
     try {
       setCancelando(reservaId);
+      const token = localStorage.getItem('token');
       const response = await fetch(`${API_BASE}/api/Reservas/${reservaId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           estado: 'cancelada'

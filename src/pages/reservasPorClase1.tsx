@@ -62,7 +62,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
         const adminToken = localStorage.getItem('adminToken');
         if (!adminToken) return;
 
-        const res = await fetch('http://localhost:5500/api/clases/todas-ordenadas', {
+        const res = await fetch('http://localhost:5500/api/clases/admin/todas-ordenadas', {
           headers: { Authorization: `Bearer ${adminToken}` }
         });
         
@@ -84,7 +84,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
       const adminToken = localStorage.getItem('adminToken');
       if (!adminToken) return;
 
-      let url = 'http://localhost:5500/api/clases/todas-ordenadas?';
+      let url = 'http://localhost:5500/api/clases/admin/todas-ordenadas?';
       
       const params = new URLSearchParams();
       if (fecha) params.append('fecha', fecha);
@@ -113,7 +113,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
         const adminToken = localStorage.getItem('adminToken');
         if (!adminToken) return;
 
-        const res = await fetch('http://localhost:5500/api/clases/todas-ordenadas', {
+        const res = await fetch('http://localhost:5500/api/clases/admin/todas-ordenadas', {
           headers: { Authorization: `Bearer ${adminToken}` }
         });
         

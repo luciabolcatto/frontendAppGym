@@ -118,7 +118,15 @@ const ReservarClase: React.FC = () => {
       }
 
       // Validar contrato pagado vigente para la fecha de la clase
-      const contratosRes = await fetch(`${API_BASE}/api/contratos/usuario/${usuario.id}`);
+      const token = localStorage.getItem('token');
+      const contratosRes = await fetch(`${API_BASE}/api/contratos/usuario/${usuario.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!contratosRes.ok) {
+        throw new Error('Error al obtener contratos del usuario');
+      }
       const contratosData = await contratosRes.json();
       // Unir todos los contratos y filtrar por estado pagado
       const todos = Array.isArray(contratosData?.data?.contratos)
@@ -144,7 +152,10 @@ const ReservarClase: React.FC = () => {
       //  Registrar la reserva
       const reservaRes = await fetch(`${API_BASE}/api/Reservas`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           fecha_hora: new Date().toISOString(),
           estado: 'pendiente', 

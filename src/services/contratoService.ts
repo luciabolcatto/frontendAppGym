@@ -11,10 +11,12 @@ export class ContratoService {
    */
   static async contratarMembresia(data: ContratoRequest): Promise<ContratoResponse> {
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}/contratos/contratar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include',
         body: JSON.stringify(data),
@@ -37,10 +39,12 @@ export class ContratoService {
    */
   static async simularPago(data: PagoRequest): Promise<ContratoResponse> {
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}/contratos/simular-pago`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include',
         body: JSON.stringify(data),
@@ -63,10 +67,12 @@ export class ContratoService {
    */
   static async cancelarContrato(contratoId: string): Promise<ContratoResponse> {
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}/contratos/cancelar/${contratoId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include',
       });
@@ -88,10 +94,12 @@ export class ContratoService {
    */
   static async obtenerContratosPorUsuario(usuarioId: string): Promise<{ data: any }> {
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}/contratos/usuario/${usuarioId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include',
       });

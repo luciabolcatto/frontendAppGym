@@ -90,8 +90,18 @@ const ClasesPage: React.FC = () => {
     }
 
     // Validar contrato pagado vigente para la fecha de la clase
-    fetch(`${API_BASE}/api/contratos/usuario/${usuario.id}`)
-      .then(res => res.json())
+    const token = localStorage.getItem('token');
+    fetch(`${API_BASE}/api/contratos/usuario/${usuario.id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`Error ${res.status}: No se pudieron obtener los contratos`);
+        }
+        return res.json();
+      })
       .then(data => {
         // Unir todos los contratos y filtrar por estado pagado
         const todos = Array.isArray(data?.data?.contratos)
@@ -119,8 +129,9 @@ const ClasesPage: React.FC = () => {
           state: { claseId, claseNombre },
         });
       })
-      .catch(() => {
-        alert('Error al validar el contrato. Intenta nuevamente.');
+      .catch((error) => {
+        console.error('Error al validar el contrato:', error);
+        alert('Error al validar el contrato: ' + error.message);
       });
   };
 
@@ -586,10 +597,12 @@ const ClasesPage: React.FC = () => {
                           }
                           
                           try {
+                            const token = localStorage.getItem('token');
                             const response = await fetch(`${API_BASE}/api/Reservas/${reservaUsuario.id}`, {
                               method: 'PATCH',
                               headers: {
                                 'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`,
                               },
                               body: JSON.stringify({
                                 estado: 'cancelada'
