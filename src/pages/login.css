@@ -108,6 +108,16 @@ button[type='submit']:hover {
   text-decoration: underline;
 }
 
+.forgot-password-link {
+  color: #667eea;
+  font-style: italic;
+}
+
+.forgot-password-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
 .admin-link {
   color: #ff5555;
   font-weight: bold;

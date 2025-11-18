@@ -1,0 +1,169 @@
+.restablecer-container {
+  background-color: black;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 20px;
+}
+
+.restablecer-box {
+  background-color: #111;
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 10px #00bfff55;
+}
+
+.title {
+  text-align: center;
+  color: #00bfff;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.email-info {
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.email-info strong {
+  color: #00bfff;
+}
+
+.subtitle {
+  text-align: center;
+  color: white;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+label {
+  font-weight: 600;
+  color: white;
+  margin-bottom: -15px;
+}
+
+input {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #222;
+  color: white;
+  outline: none;
+  font-size: 16px;
+  transition: border 0.3s;
+}
+
+input:focus {
+  border: 1px solid #00bfff;
+}
+
+input:disabled {
+  background-color: #333;
+  cursor: not-allowed;
+}
+
+.codigo-input {
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: 5px;
+  font-weight: bold;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  flex: 1;
+  padding-right: 100px;
+}
+
+.toggle-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #00bfff;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 5px 10px;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.success-message {
+  background-color: #efe;
+  color: #3c3;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.btn-primary {
+  padding: 12px;
+  background-color: #00bfff;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #00a5dd;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  padding: 12px;
+  background: transparent;
+  color: #00bfff;
+  border: 2px solid #00bfff;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #00bfff;
+  color: black;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

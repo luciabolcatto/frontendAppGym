@@ -12,6 +12,8 @@ import CambiarContrasena from './pages/cambiarContrasena';
 import BorrarCuenta from './pages/borrarCuenta';
 import ClasesPage from './pages/clases';
 import AdminLogin from './pages/adminLogin';
+import OlvideMiContrasena from './pages/olvideMiContrasena';
+import RestablecerContrasena from './pages/restablecerContrasena';
 import AdminMenu from './pages/adminMenu';
 import UsuariosPorEstado from './pages/usuariosPorEstado';
 import ReservasPorClase1 from './pages/reservasPorClase1';
@@ -39,6 +41,8 @@ function App(): React.JSX.Element {
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path="olvide-mi-contrasena" element={<OlvideMiContrasena />} />
+      <Route path="restablecer-contrasena" element={<RestablecerContrasena />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminMenu />} />
       <Route

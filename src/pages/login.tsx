@@ -99,6 +99,12 @@ const Login = (): React.JSX.Element => {
           <button type="submit">Ingresar</button>
 
           <p>
+            <Link to="/olvide-mi-contrasena" className="forgot-password-link">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </p>
+
+          <p>
             ¿No tenés cuenta? <Link to="/register">Registrate</Link>
           </p>
 
