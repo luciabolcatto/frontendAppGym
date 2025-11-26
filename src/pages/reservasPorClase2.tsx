@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
+import toast from 'react-hot-toast';
 import { EstadoReserva } from '../types/reserva';
 import './reservasPorClase2.css';
 
@@ -25,7 +26,7 @@ const ReservasPorClase2 = (): React.JSX.Element => {
   useEffect(() => {
     const adminToken = localStorage.getItem('adminToken');
     if (!adminToken) {
-      alert('Acceso denegado. Debes ser administrador para acceder a esta página.');
+      toast.error('Acceso denegado. Debes ser administrador para acceder a esta página.');
       navigate('/admin-login');
       return;
     }
@@ -35,7 +36,7 @@ const ReservasPorClase2 = (): React.JSX.Element => {
   useEffect(() => {
     const fetchReservas = async () => {
       if (!claseId) {
-        alert('ID de clase no válido');
+        toast.error('ID de clase no válido');
         navigate('/admin/informe-reservas');
         return;
       }
@@ -55,7 +56,7 @@ const ReservasPorClase2 = (): React.JSX.Element => {
         setReservas(data.data);
       } catch (error) {
         console.error(error);
-        alert('Error al cargar reservas de la clase');
+        toast.error('Error al cargar reservas de la clase');
         navigate('/admin/informe-reservas');
       } finally {
         setLoading(false);

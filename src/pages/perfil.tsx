@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { FaUserCircle } from 'react-icons/fa';
 import type { Usuario } from '../types/usuario';
 import './Perfil.css';
@@ -26,6 +27,9 @@ const Perfil = (): React.JSX.Element => {
  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -66,7 +70,12 @@ const Perfil = (): React.JSX.Element => {
 
   const handleUpdate = async () => {
     if (!usuario) return;
-    if (!window.confirm('¿Seguro que deseas guardar los cambios?')) return;
+    setShowSaveModal(true);
+  };
+
+  const procesarActualizacion = async () => {
+    setShowSaveModal(false);
+    if (!usuario) return;
 
     try {
       const token = localStorage.getItem('token');
@@ -92,7 +101,7 @@ const Perfil = (): React.JSX.Element => {
 
       const data = await res.json();
       if (!res.ok) {
-        alert(data.message || 'Error al actualizar');
+        toast.error(data.message || 'Error al actualizar');
         return;
       }
 
@@ -103,20 +112,24 @@ const Perfil = (): React.JSX.Element => {
       };
 
       localStorage.setItem('usuario', JSON.stringify(newUsuario));
-      notifyUsuarioUpdated(); // Notificar al layout que se actualizó el usuario
+      notifyUsuarioUpdated();
       setUsuario(newUsuario);
       setEditMode(false);
       setFotoFile(null);
       setFotoPreview(null);
-      alert('Datos actualizados correctamente');
+      toast.success('Datos actualizados correctamente');
     } catch (err) {
       console.error(err);
-      alert('Error de conexión.');
+      toast.error('Error de conexión.');
     }
   };
 
   const handleCancel = () => {
-    if (!window.confirm('¿Seguro que deseas cancelar los cambios?')) return;
+    setShowCancelModal(true);
+  };
+
+  const procesarCancelacion = () => {
+    setShowCancelModal(false);
     if (usuario) setForm({
       nombre: usuario.nombre,
       apellido: usuario.apellido,
@@ -129,7 +142,11 @@ const Perfil = (): React.JSX.Element => {
   };
 
   const handleLogout = () => {
-    if (!window.confirm('¿Seguro que deseas cerrar sesión?')) return;
+    setShowLogoutModal(true);
+  };
+
+  const procesarLogout = () => {
+    setShowLogoutModal(false);
     localStorage.clear();
     navigate('/login');
   };
@@ -183,6 +200,51 @@ const Perfil = (): React.JSX.Element => {
           </div>
         </div>
       </div>
+
+      {/* Modal de guardar cambios */}
+      {showSaveModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">💾</div>
+            <h3>Guardar cambios</h3>
+            <p>¿Seguro que deseas guardar los cambios?</p>
+            <div className="confirm-modal-actions">
+              <button className="btn-cancel" onClick={() => setShowSaveModal(false)}>Cancelar</button>
+              <button className="btn-confirm" onClick={procesarActualizacion}>Sí, guardar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de cancelar edición */}
+      {showCancelModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">❌</div>
+            <h3>Cancelar cambios</h3>
+            <p>¿Seguro que deseas cancelar los cambios? Se perderán las modificaciones.</p>
+            <div className="confirm-modal-actions">
+              <button className="btn-cancel" onClick={() => setShowCancelModal(false)}>Volver</button>
+              <button className="btn-confirm" onClick={procesarCancelacion}>Sí, cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de cerrar sesión */}
+      {showLogoutModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">🚪</div>
+            <h3>Cerrar sesión</h3>
+            <p>¿Seguro que deseas cerrar sesión?</p>
+            <div className="confirm-modal-actions">
+              <button className="btn-cancel" onClick={() => setShowLogoutModal(false)}>Cancelar</button>
+              <button className="btn-confirm" onClick={procesarLogout}>Sí, cerrar sesión</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

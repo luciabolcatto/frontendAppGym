@@ -147,12 +147,33 @@ const MisContratosPage: React.FC = () => {
   };
 
   const handleCancelarContrato = async (contratoId: string) => {
-    const confirmar = window.confirm(
-      '¿Está seguro que desea cancelar este contrato? Esta acción no se puede deshacer.'
-    );
-    
-    if (!confirmar) return;
+    // Usar toast con botones para confirmación
+    toast((t) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <span>¿Está seguro que desea cancelar este contrato?</span>
+        <span style={{ fontSize: '12px', color: '#9ca3af' }}>Esta acción no se puede deshacer.</span>
+        <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+          <button
+            style={{ padding: '6px 12px', cursor: 'pointer', background: '#6b7280', color: 'white', border: 'none', borderRadius: '4px' }}
+            onClick={() => toast.dismiss(t.id)}
+          >
+            No
+          </button>
+          <button
+            style={{ padding: '6px 12px', cursor: 'pointer', background: '#ef4444', color: 'white', border: 'none', borderRadius: '4px' }}
+            onClick={async () => {
+              toast.dismiss(t.id);
+              await procesarCancelacionContrato(contratoId);
+            }}
+          >
+            Sí, cancelar
+          </button>
+        </div>
+      </div>
+    ), { duration: 10000 });
+  };
 
+  const procesarCancelacionContrato = async (contratoId: string) => {
     setCancelando(contratoId);
     try {
       await ContratoService.cancelarContrato(contratoId);

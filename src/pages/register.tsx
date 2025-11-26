@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import type { Usuario } from '../types/usuario';
 import './Register.css';
 import { notifyUsuarioUpdated } from '../hooks/useUsuario';
@@ -21,17 +22,17 @@ const Register = (): React.JSX.Element => {
 
     // Validaciones
     if (contrasena !== confirmContrasena) {
-      alert('Las contraseñas no coinciden');
+      toast.error('Las contraseñas no coinciden');
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
-      alert('Email no válido');
+      toast.error('Email no válido');
       return;
     }
 
     if (tel && !/^\d+$/.test(tel)) {
-      alert('Teléfono solo debe contener números');
+      toast.error('Teléfono solo debe contener números');
       return;
     }
 
@@ -53,7 +54,7 @@ const Register = (): React.JSX.Element => {
 
       const data = await res.json();
       if (!res.ok) {
-        alert(data.message || 'Error al registrarse');
+        toast.error(data.message || 'Error al registrarse');
         return;
       }
 
@@ -66,7 +67,7 @@ const Register = (): React.JSX.Element => {
 
       const loginData = await loginRes.json();
       if (!loginRes.ok) {
-        alert(loginData.message || 'Error al iniciar sesión');
+        toast.error(loginData.message || 'Error al iniciar sesión');
         return;
       }
 
@@ -80,7 +81,7 @@ const Register = (): React.JSX.Element => {
 
       const usuarioData = await usuarioRes.json();
       if (!usuarioRes.ok) {
-        alert(usuarioData.message || 'Error al traer datos del usuario');
+        toast.error(usuarioData.message || 'Error al traer datos del usuario');
         return;
       }
     
@@ -88,11 +89,11 @@ const Register = (): React.JSX.Element => {
       notifyUsuarioUpdated(); // Notificar al layout que se actualizó el usuario
       
       // Mensaje de bienvenida
-      alert(`¡Bienvenido ${usuarioData.data.nombre} ${usuarioData.data.apellido}!`);
+      toast.success(`¡Bienvenido ${usuarioData.data.nombre} ${usuarioData.data.apellido}!`);
       navigate('/home');
     } catch (error) {
       console.error(error);
-      alert('Error al conectar con el servidor');
+      toast.error('Error al conectar con el servidor');
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 import './reservasPorClase1.css';
 
 interface Actividad {
@@ -32,7 +33,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
   useEffect(() => {
     const adminToken = localStorage.getItem('adminToken');
     if (!adminToken) {
-      alert('Acceso denegado. Debes ser administrador para acceder a esta página.');
+      toast.error('Acceso denegado. Debes ser administrador para acceder a esta página.');
       navigate('/admin-login');
       return;
     }
@@ -48,7 +49,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
         setActividades(data.data);
       } catch (error) {
         console.error(error);
-        alert('Error al cargar actividades');
+        toast.error('Error al cargar actividades');
       }
     };
 
@@ -72,7 +73,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
         setClases(data.data);
       } catch (error) {
         console.error(error);
-        alert('Error al cargar clases iniciales');
+        toast.error('Error al cargar clases iniciales');
       }
     };
 
@@ -100,7 +101,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
       setClases(data.data);
     } catch (error) {
       console.error(error);
-      alert('Error al filtrar clases');
+      toast.error('Error al filtrar clases');
     }
   };
 
@@ -123,7 +124,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
         setClases(data.data);
       } catch (error) {
         console.error(error);
-        alert('Error al recargar clases');
+        toast.error('Error al recargar clases');
       }
     };
 

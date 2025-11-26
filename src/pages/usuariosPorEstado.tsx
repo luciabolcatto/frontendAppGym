@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 import { EstadoContrato } from '../types/contrato';
 import './usuariosPorEstado.css';
 
@@ -25,7 +26,7 @@ const UsuariosPorEstado = (): React.JSX.Element => {
   useEffect(() => {
     const adminToken = localStorage.getItem('adminToken');
     if (!adminToken) {
-      alert('Acceso denegado. Debes ser administrador para acceder a esta página.');
+      toast.error('Acceso denegado. Debes ser administrador para acceder a esta página.');
       navigate('/admin-login');
     }
   }, [navigate]);
@@ -50,7 +51,7 @@ const UsuariosPorEstado = (): React.JSX.Element => {
         setUsuarios(data.data);
       } catch (error) {
         console.error(error);
-        alert('Error al conectar con el servidor');
+        toast.error('Error al conectar con el servidor');
         setUsuarios([]); // Limpiar en caso de error también
       }
     };

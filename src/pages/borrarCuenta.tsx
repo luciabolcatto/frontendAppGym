@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import './borrarCuenta.css';
 
 export default function BorrarCuenta() {
@@ -8,6 +9,7 @@ export default function BorrarCuenta() {
   const [mail, setMail] = useState<string>("");
   const [contrasena, setContrasena] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("usuario");
@@ -22,11 +24,15 @@ export default function BorrarCuenta() {
     e.preventDefault();
 
     if (!usuarioId || !mail) {
-      alert("Usuario no encontrado. Inicia sesión nuevamente.");
+      toast.error("Usuario no encontrado. Inicia sesión nuevamente.");
       return;
     }
 
-    if (!window.confirm(" Esta acción eliminará tu cuenta permanentemente. ¿Seguro?")) return;
+    setShowConfirmModal(true);
+  };
+
+  const procesarEliminacion = async () => {
+    setShowConfirmModal(false);
 
     try {
       // Validar contraseña mediante login
@@ -56,13 +62,13 @@ export default function BorrarCuenta() {
         throw new Error(data.message || "Error al eliminar la cuenta");
       }
 
-      alert("Cuenta eliminada correctamente.");
+      toast.success("Cuenta eliminada correctamente.");
       setTimeout(() => {
         localStorage.clear();
         navigate("/login");
       }, 500);
     } catch (err: any) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -96,6 +102,32 @@ export default function BorrarCuenta() {
           </button>
         </form>
       </div>
+
+      {/* Modal de confirmación */}
+      {showConfirmModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">⚠️</div>
+            <h3>¡Atención!</h3>
+            <p>Esta acción eliminará tu cuenta permanentemente.</p>
+            <p className="confirm-warning">¿Estás seguro de que deseas continuar?</p>
+            <div className="confirm-modal-actions">
+              <button 
+                className="btn-cancel" 
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancelar
+              </button>
+              <button 
+                className="btn-danger" 
+                onClick={procesarEliminacion}
+              >
+                Sí, eliminar cuenta
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,24 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import './adminMenu.css';
 
 const AdminMenu = (): React.JSX.Element => {
   const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const adminToken = localStorage.getItem('adminToken');
     if (!adminToken) {
-      alert('Acceso denegado. Debes ser administrador para acceder a esta página.');
+      toast.error('Acceso denegado. Debes ser administrador para acceder a esta página.');
       navigate('/admin-login');
     }
   }, [navigate]);
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm("¿Estás seguro que querés cerrar sesión?");
-    if (!confirmLogout) return; 
+    setShowLogoutModal(true);
+  };
 
+  const confirmarLogout = () => {
+    setShowLogoutModal(false);
     localStorage.removeItem('adminToken'); 
-    alert('Sesión de administrador cerrada');
+    toast.success('Sesión de administrador cerrada');
     navigate('/'); 
   };
 
@@ -37,6 +41,31 @@ const AdminMenu = (): React.JSX.Element => {
           Cerrar sesión y volver al Home
         </button>
       </div>
+
+      {/* Modal de confirmación de logout */}
+      {showLogoutModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">🚪</div>
+            <h3>Cerrar sesión</h3>
+            <p>¿Estás seguro que querés cerrar sesión?</p>
+            <div className="confirm-modal-actions">
+              <button 
+                className="btn-cancel" 
+                onClick={() => setShowLogoutModal(false)}
+              >
+                Cancelar
+              </button>
+              <button 
+                className="btn-confirm" 
+                onClick={confirmarLogout}
+              >
+                Sí, cerrar sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

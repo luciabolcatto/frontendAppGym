@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import type { Usuario } from '../types/usuario';
 import './Login.css';
 import { notifyUsuarioUpdated } from '../hooks/useUsuario';
@@ -15,7 +16,7 @@ const Login = (): React.JSX.Element => {
     const storedUser = localStorage.getItem('usuario');
     if (storedUser) {
       const user: Usuario = JSON.parse(storedUser);
-      alert(`Bienvenido ${user.nombre} ${user.apellido}`);
+      toast.success(`Bienvenido ${user.nombre} ${user.apellido}`);
     }
   }, []);
 
@@ -33,7 +34,7 @@ const Login = (): React.JSX.Element => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || 'Error al iniciar sesión');
+        toast.error(data.message || 'Error al iniciar sesión');
         return;
       }
 
@@ -48,7 +49,7 @@ const Login = (): React.JSX.Element => {
       const usuarioData = await usuarioRes.json();
 
       if (!usuarioRes.ok) {
-        alert(usuarioData.message || 'Error al traer datos del usuario');
+        toast.error(usuarioData.message || 'Error al traer datos del usuario');
         return;
       }
 
@@ -56,11 +57,11 @@ const Login = (): React.JSX.Element => {
       localStorage.setItem('usuario', JSON.stringify(usuarioData.data));
       notifyUsuarioUpdated(); // Notificar al layout que se actualizó el usuario
 
-      alert(`Bienvenido ${usuarioData.data.nombre} ${usuarioData.data.apellido}`);
+      toast.success(`Bienvenido ${usuarioData.data.nombre} ${usuarioData.data.apellido}`);
       navigate('/home');
     } catch (error) {
       console.error(error);
-      alert('Error al conectar con el servidor');
+      toast.error('Error al conectar con el servidor');
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import './misReservas.css';
 
 const API_BASE =
@@ -131,17 +132,39 @@ const MisReservas: React.FC = () => {
       const fechaInicio = new Date(reserva.clase.fecha_hora_ini);
       
       if (fechaInicio <= treintaMinutosDesdeAhora) {
-        alert('No se puede cancelar esta reserva. Las cancelaciones no están permitidas dentro de los 30 minutos previos al inicio de la clase.');
+        toast.error('No se puede cancelar esta reserva. Las cancelaciones no están permitidas dentro de los 30 minutos previos al inicio de la clase.');
        
         await cargarReservas();
         return;
       }
     }
     
-    if (!window.confirm('¿Estás seguro de que quieres cancelar esta reserva?')) {
-      return;
-    }
-    
+    // Usar toast con botones para confirmación
+    toast((t) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <span>¿Estás seguro de que quieres cancelar esta reserva?</span>
+        <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+          <button
+            style={{ padding: '6px 12px', cursor: 'pointer', background: '#6b7280', color: 'white', border: 'none', borderRadius: '4px' }}
+            onClick={() => toast.dismiss(t.id)}
+          >
+            No
+          </button>
+          <button
+            style={{ padding: '6px 12px', cursor: 'pointer', background: '#ef4444', color: 'white', border: 'none', borderRadius: '4px' }}
+            onClick={async () => {
+              toast.dismiss(t.id);
+              await procesarCancelacion(reservaId);
+            }}
+          >
+            Sí, cancelar
+          </button>
+        </div>
+      </div>
+    ), { duration: 10000 });
+  };
+
+  const procesarCancelacion = async (reservaId: string) => {
     try {
       setCancelando(reservaId);
       const response = await fetch(`${API_BASE}/api/Reservas/${reservaId}`, {
@@ -164,11 +187,10 @@ const MisReservas: React.FC = () => {
       await cargarReservas();
       
       // Mostrar mensaje de éxito
-      setMensaje('Reserva cancelada exitosamente. El cupo ha sido liberado para otros usuarios.');
-      setTimeout(() => setMensaje(''), 4000);
+      toast.success('Reserva cancelada exitosamente. El cupo ha sido liberado para otros usuarios.');
       
     } catch (err: any) {
-      alert('Error al cancelar la reserva: ' + err.message);
+      toast.error('Error al cancelar la reserva: ' + err.message);
       console.error('Error cancelando reserva:', err);
     } finally {
       setCancelando(null);

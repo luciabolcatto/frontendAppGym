@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import './layout.css';
 import { FaInstagram, FaFacebookF, FaTwitter, FaUserCircle } from 'react-icons/fa';
 import type { Usuario } from '../types/usuario';
@@ -22,7 +23,7 @@ export default function Layout(): React.JSX.Element {
 
   const handleProfileClick = () => {
     if (!usuario) {
-      alert('Debes iniciar sesión para acceder al perfil');
+      toast.error('Debes iniciar sesión para acceder al perfil');
       navigate('/login');
       return;
     }
@@ -31,7 +32,7 @@ export default function Layout(): React.JSX.Element {
 
   const handleProtectedRoute = (path: string) => {
     if (!usuario) {
-      alert('Debes iniciar sesión para acceder a esta sección');
+      toast.error('Debes iniciar sesión para acceder a esta sección');
       navigate('/login');
       return;
     }
@@ -40,7 +41,7 @@ export default function Layout(): React.JSX.Element {
 
   const handlePublicRoute = (path: string) => {
     if (usuario) {
-      alert('Ya has iniciado sesión');
+      toast('Ya has iniciado sesión', { icon: 'ℹ️' });
       navigate('/home');
       return;
     }

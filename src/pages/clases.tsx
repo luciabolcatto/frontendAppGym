@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import './clases.css';
 
 interface Actividad {
@@ -67,7 +68,7 @@ const ClasesPage: React.FC = () => {
 
   const handleReservar = (claseId: string, claseNombre: string, clase: any) => {
     if (!usuario) {
-      alert('Debes iniciar sesión para reservar una clase');
+      toast.error('Debes iniciar sesión para reservar una clase');
       navigate('/login');
       return;
     }
@@ -75,7 +76,7 @@ const ClasesPage: React.FC = () => {
     // Validar cupo disponible
     const cupoDisponible = typeof clase.cupo_disp === 'number' ? clase.cupo_disp : parseInt(clase.cupo_disp) || 0;
     if (cupoDisponible === 0) {
-      alert('No se puede reservar esta clase. No hay cupo disponible.');
+      toast.error('No se puede reservar esta clase. No hay cupo disponible.');
       return;
     }
 
@@ -85,7 +86,7 @@ const ClasesPage: React.FC = () => {
     const fechaInicio = clase.fecha_hora_ini?.$date ? new Date(clase.fecha_hora_ini.$date) : new Date(clase.fecha_hora_ini);
     
     if (fechaInicio <= treintaMinutosDesdeAhora) {
-      alert('No se puede reservar esta clase. Las reservas se cierran 30 minutos antes del inicio.');
+      toast.error('No se puede reservar esta clase. Las reservas se cierran 30 minutos antes del inicio.');
       return;
     }
 
@@ -109,9 +110,21 @@ const ClasesPage: React.FC = () => {
           return fechaInicio >= inicio && fechaInicio < fin;
         });
         if (!contratoValido) {
-          if (window.confirm('No tienes un contrato vigente y pagado para la fecha de esta clase. ¿Quieres ver los planes disponibles?')) {
-            navigate('/planes');
-          }
+          toast.error('No tienes un contrato vigente y pagado para la fecha de esta clase.');
+          toast((t) => (
+            <span>
+              ¿Quieres ver los planes disponibles?
+              <button
+                style={{ marginLeft: '10px', padding: '4px 8px', cursor: 'pointer' }}
+                onClick={() => {
+                  toast.dismiss(t.id);
+                  navigate('/planes');
+                }}
+              >
+                Ver planes
+              </button>
+            </span>
+          ), { duration: 6000 });
           return;
         }
         // Si cumple, navegar a reservarClase
@@ -120,7 +133,7 @@ const ClasesPage: React.FC = () => {
         });
       })
       .catch(() => {
-        alert('Error al validar el contrato. Intenta nuevamente.');
+        toast.error('Error al validar el contrato. Intenta nuevamente.');
       });
   };
 
@@ -575,38 +588,55 @@ const ClasesPage: React.FC = () => {
                           const fechaInicio = c.fecha_hora_ini?.$date ? new Date(c.fecha_hora_ini.$date) : new Date(c.fecha_hora_ini);
                           
                           if (fechaInicio <= treintaMinutosDesdeAhora) {
-                            alert('No se puede cancelar esta reserva. Las cancelaciones no están permitidas dentro de los 30 minutos previos al inicio de la clase.');
+                            toast.error('No se puede cancelar esta reserva. Las cancelaciones no están permitidas dentro de los 30 minutos previos al inicio de la clase.');
                             
                             await recargarClases();
                             return;
                           }
                           
-                          if (!window.confirm('¿Estás seguro de que quieres cancelar esta reserva?')) {
-                            return;
-                          }
-                          
-                          try {
-                            const response = await fetch(`${API_BASE}/api/Reservas/${reservaUsuario.id}`, {
-                              method: 'PATCH',
-                              headers: {
-                                'Content-Type': 'application/json',
-                              },
-                              body: JSON.stringify({
-                                estado: 'cancelada'
-                              }),
-                            });
-                            
-                            if (response.ok) {
-                              alert('Reserva cancelada exitosamente. El cupo ha sido liberado para otros usuarios.');
-                              // Recargar las clases para actualizar el estado inmediatamente
-                              await recargarClases(); // Esto recargará todas las clases con el estado actualizado
-                            } else {
-                              throw new Error('Error al cancelar la reserva');
-                            }
-                          } catch (error) {
-                            alert('Error al cancelar la reserva');
-                            console.error('Error:', error);
-                          }
+                          // Usar toast con botones para confirmación
+                          toast((t) => (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                              <span>¿Estás seguro de que quieres cancelar esta reserva?</span>
+                              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                                <button
+                                  style={{ padding: '6px 12px', cursor: 'pointer', background: '#6b7280', color: 'white', border: 'none', borderRadius: '4px' }}
+                                  onClick={() => toast.dismiss(t.id)}
+                                >
+                                  No
+                                </button>
+                                <button
+                                  style={{ padding: '6px 12px', cursor: 'pointer', background: '#ef4444', color: 'white', border: 'none', borderRadius: '4px' }}
+                                  onClick={async () => {
+                                    toast.dismiss(t.id);
+                                    try {
+                                      const response = await fetch(`${API_BASE}/api/Reservas/${reservaUsuario.id}`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                          estado: 'cancelada'
+                                        }),
+                                      });
+                                      
+                                      if (response.ok) {
+                                        toast.success('Reserva cancelada exitosamente. El cupo ha sido liberado para otros usuarios.');
+                                        await recargarClases();
+                                      } else {
+                                        throw new Error('Error al cancelar la reserva');
+                                      }
+                                    } catch (error) {
+                                      toast.error('Error al cancelar la reserva');
+                                      console.error('Error:', error);
+                                    }
+                                  }}
+                                >
+                                  Sí, cancelar
+                                </button>
+                              </div>
+                            </div>
+                          ), { duration: 10000 });
                         }}
                         aria-label={`Cancelar reserva de ${title}`}
                       >
