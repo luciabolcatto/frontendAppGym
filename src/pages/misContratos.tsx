@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { ContratoService } from '../services/contratoService';
+import { StripeService } from '../services/stripeService';
 import { Contrato, EstadoContrato } from '../types/contrato';
 import PagoModal from '../components/PagoModal';
 import './misContratos.css';
@@ -12,12 +14,65 @@ const MisContratosPage: React.FC = () => {
   const [contratoParaPagar, setContratoParaPagar] = useState<Contrato | null>(null);
   const [cancelando, setCancelando] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   
   // Obtenemos el usuario del localStorage
   const [usuario] = useState(() => {
     const storedUser = localStorage.getItem('usuario');
     return storedUser ? JSON.parse(storedUser) : null;
   });
+
+  // Manejar redirecciones de Stripe (success/cancelled)
+  useEffect(() => {
+    const handleStripeRedirect = async () => {
+      const paymentStatus = searchParams.get('payment');
+      const sessionId = searchParams.get('session_id');
+
+      if (paymentStatus === 'success') {
+        // Verificar el estado de la sesión si tenemos el sessionId
+        if (sessionId) {
+          try {
+            const sessionStatus = await StripeService.getSessionStatus(sessionId);
+            if (sessionStatus.paymentStatus === 'paid') {
+              toast.success('¡Pago completado exitosamente! Tu membresía está activa.', {
+                duration: 5000,
+              });
+            } else {
+              toast.success('¡Pago procesado! El estado se actualizará en breve.', {
+                duration: 5000,
+              });
+            }
+          } catch {
+            // Si falla la verificación, igual mostramos éxito (el webhook lo procesará)
+            toast.success('¡Pago procesado exitosamente!', {
+              duration: 5000,
+            });
+          }
+        } else {
+          toast.success('¡Pago procesado exitosamente!', {
+            duration: 5000,
+          });
+        }
+        
+        // Limpiar los parámetros de la URL
+        navigate('/mis-contratos', { replace: true });
+        
+        // Recargar contratos para mostrar el estado actualizado
+        if (usuario?.id) {
+          cargarContratos();
+        }
+      } else if (paymentStatus === 'cancelled') {
+        toast.error('El pago fue cancelado. Puedes intentarlo nuevamente.', {
+          duration: 5000,
+        });
+        
+        // Limpiar los parámetros de la URL
+        navigate('/mis-contratos', { replace: true });
+      }
+    };
+
+    handleStripeRedirect();
+  }, [searchParams, navigate, usuario?.id]);
 
   useEffect(() => {
     if (!usuario?.id) {
@@ -96,11 +151,11 @@ const MisContratosPage: React.FC = () => {
     setCancelando(contratoId);
     try {
       await ContratoService.cancelarContrato(contratoId);
-      alert('Contrato cancelado exitosamente');
+      toast.success('Contrato cancelado exitosamente');
       await cargarContratos(); // Recargar la lista
     } catch (error) {
       console.error('Error al cancelar contrato:', error);
-      alert(error instanceof Error ? error.message : 'Error al cancelar el contrato');
+      toast.error(error instanceof Error ? error.message : 'Error al cancelar el contrato');
     } finally {
       setCancelando(null);
     }
@@ -112,6 +167,8 @@ const MisContratosPage: React.FC = () => {
       prev.map(c => c.id === contratoActualizado.id ? contratoActualizado : c)
     );
     setContratoParaPagar(null);
+    // Recargar contratos para asegurar datos actualizados
+    await cargarContratos();
   };
 
   const formatearFecha = (fecha: string) => {

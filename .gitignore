@@ -24,3 +24,15 @@ dist-ssr
 *.sw?
 
 .github
+
+
+
+
+
+
+
+
+
+.env
+DOCUMENTACION_PROYECTO.md
+INTEGRACION_STRIPE_FRONTEND.md
