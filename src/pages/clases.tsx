@@ -89,9 +89,39 @@ const ClasesPage: React.FC = () => {
       return;
     }
 
-    navigate('/reservarClase', {
-      state: { claseId, claseNombre },
-    });
+    // Validar contrato pagado vigente para la fecha de la clase
+    fetch(`${API_BASE}/api/contratos/usuario/${usuario.id}`)
+      .then(res => res.json())
+      .then(data => {
+        // Unir todos los contratos y filtrar por estado pagado
+        const todos = Array.isArray(data?.data?.contratos)
+          ? data.data.contratos
+          : Object.values(data?.data?.contratos || {}).flat();
+        const contratosPagados = todos.filter((contrato: any) => contrato.estado === 'pagado');
+        // Buscar contrato pagado vigente para la fecha de la clase
+        const contratoValido = contratosPagados.find((contrato: any) => {
+          if (!contrato.fecha_hora_ini || !contrato.fecha_hora_fin) return false;
+          const inicio = new Date(contrato.fecha_hora_ini);
+          const fin = new Date(contrato.fecha_hora_fin);
+          // Asegurar que ambas fechas sean válidas
+          if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) return false;
+          // La clase debe estar dentro del rango del contrato
+          return fechaInicio >= inicio && fechaInicio < fin;
+        });
+        if (!contratoValido) {
+          if (window.confirm('No tienes un contrato vigente y pagado para la fecha de esta clase. ¿Quieres ver los planes disponibles?')) {
+            navigate('/planes');
+          }
+          return;
+        }
+        // Si cumple, navegar a reservarClase
+        navigate('/reservarClase', {
+          state: { claseId, claseNombre },
+        });
+      })
+      .catch(() => {
+        alert('Error al validar el contrato. Intenta nuevamente.');
+      });
   };
 
   const state: any = (location && (location as any).state) || {};

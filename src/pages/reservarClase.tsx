@@ -111,12 +111,36 @@ const ReservarClase: React.FC = () => {
       const ahora = new Date();
       const treintaMinutosDesdeAhora = new Date(ahora.getTime() + 30 * 60 * 1000);
       const fechaInicio = clase.fecha_hora_ini?.$date ? new Date(clase.fecha_hora_ini.$date) : new Date(clase.fecha_hora_ini);
-      
       if (fechaInicio <= treintaMinutosDesdeAhora) {
         setError('No se puede reservar esta clase. Las reservas se cierran 30 minutos antes del inicio.');
         setLoading(false);
         return;
       }
+
+      // Validar contrato pagado vigente para la fecha de la clase
+      const contratosRes = await fetch(`${API_BASE}/api/contratos/usuario/${usuario.id}`);
+      const contratosData = await contratosRes.json();
+      // Unir todos los contratos y filtrar por estado pagado
+      const todos = Array.isArray(contratosData?.data?.contratos)
+        ? contratosData.data.contratos
+        : Object.values(contratosData?.data?.contratos || {}).flat();
+      const contratosPagados = todos.filter((contrato: any) => contrato.estado === 'pagado');
+      // Buscar contrato pagado vigente para la fecha de la clase
+      const contratoValido = contratosPagados.find((contrato: any) => {
+        if (!contrato.fecha_hora_ini || !contrato.fecha_hora_fin) return false;
+        const inicio = new Date(contrato.fecha_hora_ini);
+        const fin = new Date(contrato.fecha_hora_fin);
+        if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) return false;
+        return fechaInicio >= inicio && fechaInicio < fin;
+      });
+      if (!contratoValido) {
+        setLoading(false);
+        if (window.confirm('No tienes un contrato vigente y pagado para la fecha de esta clase. ¿Quieres ver los planes disponibles?')) {
+          navigate('/planes');
+        }
+        return;
+      }
+
       //  Registrar la reserva
       const reservaRes = await fetch(`${API_BASE}/api/Reservas`, {
         method: 'POST',
