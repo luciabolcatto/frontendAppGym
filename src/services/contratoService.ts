@@ -1,6 +1,6 @@
 import { Contrato, ContratoRequest, ContratoResponse } from '../types/contrato';
 
-const API_BASE_URL = 'http://localhost:5500/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5500';
 
 /**
  * Servicio para gestionar contratos de membresías
@@ -117,7 +117,7 @@ export class MembresiaService {
    */
   static async obtenerMembresias(): Promise<{ data: any[] }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/membresias`, {
+      const response = await fetch(`${API_BASE_URL}/api/membresias`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ export class MembresiaService {
    */
   static async obtenerMembresia(membresiaId: string): Promise<{ data: any }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/membresias/${membresiaId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/membresias/${membresiaId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

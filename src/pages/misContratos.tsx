@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { ContratoService } from '../services/contratoService';
@@ -15,6 +15,7 @@ const MisContratosPage: React.FC = () => {
   const [cancelando, setCancelando] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const stripeRedirectHandled = useRef(false);
   
   // Obtenemos el usuario del localStorage
   const [usuario] = useState(() => {
@@ -27,6 +28,10 @@ const MisContratosPage: React.FC = () => {
     const handleStripeRedirect = async () => {
       const paymentStatus = searchParams.get('payment');
       const sessionId = searchParams.get('session_id');
+
+      // Evitar ejecución múltiple
+      if (!paymentStatus || stripeRedirectHandled.current) return;
+      stripeRedirectHandled.current = true;
 
       if (paymentStatus === 'success') {
         // Verificar el estado de la sesión si tenemos el sessionId
@@ -72,7 +77,7 @@ const MisContratosPage: React.FC = () => {
     };
 
     handleStripeRedirect();
-  }, [searchParams, navigate, usuario?.id]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!usuario?.id) {
