@@ -1,15 +1,46 @@
 import { 
   CheckoutSessionResponse, 
   SessionStatusResponse, 
-  CreateCheckoutSessionRequest 
+  CreateCheckoutSessionRequest,
+  MetodosPagoResponse,
+  PagoTransferenciaResponse,
+  PagoEfectivoResponse
 } from '../types/stripe';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5500';
 
 /**
- * Servicio para integración con Stripe Checkout
+ * Servicio para integración con Stripe Checkout y otros métodos de pago
  */
 export class StripeService {
+  /**
+   * Obtiene los métodos de pago disponibles en el sistema.
+   * 
+   * @returns Lista de métodos de pago con sus detalles
+   * @throws Error si la obtención falla
+   */
+  static async getMetodosPago(): Promise<MetodosPagoResponse> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/stripe/metodos-pago`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error al obtener métodos de pago:', error);
+      throw error;
+    }
+  }
+
   /**
    * Crea una sesión de Stripe Checkout para pagar un contrato pendiente.
    * Retorna la URL de checkout a la que se debe redirigir al usuario.
@@ -39,6 +70,75 @@ export class StripeService {
       return await response.json();
     } catch (error) {
       console.error('Error al crear sesión de checkout:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Procesa un pago con transferencia bancaria.
+   * 
+   * @param contratoId - ID del contrato a pagar
+   * @param comprobanteNumero - Número de comprobante (opcional)
+   * @returns Datos del contrato actualizado
+   * @throws Error si el procesamiento falla
+   */
+  static async pagarConTransferencia(
+    contratoId: string, 
+    comprobanteNumero?: string
+  ): Promise<PagoTransferenciaResponse> {
+    try {
+      const requestBody: { contratoId: string; comprobanteNumero?: string } = { contratoId };
+      if (comprobanteNumero) {
+        requestBody.comprobanteNumero = comprobanteNumero;
+      }
+      
+      const response = await fetch(`${API_BASE_URL}/api/stripe/pagar-transferencia`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error al procesar pago con transferencia:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Procesa un pago en efectivo.
+   * 
+   * @param contratoId - ID del contrato a pagar
+   * @returns Datos del contrato actualizado
+   * @throws Error si el procesamiento falla
+   */
+  static async pagarConEfectivo(contratoId: string): Promise<PagoEfectivoResponse> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/stripe/pagar-efectivo`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ contratoId }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error al procesar pago en efectivo:', error);
       throw error;
     }
   }

@@ -133,6 +133,86 @@
 }
 
 
+/* Payment Method Section */
+.metodo-pago-section {
+  margin-bottom: 24px;
+}
+
+.metodo-pago-section h3 {
+  margin: 0 0 16px;
+  color: #111827;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.metodos-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  color: #64748b;
+}
+
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-top-color: #635BFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.metodo-pago-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.metodo-option {
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
+
+.metodo-option:hover {
+  border-color: #c7c4ff;
+  background-color: #fafafa;
+}
+
+.metodo-option.selected {
+  border-color: #635BFF;
+  background-color: #f8f7ff;
+}
+
+.metodo-option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.metodo-nombre {
+  font-weight: 600;
+  color: #111827;
+  font-size: 15px;
+}
+
+.metodo-check {
+  color: #635BFF;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.metodo-descripcion {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+
 /* Stripe Info Section */
 .stripe-info {
   background-color: #f8fafc;
@@ -160,6 +240,138 @@
   color: #64748b;
   font-size: 14px;
   line-height: 1.5;
+}
+
+
+/* Transferencia Info Section */
+.transferencia-info {
+  margin-bottom: 16px;
+}
+
+.datos-bancarios {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.datos-bancarios h4 {
+  margin: 0 0 12px;
+  color: #166534;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.datos-bancarios-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.dato-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #dcfce7;
+}
+
+.dato-item:last-child {
+  border-bottom: none;
+}
+
+.dato-item label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 13px;
+}
+
+.dato-item span {
+  color: #111827;
+  font-size: 13px;
+  font-family: monospace;
+}
+
+.dato-copiable {
+  background-color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #d1fae5;
+}
+
+.comprobante-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.comprobante-input label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+.comprobante-input input {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.comprobante-input input:focus {
+  outline: none;
+  border-color: #635BFF;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+}
+
+.comprobante-input input:disabled {
+  background-color: #f9fafb;
+  cursor: not-allowed;
+}
+
+.comprobante-input small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+
+/* Efectivo Info Section */
+.efectivo-info {
+  margin-bottom: 16px;
+}
+
+.instrucciones-efectivo {
+  background-color: #fefce8;
+  border: 1px solid #fef08a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.instrucciones-efectivo h4 {
+  margin: 0 0 12px;
+  color: #854d0e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.instrucciones-efectivo p {
+  margin: 0 0 12px;
+  color: #713f12;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.nota-efectivo {
+  background-color: #fef9c3;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #854d0e;
+}
+
+.nota-efectivo strong {
+  color: #713f12;
 }
 
 

@@ -1,5 +1,5 @@
 /**
- * Tipos para la integración con Stripe Checkout
+ * Tipos para la integración con Stripe Checkout y otros métodos de pago
  */
 
 /**
@@ -30,4 +30,71 @@ export interface SessionStatusResponse {
  */
 export interface CreateCheckoutSessionRequest {
   contratoId: string;
+}
+
+/**
+ * Datos bancarios para transferencias
+ */
+export interface DatosBancarios {
+  banco: string;
+  titular: string;
+  cbu: string;
+  alias: string;
+}
+
+/**
+ * Método de pago disponible
+ */
+export interface MetodoPago {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  icono: string;
+  requiereRedireccion: boolean;
+  datosBancarios?: DatosBancarios;
+  instrucciones?: string;
+}
+
+/**
+ * Respuesta al obtener métodos de pago disponibles
+ */
+export interface MetodosPagoResponse {
+  message: string;
+  data: MetodoPago[];
+}
+
+/**
+ * Datos del contrato en respuestas de pago
+ */
+export interface ContratoDataResponse {
+  id: string;
+  estado: string;
+  fechaPago: string;
+  metodoPago: string;
+}
+
+/**
+ * Respuesta al pagar con transferencia bancaria
+ */
+export interface PagoTransferenciaResponse {
+  message: string;
+  data: {
+    contrato: ContratoDataResponse;
+    membresia: string;
+    monto: number;
+    comprobante: string | null;
+  };
+}
+
+/**
+ * Respuesta al pagar en efectivo
+ */
+export interface PagoEfectivoResponse {
+  message: string;
+  data: {
+    contrato: ContratoDataResponse;
+    membresia: string;
+    monto: number;
+    reciboNumero: string;
+  };
 }
