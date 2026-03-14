@@ -2,6 +2,19 @@ import { Contrato, ContratoRequest, ContratoResponse } from '../types/contrato';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5500';
 
+function buildHeaders(requireAuth = false): HeadersInit {
+  const token = localStorage.getItem('token');
+
+  if (requireAuth && !token) {
+    throw new Error('No hay token de autenticación. Inicia sesión nuevamente.');
+  }
+
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 /**
  * Servicio para gestionar contratos de membresías
  */
@@ -13,9 +26,7 @@ export class ContratoService {
     try {
       const response = await fetch(`${API_BASE_URL}/api/contratos/contratar`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildHeaders(),
         credentials: 'include',
         body: JSON.stringify(data),
       });
@@ -39,9 +50,7 @@ export class ContratoService {
     try {
       const response = await fetch(`${API_BASE_URL}/api/contratos/cancelar/${contratoId}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildHeaders(),
         credentials: 'include',
       });
 
@@ -64,9 +73,7 @@ export class ContratoService {
     try {
       const response = await fetch(`${API_BASE_URL}/api/contratos/usuario/${usuarioId}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildHeaders(true),
         credentials: 'include',
       });
 
@@ -89,9 +96,7 @@ export class ContratoService {
     try {
       const response = await fetch(`${API_BASE_URL}/api/contratos/${contratoId}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildHeaders(true),
         credentials: 'include',
       });
 
@@ -119,9 +124,7 @@ export class MembresiaService {
     try {
       const response = await fetch(`${API_BASE_URL}/api/membresias`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildHeaders(),
         credentials: 'include',
       });
 
@@ -144,9 +147,7 @@ export class MembresiaService {
     try {
       const response = await fetch(`${API_BASE_URL}/api/membresias/${membresiaId}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildHeaders(),
         credentials: 'include',
       });
 

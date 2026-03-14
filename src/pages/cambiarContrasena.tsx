@@ -54,6 +54,11 @@ export default function CambiarContrasena() {
 
   const procesarCambioContrasena = async () => {
     setShowConfirmModal(false);
+
+    if (!usuario) {
+      toast.error("Usuario no encontrado. Iniciá sesión nuevamente.");
+      return;
+    }
     
     try {
       // Validar contraseña anterior
