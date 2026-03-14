@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import './adminLogin.css';
 
 const AdminLogin = (): React.JSX.Element => {
@@ -24,16 +25,16 @@ const AdminLogin = (): React.JSX.Element => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || 'Contraseña incorrecta');
+        toast.error(data.message || 'Contraseña incorrecta');
         return;
       }
 
       localStorage.setItem('adminToken', data.token);
-      alert('Bienvenido administrador');
+      toast.success('Bienvenido administrador');
       navigate('/admin'); 
     } catch (error) {
       console.error(error);
-      alert('Error al conectar con el servidor');
+      toast.error('Error al conectar con el servidor');
     }
   };
 

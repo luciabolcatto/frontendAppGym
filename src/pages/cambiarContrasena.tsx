@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import type { Usuario } from "../types/usuario";
 import "./cambiarContrasena.css";
 
@@ -19,6 +20,7 @@ export default function CambiarContrasena() {
   const [showAnterior, setShowAnterior] = useState(false);
   const [showNueva, setShowNueva] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("usuario");
@@ -33,22 +35,26 @@ export default function CambiarContrasena() {
     e.preventDefault();
 
     if (!usuario || !mail) {
-      alert("Usuario no encontrado. Iniciá sesión nuevamente.");
+      toast.error("Usuario no encontrado. Iniciá sesión nuevamente.");
       return;
     }
 
     if (contrasenaNueva !== confirmarContrasena) {
-      alert("La nueva contraseña no coincide con la confirmación.");
+      toast.error("La nueva contraseña no coincide con la confirmación.");
       return;
     }
 
     if (contrasenaNueva.length < 6) {
-      alert("La nueva contraseña debe tener al menos 6 caracteres.");
+      toast.error("La nueva contraseña debe tener al menos 6 caracteres.");
       return;
     }
 
-    if (!window.confirm("¿Seguro que deseas cambiar tu contraseña?")) return;
+    setShowConfirmModal(true);
+  };
 
+  const procesarCambioContrasena = async () => {
+    setShowConfirmModal(false);
+    
     try {
       // Validar contraseña anterior
       const loginRes = await fetch(`${API_BASE}/api/Usuarios/login`, {
@@ -87,14 +93,14 @@ export default function CambiarContrasena() {
       const data = await updateRes.json();
       localStorage.setItem("usuario", JSON.stringify(data.data));
 
-      alert(" Contraseña cambiada correctamente.");
+      toast.success("Contraseña cambiada correctamente.");
       setContrasenaAnterior("");
       setContrasenaNueva("");
       setConfirmarContrasena("");
 
       navigate("/perfil");
     } catch (err: any) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -165,6 +171,31 @@ export default function CambiarContrasena() {
           </button>
         </form>
       </div>
+
+      {/* Modal de confirmación */}
+      {showConfirmModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">🔐</div>
+            <h3>Confirmar cambio</h3>
+            <p>¿Seguro que deseas cambiar tu contraseña?</p>
+            <div className="confirm-modal-actions">
+              <button 
+                className="btn-cancel" 
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancelar
+              </button>
+              <button 
+                className="btn-confirm" 
+                onClick={procesarCambioContrasena}
+              >
+                Sí, cambiar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

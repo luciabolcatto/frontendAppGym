@@ -69,6 +69,11 @@
   background-color: #f3f4f6;
 }
 
+.close-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 
 .modal-body {
   padding: 0 24px;
@@ -128,71 +133,335 @@
 }
 
 
-.pago-form h3 {
+/* Payment Method Section */
+.metodo-pago-section {
+  margin-bottom: 24px;
+}
+
+.metodo-pago-section h3 {
   margin: 0 0 16px;
   color: #111827;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
-.form-group {
+.metodos-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  color: #64748b;
+}
+
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-top-color: #635BFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.metodo-pago-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.metodo-option {
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
+
+.metodo-option:hover {
+  border-color: #c7c4ff;
+  background-color: #fafafa;
+}
+
+.metodo-option.selected {
+  border-color: #635BFF;
+  background-color: #f8f7ff;
+}
+
+.metodo-option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.metodo-nombre {
+  font-weight: 600;
+  color: #111827;
+  font-size: 15px;
+}
+
+.metodo-check {
+  color: #635BFF;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.metodo-descripcion {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+
+/* Stripe Info Section */
+.stripe-info {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
   margin-bottom: 16px;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: #374151;
-  font-weight: 500;
+.stripe-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-.form-group select {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e7eb;
+.stripe-badge span {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.stripe-info p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+/* Transferencia Info Section */
+.transferencia-info {
+  margin-bottom: 16px;
+}
+
+.datos-bancarios {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
   border-radius: 8px;
-  font-size: 16px;
-  background-color: white;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
-.form-group select:focus {
+.datos-bancarios h4 {
+  margin: 0 0 12px;
+  color: #166534;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.datos-bancarios-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.dato-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #dcfce7;
+}
+
+.dato-item:last-child {
+  border-bottom: none;
+}
+
+.dato-item label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 13px;
+}
+
+.dato-item span {
+  color: #111827;
+  font-size: 13px;
+  font-family: monospace;
+}
+
+.dato-copiable {
+  background-color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #d1fae5;
+}
+
+.comprobante-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.comprobante-input label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+.comprobante-input input {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.comprobante-input input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #635BFF;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
 }
 
-.form-group select:disabled {
-  background-color: #f3f4f6;
-  color: #6b7280;
+.comprobante-input input:disabled {
+  background-color: #f9fafb;
   cursor: not-allowed;
 }
 
+.comprobante-input small {
+  color: #6b7280;
+  font-size: 12px;
+}
 
+
+/* Efectivo Info Section */
+.efectivo-info {
+  margin-bottom: 16px;
+}
+
+.instrucciones-efectivo {
+  background-color: #fefce8;
+  border: 1px solid #fef08a;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.instrucciones-efectivo h4 {
+  margin: 0 0 12px;
+  color: #854d0e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.instrucciones-efectivo p {
+  margin: 0 0 12px;
+  color: #713f12;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.nota-efectivo {
+  background-color: #fef9c3;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #854d0e;
+}
+
+.nota-efectivo strong {
+  color: #713f12;
+}
+
+
+/* Error Message with Retry */
 .error-message {
   background-color: #fef2f2;
   border: 1px solid #fecaca;
   color: #dc2626;
-  padding: 12px 16px;
+  padding: 16px;
   border-radius: 8px;
   margin: 16px 0;
+}
+
+.error-message p {
+  margin: 0 0 12px 0;
   font-size: 14px;
 }
 
-
-.simulacion-info {
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
-  border-radius: 8px;
-  padding: 16px;
-  margin-top: 16px;
+.btn-retry {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.simulacion-info p {
+.btn-retry:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+
+.btn-retry:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* Redirecting State */
+.redirecting-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.redirecting-state h3 {
+  margin: 20px 0 8px;
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.redirecting-state p {
   margin: 0;
-  color: #1e40af;
+  color: #64748b;
   font-size: 14px;
-  line-height: 1.5;
+}
+
+/* Spinner */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #635BFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Button Spinner */
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
 
@@ -216,17 +485,20 @@
   cursor: pointer;
   transition: all 0.2s;
   min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #635BFF 0%, #5046e5 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(99, 91, 255, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+  background: linear-gradient(135deg, #5046e5 0%, #4338ca 100%);
+  box-shadow: 0 6px 16px rgba(99, 91, 255, 0.4);
   transform: translateY(-1px);
 }
 
@@ -288,5 +560,9 @@
   .btn-primary,
   .btn-secondary {
     width: 100%;
+  }
+
+  .redirecting-state {
+    padding: 40px 20px;
   }
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import './reservarClase.css';
 
 const API_BASE =
@@ -143,9 +144,21 @@ const ReservarClase: React.FC = () => {
       });
       if (!contratoValido) {
         setLoading(false);
-        if (window.confirm('No tienes un contrato vigente y pagado para la fecha de esta clase. ¿Quieres ver los planes disponibles?')) {
-          navigate('/planes');
-        }
+        toast.error('No tienes un contrato vigente y pagado para la fecha de esta clase.');
+        toast((t) => (
+          <span>
+            ¿Quieres ver los planes disponibles?
+            <button
+              style={{ marginLeft: '10px', padding: '4px 8px', cursor: 'pointer' }}
+              onClick={() => {
+                toast.dismiss(t.id);
+                navigate('/planes');
+              }}
+            >
+              Ver planes
+            </button>
+          </span>
+        ), { duration: 6000 });
         return;
       }
 

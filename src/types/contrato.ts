@@ -33,11 +33,6 @@ export interface ContratoRequest {
   membresiaId: string;
 }
 
-export interface PagoRequest {
-  contratoId: string;
-  metodoPago?: string;
-}
-
 export interface ContratoResponse {
   message: string;
   data: {

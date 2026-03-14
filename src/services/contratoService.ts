@@ -1,6 +1,6 @@
-import { Contrato, ContratoRequest, PagoRequest, ContratoResponse } from '../types/contrato';
+import { Contrato, ContratoRequest, ContratoResponse } from '../types/contrato';
 
-const API_BASE_URL = 'http://localhost:5500/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5500';
 
 /**
  * Servicio para gestionar contratos de membresías
@@ -11,12 +11,10 @@ export class ContratoService {
    */
   static async contratarMembresia(data: ContratoRequest): Promise<ContratoResponse> {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/contratos/contratar`, {
+      const response = await fetch(`${API_BASE_URL}/api/contratos/contratar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include',
         body: JSON.stringify(data),
@@ -35,44 +33,14 @@ export class ContratoService {
   }
 
   /**
-   * Simula el pago de un contrato pendiente
-   */
-  static async simularPago(data: PagoRequest): Promise<ContratoResponse> {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/contratos/simular-pago`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Error al procesar pago:', error);
-      throw error;
-    }
-  }
-
-  /**
    * Cancela un contrato existente
    */
   static async cancelarContrato(contratoId: string): Promise<ContratoResponse> {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/contratos/cancelar/${contratoId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/contratos/cancelar/${contratoId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include',
       });
@@ -94,12 +62,10 @@ export class ContratoService {
    */
   static async obtenerContratosPorUsuario(usuarioId: string): Promise<{ data: any }> {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/contratos/usuario/${usuarioId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/contratos/usuario/${usuarioId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include',
       });
@@ -121,7 +87,7 @@ export class ContratoService {
    */
   static async obtenerContrato(contratoId: string): Promise<{ data: Contrato }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/contratos/${contratoId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/contratos/${contratoId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +117,7 @@ export class MembresiaService {
    */
   static async obtenerMembresias(): Promise<{ data: any[] }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/membresias`, {
+      const response = await fetch(`${API_BASE_URL}/api/membresias`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -176,7 +142,7 @@ export class MembresiaService {
    */
   static async obtenerMembresia(membresiaId: string): Promise<{ data: any }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/membresias/${membresiaId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/membresias/${membresiaId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

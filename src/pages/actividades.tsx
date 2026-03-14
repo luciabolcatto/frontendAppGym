@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { Actividad } from '../types/actividad';
 import './actividades.css';
 
@@ -43,7 +44,7 @@ const ActividadesPage: React.FC = () => {
 
   const handleVerClases = (actividadId: string, actividadNombre: string) => {
     if (!usuario) {
-      alert('Debes iniciar sesión para ver las clases disponibles');
+      toast.error('Debes iniciar sesión para ver las clases disponibles');
       navigate('/login');
       return;
     }

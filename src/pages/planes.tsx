@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import "./planes.css";
 import { Membresia } from "../types/membresia";
 import { ContratoService, MembresiaService } from "../services/contratoService";
@@ -15,6 +17,8 @@ const PlanesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [contratando, setContratando] = useState<string | null>(null);
   const [contratosPendientes, setContratosPendientes] = useState<number>(0);
+  const [showConfirmModal, setShowConfirmModal] = useState<{ show: boolean; membresiaId: string | null; message: string }>({ show: false, membresiaId: null, message: '' });
+  const navigate = useNavigate();
   const [usuario] = useState(() => {
     // Intentamos obtener el usuario del localStorage
     const storedUser = localStorage.getItem('usuario');
@@ -70,67 +74,78 @@ const PlanesPage: React.FC = () => {
 
   const handleContratarPlan = async (membresiaId: string) => {
     if (!usuario?.id) {
-      alert("Debe estar logueado para contratar un plan");
+      toast.error("Debe iniciar sesión para contratar un plan");
+      navigate('/login');
       return;
     }
 
     setContratando(membresiaId);
     try {
       // Verificar contratos pendientes antes de contratar
-      const contratosPendientes = await verificarContratosPendientes(usuario.id);
+      const pendientes = await verificarContratosPendientes(usuario.id);
       
-      if (contratosPendientes >= 2) {
-        alert("No puedes contratar más membresías. Ya tienes 2 contratos pendientes de pago. Completa el pago o cancela alguno antes de crear uno nuevo.");
+      if (pendientes >= 2) {
+        toast.error("Ya tienes 2 contratos pendientes. Completa los pagos o cancela alguno antes de contratar otro.");
         setContratando(null);
         return;
       }
 
       // Mostrar advertencia si ya tiene 1 contrato pendiente
-      if (contratosPendientes === 1) {
-        const continuar = confirm("Ya tienes 1 contrato pendiente de pago. Si continúas, tendrás 2 contratos pendientes (máximo permitido). ¿Deseas continuar?");
-        if (!continuar) {
-          setContratando(null);
-          return;
-        }
+      if (pendientes === 1) {
+        setShowConfirmModal({
+          show: true,
+          membresiaId,
+          message: 'Ya tienes 1 contrato pendiente de pago. Si continúas, tendrás 2 contratos pendientes (máximo permitido).'
+        });
+        setContratando(null);
+        return;
       }
 
-      const request: ContratoRequest = {
-        usuarioId: usuario.id,
-        membresiaId: membresiaId
-      };
-
-      const response = await ContratoService.contratarMembresia(request);
-      
-      if (response.data.contrato) {
-        const { contrato, esRenovacion } = response.data;
-        const mensaje = esRenovacion 
-          ? `¡Renovación programada exitosamente! Su nueva membresía comenzará el ${new Date(contrato.fecha_hora_ini).toLocaleDateString()}`
-          : `¡Contrato creado exitosamente! Su membresía está pendiente de pago.`;
-        
-        alert(mensaje);
-        
-        // Actualizar contador de contratos pendientes
-        setContratosPendientes(prev => prev + 1);
-        
-        // Redirigir a la página de contratos o mostrar modal de pago
-        if (confirm("¿Desea proceder al pago ahora?")) {
-          window.location.href = `/mis-contratos?pagar=${contrato.id}`;
-        } else {
-          // Si no quiere pagar ahora, ir a la página de contratos
-          window.location.href = `/mis-contratos`;
-        }
-      }
+      await procesarContratacion(membresiaId);
     } catch (error: any) {
       console.error("Error al contratar plan:", error);
-      
-      // Manejar error específico de límite de contratos
-      if (error?.response?.data?.error === 'LIMITE_CONTRATOS_EXCEDIDO') {
-        alert(` ${error.response.data.message}\n\n Contratos pendientes: ${error.response.data.contratosPendientesActuales}/${error.response.data.limite}`);
-      } else {
-        alert(error instanceof Error ? error.message : "Error al contratar el plan");
-      }
+      toast.error(error instanceof Error ? error.message : "Error al contratar el plan");
     } finally {
       setContratando(null);
+    }
+  };
+
+  const procesarContratacion = async (membresiaId: string) => {
+    const request: ContratoRequest = {
+      usuarioId: usuario.id,
+      membresiaId: membresiaId
+    };
+
+    const response = await ContratoService.contratarMembresia(request);
+    
+    if (response.data.contrato) {
+      const { contrato, esRenovacion } = response.data;
+      
+      // Actualizar contador de contratos pendientes
+      setContratosPendientes(prev => prev + 1);
+      
+      if (esRenovacion) {
+        toast.success(`¡Renovación programada! Comenzará el ${new Date(contrato.fecha_hora_ini).toLocaleDateString()}`);
+      } else {
+        toast.success('¡Contrato creado exitosamente!');
+      }
+      
+      // Redirigir directamente a mis-contratos con el parámetro para abrir el modal de pago
+      navigate(`/mis-contratos?pagar=${contrato.id}`);
+    }
+  };
+
+  const handleConfirmContratacion = async () => {
+    if (showConfirmModal.membresiaId) {
+      setShowConfirmModal({ show: false, membresiaId: null, message: '' });
+      setContratando(showConfirmModal.membresiaId);
+      try {
+        await procesarContratacion(showConfirmModal.membresiaId);
+      } catch (error: any) {
+        toast.error(error instanceof Error ? error.message : "Error al contratar el plan");
+      } finally {
+        setContratando(null);
+      }
     }
   };
 
@@ -209,6 +224,32 @@ const PlanesPage: React.FC = () => {
               </button>
             </article>
           ))}
+        </div>
+      )}
+
+      {/* Modal de confirmación personalizado */}
+      {showConfirmModal.show && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <div className="confirm-modal-icon">⚠️</div>
+            <h3>Confirmar contratación</h3>
+            <p>{showConfirmModal.message}</p>
+            <p className="confirm-question">¿Deseas continuar?</p>
+            <div className="confirm-modal-actions">
+              <button 
+                className="btn-cancel" 
+                onClick={() => setShowConfirmModal({ show: false, membresiaId: null, message: '' })}
+              >
+                Cancelar
+              </button>
+              <button 
+                className="btn-confirm" 
+                onClick={handleConfirmContratacion}
+              >
+                Sí, continuar
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

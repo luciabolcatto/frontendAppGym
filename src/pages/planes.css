@@ -144,3 +144,113 @@
 
 @media (min-width: 768px) { .planes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .planes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Modal de confirmación personalizado */
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.confirm-modal {
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.confirm-modal-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.confirm-modal h3 {
+  color: var(--blanco);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.confirm-modal p {
+  color: #ccc;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+
+.confirm-modal .confirm-question {
+  color: var(--celeste);
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.confirm-modal-actions button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 2px solid #666;
+  color: #ccc;
+}
+
+.btn-cancel:hover {
+  border-color: #999;
+  color: #fff;
+}
+
+.btn-confirm {
+  background: var(--celeste);
+  border: 2px solid var(--celeste);
+  color: #000;
+}
+
+.btn-confirm:hover {
+  background: #00d4ff;
+  border-color: #00d4ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 191, 255, 0.4);
+}
