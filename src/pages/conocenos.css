@@ -122,3 +122,136 @@
   color: #e0e0e0;
   margin-top: 8px;
 }
+
+/*  Rating en cards */
+.trainer-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.trainer-rating-text {
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+/*  Botón valorar */
+.btn-valorar {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.35);
+  color: white;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.btn-valorar:hover {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/*  Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 9999;
+}
+
+.modal-content {
+  width: min(520px, 100%);
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  color: #111;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.modal-close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modal-stars {
+  margin-top: 12px;
+}
+
+.modal-hint {
+  display: block;
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 6px;
+}
+
+.modal-textarea {
+  margin-top: 12px;
+}
+
+.modal-textarea label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.modal-textarea textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.modal-error {
+  margin-top: 10px;
+  color: crimson;
+  font-size: 13px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.btn-cancelar {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.btn-enviar {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-enviar:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+}
