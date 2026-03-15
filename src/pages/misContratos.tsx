@@ -248,7 +248,7 @@ const MisContratosPage: React.FC = () => {
   };
 
   const puedeSerCancelado = (contrato: Contrato) => {
-    return contrato.estado === EstadoContrato.PENDIENTE || contrato.estado === EstadoContrato.PAGADO;
+    return contrato.estado === EstadoContrato.PENDIENTE;
   };
 
   if (loading) {
