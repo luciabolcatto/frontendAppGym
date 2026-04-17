@@ -16,5 +16,11 @@ export function buildPublicUrl(path: string) {
   }
 
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return `${API_BASE_URL}${normalizedPath}`;
+  const publicPath = normalizedPath.startsWith('/public/')
+    ? normalizedPath
+    : normalizedPath.startsWith('/uploads/')
+      ? `/public${normalizedPath}`
+      : normalizedPath;
+
+  return `${API_BASE_URL}${publicPath}`;
 }

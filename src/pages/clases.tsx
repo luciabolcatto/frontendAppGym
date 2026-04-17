@@ -154,7 +154,7 @@ const ClasesPage: React.FC = () => {
   useEffect(() => {
     const fetchActividades = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/actividad`);
+        const res = await fetch(buildApiUrl('/api/actividad'));
         const data = await res.json();
         if (!res.ok)
           throw new Error(data.message || 'Error al cargar actividades');
@@ -210,9 +210,9 @@ const ClasesPage: React.FC = () => {
         setLoading(true);
 
         // Usar el endpoint que incluye reservas del usuario si está logueado
-        let url = `${API_BASE}/api/clases/todas-ordenadas`;
+        let url = buildApiUrl('/api/clases/todas-ordenadas');
         if (usuario) {
-          url = `${API_BASE}/api/clases/con-reservas-usuario?usuarioId=${usuario.id}`;
+          url = buildApiUrl(`/api/clases/con-reservas-usuario?usuarioId=${usuario.id}`);
         }
         
         const res = await fetch(url);
@@ -294,8 +294,8 @@ const ClasesPage: React.FC = () => {
 
       // Usar el endpoint correcto según si hay usuario
       let url = usuario 
-        ? `${API_BASE}/api/clases/con-reservas-usuario?` 
-        : `${API_BASE}/api/clases/todas-ordenadas?`;
+        ? buildApiUrl('/api/clases/con-reservas-usuario?') 
+        : buildApiUrl('/api/clases/todas-ordenadas?');
       
       const params = new URLSearchParams();
 
@@ -352,8 +352,8 @@ const ClasesPage: React.FC = () => {
       setLoading(true);
       // Usar el endpoint correcto
       let url = usuario 
-        ? `${API_BASE}/api/clases/con-reservas-usuario?usuarioId=${usuario.id}` 
-        : `${API_BASE}/api/clases/todas-ordenadas`;
+        ? buildApiUrl(`/api/clases/con-reservas-usuario?usuarioId=${usuario.id}`) 
+        : buildApiUrl('/api/clases/todas-ordenadas');
       
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -616,7 +616,7 @@ const ClasesPage: React.FC = () => {
                                   onClick={async () => {
                                     toast.dismiss(t.id);
                                     try {
-                                      const response = await fetch(`${API_BASE}/api/Reservas/${reservaUsuario.id}`, {
+                                      const response = await fetch(buildApiUrl(`/api/Reservas/${reservaUsuario.id}`), {
                                         method: 'PATCH',
                                         headers: {
                                           'Content-Type': 'application/json',
