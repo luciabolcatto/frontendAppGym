@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import './borrarCuenta.css';
+import { buildApiUrl } from '../shared/config';
 
 export default function BorrarCuenta() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ export default function BorrarCuenta() {
 
     try {
       // Validar contraseña mediante login
-      const loginRes = await fetch(`http://localhost:5500/api/Usuarios/login`, {
+      const loginRes = await fetch(buildApiUrl('/api/Usuarios/login'), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mail, contrasena }),
@@ -49,7 +50,7 @@ export default function BorrarCuenta() {
 
       // Eliminar cuenta
       const token = localStorage.getItem("token");
-      const deleteRes = await fetch(`http://localhost:5500/api/Usuarios/${usuarioId}`, {
+      const deleteRes = await fetch(buildApiUrl(`/api/Usuarios/${usuarioId}`), {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import './adminLogin.css';
+import { buildApiUrl } from '../shared/config';
 
 const AdminLogin = (): React.JSX.Element => {
   const [password, setPassword] = useState<string>('');
@@ -16,7 +17,7 @@ const AdminLogin = (): React.JSX.Element => {
       localStorage.removeItem('usuario');
       localStorage.removeItem('token');
 
-      const res = await fetch('http://localhost:5500/api/admin/login', {
+      const res = await fetch(buildApiUrl('/api/admin/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),

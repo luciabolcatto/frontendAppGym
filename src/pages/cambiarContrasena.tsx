@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import type { Usuario } from "../types/usuario";
 import "./cambiarContrasena.css";
-
-const API_BASE =
-  (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, "") ||
-  "http://localhost:5500";
+import { buildApiUrl } from '../shared/config';
 
 export default function CambiarContrasena() {
   const navigate = useNavigate();
@@ -62,7 +59,7 @@ export default function CambiarContrasena() {
     
     try {
       // Validar contraseña anterior
-      const loginRes = await fetch(`${API_BASE}/api/Usuarios/login`, {
+      const loginRes = await fetch(buildApiUrl('/api/Usuarios/login'), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mail, contrasena: contrasenaAnterior }),
@@ -84,7 +81,7 @@ export default function CambiarContrasena() {
         }
       });
 
-      const updateRes = await fetch(`${API_BASE}/api/Usuarios/${usuario.id}`, {
+      const updateRes = await fetch(buildApiUrl(`/api/Usuarios/${usuario.id}`), {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

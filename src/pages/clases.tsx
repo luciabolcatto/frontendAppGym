@@ -2,21 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import './clases.css';
+import { buildApiUrl, buildPublicUrl } from '../shared/config';
 
 interface Actividad {
   id: string;
   nombre: string;
 }
 
-const API_BASE =
-  (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') ||
-  'http://localhost:5500';
-
 function resolveImageUrl(url?: string): string | undefined {
   if (!url) return undefined;
   if (/^https?:\/\//i.test(url)) return url;
-  const path = url.startsWith('/') ? url : `/${url}`;
-  return `${API_BASE}${path}`;
+  return buildPublicUrl(url);
 }
 
 function formatDate(dateLike: any) {
@@ -92,7 +88,7 @@ const ClasesPage: React.FC = () => {
 
     // Validar contrato pagado vigente para la fecha de la clase
     const token = localStorage.getItem('token');
-    fetch(`${API_BASE}/api/contratos/usuario/${usuario.id}`, {
+    fetch(buildApiUrl(`/api/contratos/usuario/${usuario.id}`), {
       headers: {
         'Authorization': `Bearer ${token}`
       }

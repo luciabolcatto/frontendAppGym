@@ -6,8 +6,7 @@ import {
   PagoTransferenciaResponse,
   PagoEfectivoResponse
 } from '../types/stripe';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5500';
+import { buildApiUrl } from '../shared/config';
 
 /**
  * Servicio para integración con Stripe Checkout y otros métodos de pago
@@ -21,7 +20,7 @@ export class StripeService {
    */
   static async getMetodosPago(): Promise<MetodosPagoResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/stripe/metodos-pago`, {
+      const response = await fetch(buildApiUrl('/api/stripe/metodos-pago'), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +52,7 @@ export class StripeService {
     try {
       const requestBody: CreateCheckoutSessionRequest = { contratoId };
       
-      const response = await fetch(`${API_BASE_URL}/api/stripe/create-checkout-session`, {
+      const response = await fetch(buildApiUrl('/api/stripe/create-checkout-session'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +91,7 @@ export class StripeService {
         requestBody.comprobanteNumero = comprobanteNumero;
       }
       
-      const response = await fetch(`${API_BASE_URL}/api/stripe/pagar-transferencia`, {
+      const response = await fetch(buildApiUrl('/api/stripe/pagar-transferencia'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +121,7 @@ export class StripeService {
    */
   static async pagarConEfectivo(contratoId: string): Promise<PagoEfectivoResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/stripe/pagar-efectivo`, {
+      const response = await fetch(buildApiUrl('/api/stripe/pagar-efectivo'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +152,7 @@ export class StripeService {
    */
   static async getSessionStatus(sessionId: string): Promise<SessionStatusResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/stripe/session/${sessionId}`, {
+      const response = await fetch(buildApiUrl(`/api/stripe/session/${sessionId}`), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

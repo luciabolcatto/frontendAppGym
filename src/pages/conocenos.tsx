@@ -3,6 +3,7 @@ import './conocenos.css';
 
 import imagenGimnasio from '../assets/conocenos1.jpg';
 import StarRating from '../components/StarRating';
+import { buildApiUrl, buildPublicUrl } from '../shared/config';
 import {
   obtenerResumenValoraciones,
   enviarValoracion,
@@ -81,7 +82,7 @@ export default function ConocenosPage(): React.JSX.Element {
 
   // 1) Traemos entrenadores
   useEffect(() => {
-    fetch('http://localhost:5500/api/entrenadores')
+    fetch(buildApiUrl('/api/entrenadores'))
       .then((res) => res.json())
       .then((data) => {
         setEntrenadores(data.data);
@@ -138,7 +139,7 @@ export default function ConocenosPage(): React.JSX.Element {
 
         <div className="trainers-carousel">
           {entrenadores.map((entrenador) => {
-            const fullUrl = `http://localhost:5500${entrenador.fotoUrl}`;
+            const fullUrl = buildPublicUrl(entrenador.fotoUrl);
 
             const resumen = resumenPorEntrenador[entrenador.id] ?? {
               promedio: 0,

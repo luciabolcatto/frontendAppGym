@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import './reservarClase.css';
-
-const API_BASE =
-  (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') ||
-  'http://localhost:5500';
+import { buildApiUrl } from '../shared/config';
 
 interface Usuario {
   id: string;
@@ -93,7 +90,7 @@ const ReservarClase: React.FC = () => {
     
     try {
       // Obtener datos actuales de la clase para validar
-      const claseRes = await fetch(`${API_BASE}/api/clases/${claseId}`);
+      const claseRes = await fetch(buildApiUrl(`/api/clases/${claseId}`));
       if (!claseRes.ok) {
         throw new Error('Error al obtener datos de la clase');
       }

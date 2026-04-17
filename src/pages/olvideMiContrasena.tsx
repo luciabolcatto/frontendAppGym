@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './olvideMiContrasena.css';
-
-const API_BASE = import.meta.env?.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:5500';
+import { buildApiUrl } from '../shared/config';
 
 export default function OlvideMiContrasena() {
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ export default function OlvideMiContrasena() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE}/api/Usuarios/solicitar-codigo`, {
+      const response = await fetch(buildApiUrl('/api/Usuarios/solicitar-codigo'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mail: email }),

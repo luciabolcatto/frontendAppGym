@@ -3,16 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Actividad } from '../types/actividad';
 import './actividades.css';
-
-const API_BASE =
-  (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') ||
-  'http://localhost:5500';
+import { buildApiUrl, buildPublicUrl } from '../shared/config';
 
 function resolveImageUrl(a: Actividad): string | undefined {
   if (a.imagenUrl) {
     if (/^https?:\/\//i.test(a.imagenUrl)) return a.imagenUrl;
-    const path = a.imagenUrl.startsWith('/') ? a.imagenUrl : `/${a.imagenUrl}`;
-    return `${API_BASE}${path}`;
+    return buildPublicUrl(a.imagenUrl);
   }
   return undefined;
 }
@@ -58,7 +54,7 @@ const ActividadesPage: React.FC = () => {
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/api/actividad`);
+        const res = await fetch(buildApiUrl('/api/actividad'));
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (!mounted) return;

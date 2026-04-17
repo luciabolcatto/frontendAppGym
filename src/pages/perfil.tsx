@@ -5,14 +5,12 @@ import { FaUserCircle } from 'react-icons/fa';
 import type { Usuario } from '../types/usuario';
 import './Perfil.css';
 import { notifyUsuarioUpdated } from '../hooks/useUsuario';
-
-const API_BASE = (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:5500';
+import { buildApiUrl, buildPublicUrl } from '../shared/config';
 
 function resolveImageUrl(u: Usuario): string | undefined {
   if (u.fotoPerfil) {
     if (/^https?:\/\//i.test(u.fotoPerfil)) return u.fotoPerfil;
-    const path = u.fotoPerfil.startsWith('/') ? u.fotoPerfil : `/${u.fotoPerfil}`;
-    return `${API_BASE}/public${path}`;
+    return buildPublicUrl(u.fotoPerfil);
   }
   return undefined;
 }
@@ -91,7 +89,7 @@ const Perfil = (): React.JSX.Element => {
 
       if (fotoFile) formData.append('fotoPerfil', fotoFile);
 
-      const res = await fetch(`${API_BASE}/api/Usuarios/${usuario.id}`, {
+      const res = await fetch(buildApiUrl(`/api/Usuarios/${usuario.id}`), {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import { EstadoContrato } from '../types/contrato';
 import './usuariosPorEstado.css';
+import { buildApiUrl } from '../shared/config';
 
 interface UsuarioEstado {
   idUsuario: number;
@@ -43,7 +44,7 @@ const UsuariosPorEstado = (): React.JSX.Element => {
     const fetchUsuarios = async () => {
       try {
         const token = localStorage.getItem('adminToken');
-        const res = await fetch(`http://localhost:5500/api/contratos/filtrado?estado=${estado}`, {
+        const res = await fetch(buildApiUrl(`/api/contratos/filtrado?estado=${estado}`), {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();

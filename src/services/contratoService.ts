@@ -1,6 +1,5 @@
 import { Contrato, ContratoRequest, ContratoResponse } from '../types/contrato';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5500';
+import { buildApiUrl } from '../shared/config';
 
 function buildHeaders(requireAuth = false): HeadersInit {
   const token = localStorage.getItem('token');
@@ -24,7 +23,7 @@ export class ContratoService {
    */
   static async contratarMembresia(data: ContratoRequest): Promise<ContratoResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/contratos/contratar`, {
+      const response = await fetch(buildApiUrl('/api/contratos/contratar'), {
         method: 'POST',
         headers: buildHeaders(),
         credentials: 'include',
@@ -48,7 +47,7 @@ export class ContratoService {
    */
   static async cancelarContrato(contratoId: string): Promise<ContratoResponse> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/contratos/cancelar/${contratoId}`, {
+      const response = await fetch(buildApiUrl(`/api/contratos/cancelar/${contratoId}`), {
         method: 'PATCH',
         headers: buildHeaders(),
         credentials: 'include',
@@ -71,7 +70,7 @@ export class ContratoService {
    */
   static async obtenerContratosPorUsuario(usuarioId: string): Promise<{ data: any }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/contratos/usuario/${usuarioId}`, {
+      const response = await fetch(buildApiUrl(`/api/contratos/usuario/${usuarioId}`), {
         method: 'GET',
         headers: buildHeaders(true),
         credentials: 'include',
@@ -94,7 +93,7 @@ export class ContratoService {
    */
   static async obtenerContrato(contratoId: string): Promise<{ data: Contrato }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/contratos/${contratoId}`, {
+      const response = await fetch(buildApiUrl(`/api/contratos/${contratoId}`), {
         method: 'GET',
         headers: buildHeaders(true),
         credentials: 'include',
@@ -122,7 +121,7 @@ export class MembresiaService {
    */
   static async obtenerMembresias(): Promise<{ data: any[] }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/membresias`, {
+      const response = await fetch(buildApiUrl('/api/membresias'), {
         method: 'GET',
         headers: buildHeaders(),
         credentials: 'include',
@@ -145,7 +144,7 @@ export class MembresiaService {
    */
   static async obtenerMembresia(membresiaId: string): Promise<{ data: any }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/membresias/${membresiaId}`, {
+      const response = await fetch(buildApiUrl(`/api/membresias/${membresiaId}`), {
         method: 'GET',
         headers: buildHeaders(),
         credentials: 'include',

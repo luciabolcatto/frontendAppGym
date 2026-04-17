@@ -5,14 +5,12 @@ import './layout.css';
 import { FaInstagram, FaFacebookF, FaTwitter, FaUserCircle } from 'react-icons/fa';
 import type { Usuario } from '../types/usuario';
 import { useUsuario } from '../hooks/useUsuario';
-
-const API_BASE = (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:5500';
+import { buildPublicUrl } from '../shared/config';
 
 function resolveImageUrl(u: Usuario): string | undefined {
   if (u.fotoPerfil) {
     if (/^https?:\/\//i.test(u.fotoPerfil)) return u.fotoPerfil;
-    const path = u.fotoPerfil.startsWith('/') ? u.fotoPerfil : `/${u.fotoPerfil}`;
-    return `${API_BASE}/public${path}`;
+    return buildPublicUrl(u.fotoPerfil);
   }
   return undefined;
 }

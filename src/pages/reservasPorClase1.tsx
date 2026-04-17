@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 import './reservasPorClase1.css';
+import { buildApiUrl } from '../shared/config';
 
 interface Actividad {
   id: string;
@@ -43,7 +44,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
   useEffect(() => {
     const fetchActividades = async () => {
       try {
-        const res = await fetch('http://localhost:5500/api/actividad');
+        const res = await fetch(buildApiUrl('/api/actividad'));
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Error al cargar actividades');
         setActividades(data.data);
@@ -63,7 +64,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
         const adminToken = localStorage.getItem('adminToken');
         if (!adminToken) return;
 
-        const res = await fetch('http://localhost:5500/api/clases/admin/todas-ordenadas', {
+        const res = await fetch(buildApiUrl('/api/clases/admin/todas-ordenadas'), {
           headers: { Authorization: `Bearer ${adminToken}` }
         });
         
@@ -85,15 +86,18 @@ const ReservasPorClase1 = (): React.JSX.Element => {
       const adminToken = localStorage.getItem('adminToken');
       if (!adminToken) return;
 
-      let url = 'http://localhost:5500/api/clases/admin/todas-ordenadas?';
-      
       const params = new URLSearchParams();
       if (fecha) params.append('fecha', fecha);
       if (actividadId) params.append('actividadId', actividadId);
       
-      const res = await fetch(url + params.toString(), {
+      const query = params.toString();
+      const res = await fetch(
+        buildApiUrl('/api/clases/admin/todas-ordenadas') +
+          (query ? `?${query}` : ''),
+        {
         headers: { Authorization: `Bearer ${adminToken}` }
-      });
+        }
+      );
       
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Error al filtrar clases');
@@ -114,7 +118,7 @@ const ReservasPorClase1 = (): React.JSX.Element => {
         const adminToken = localStorage.getItem('adminToken');
         if (!adminToken) return;
 
-        const res = await fetch('http://localhost:5500/api/clases/admin/todas-ordenadas', {
+        const res = await fetch(buildApiUrl('/api/clases/admin/todas-ordenadas'), {
           headers: { Authorization: `Bearer ${adminToken}` }
         });
         

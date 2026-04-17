@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from 'react-hot-toast';
 import { EstadoReserva } from '../types/reserva';
 import './reservasPorClase2.css';
+import { buildApiUrl } from '../shared/config';
 
 interface ReservaDetalle {
   idActividad: string;
@@ -46,7 +47,7 @@ const ReservasPorClase2 = (): React.JSX.Element => {
         const adminToken = localStorage.getItem('adminToken');
         if (!adminToken) return;
 
-        const res = await fetch(`http://localhost:5500/api/Reservas/filtrado?claseId=${claseId}`, {
+        const res = await fetch(buildApiUrl(`/api/Reservas/filtrado?claseId=${claseId}`), {
           headers: { Authorization: `Bearer ${adminToken}` }
         });
         

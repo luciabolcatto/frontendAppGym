@@ -5,8 +5,7 @@ import "./planes.css";
 import { Membresia } from "../types/membresia";
 import { ContratoService, MembresiaService } from "../services/contratoService";
 import { ContratoRequest } from "../types/contrato";
-
-const API_BASE = (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, "") || "http://localhost:5500";
+import { buildApiUrl } from '../shared/config';
 
 const currency = (n: number) =>
   n.toLocaleString("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 });
@@ -56,7 +55,7 @@ const PlanesPage: React.FC = () => {
   const verificarContratosPendientes = async (usuarioId: string): Promise<number> => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE}/api/contratos/usuario/${usuarioId}`, {
+      const response = await fetch(buildApiUrl(`/api/contratos/usuario/${usuarioId}`), {
         headers: {
           'Authorization': `Bearer ${token}`
         }

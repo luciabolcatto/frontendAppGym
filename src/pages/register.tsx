@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import type { Usuario } from '../types/usuario';
 import './Register.css';
 import { notifyUsuarioUpdated } from '../hooks/useUsuario';
+import { buildApiUrl } from '../shared/config';
 
 const Register = (): React.JSX.Element => {
   const [nombre, setNombre] = useState<string>('');
@@ -47,7 +48,7 @@ const Register = (): React.JSX.Element => {
       if (foto) formData.append('fotoPerfil', foto);
 
       //  Registrar usuario
-      const res = await fetch('http://localhost:5500/api/Usuarios/', {
+      const res = await fetch(buildApiUrl('/api/Usuarios/'), {
         method: 'POST',
         body: formData,
       });
@@ -59,7 +60,7 @@ const Register = (): React.JSX.Element => {
       }
 
       //  Login automático después de registro
-      const loginRes = await fetch('http://localhost:5500/api/Usuarios/login', {
+      const loginRes = await fetch(buildApiUrl('/api/Usuarios/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mail, contrasena }),
@@ -75,7 +76,7 @@ const Register = (): React.JSX.Element => {
       localStorage.setItem('token', token);
 
       // Traer datos completos del usuario
-      const usuarioRes = await fetch(`http://localhost:5500/api/Usuarios/${usuario.id}`, {
+      const usuarioRes = await fetch(buildApiUrl(`/api/Usuarios/${usuario.id}`), {
         headers: { Authorization: `Bearer ${token}` },
       });
 

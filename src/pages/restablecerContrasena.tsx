@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './restablecerContrasena.css';
-
-const API_BASE = import.meta.env?.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:5500';
+import { buildApiUrl } from '../shared/config';
 
 export default function RestablecerContrasena() {
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ export default function RestablecerContrasena() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE}/api/Usuarios/validar-codigo`, {
+      const response = await fetch(buildApiUrl('/api/Usuarios/validar-codigo'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mail: email, code: codigo }),
@@ -76,7 +75,7 @@ export default function RestablecerContrasena() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE}/api/Usuarios/restablecer-contrasena`, {
+      const response = await fetch(buildApiUrl('/api/Usuarios/restablecer-contrasena'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resetToken, nuevaContrasena }),

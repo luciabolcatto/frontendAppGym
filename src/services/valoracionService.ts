@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:5500/api/valoraciones";
+import { buildApiUrl } from '../shared/config';
+
+const API_URL = buildApiUrl('/api/valoraciones');
 
 console.log("API_URL", API_URL);
 

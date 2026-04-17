@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import './misReservas.css';
-
-const API_BASE =
-  (import.meta as any).env?.VITE_API_URL?.replace(/\/+$/, '') ||
-  'http://localhost:5500';
+import { buildApiUrl } from '../shared/config';
 
 interface Reserva {
   id: string;
@@ -98,7 +95,7 @@ const MisReservas: React.FC = () => {
       setLoading(true);
       
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE}/api/Reservas?usuario=${usuario.id}`, {
+      const response = await fetch(buildApiUrl(`/api/Reservas?usuario=${usuario.id}`), {
         headers: {
           'Authorization': `Bearer ${token}`
         }

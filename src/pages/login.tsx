@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import type { Usuario } from '../types/usuario';
 import './Login.css';
 import { notifyUsuarioUpdated } from '../hooks/useUsuario';
+import { buildApiUrl } from '../shared/config';
 
 const Login = (): React.JSX.Element => {
   const [mail, setMail] = useState<string>('');
@@ -25,7 +26,7 @@ const Login = (): React.JSX.Element => {
 
     try {
       //  Login
-      const res = await fetch('http://localhost:5500/api/Usuarios/login', {
+      const res = await fetch(buildApiUrl('/api/Usuarios/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mail, contrasena }),
@@ -42,7 +43,7 @@ const Login = (): React.JSX.Element => {
       localStorage.setItem('token', token);
 
       // Traer datos completos del usuario
-      const usuarioRes = await fetch(`http://localhost:5500/api/Usuarios/${usuario.id}`, {
+      const usuarioRes = await fetch(buildApiUrl(`/api/Usuarios/${usuario.id}`), {
         headers: { Authorization: `Bearer ${token}` },
       });
 
