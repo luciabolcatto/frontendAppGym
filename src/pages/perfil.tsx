@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { FaUserCircle } from 'react-icons/fa';
 import type { Usuario } from '../types/usuario';
-import './Perfil.css';
+import './perfil.css';
 import { notifyUsuarioUpdated } from '../hooks/useUsuario';
 import { buildApiUrl, buildPublicUrl } from '../shared/config';
 

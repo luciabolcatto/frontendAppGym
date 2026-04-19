@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import type { Usuario } from '../types/usuario';
-import './Register.css';
+import './register.css';
 import { notifyUsuarioUpdated } from '../hooks/useUsuario';
 import { buildApiUrl } from '../shared/config';
 
