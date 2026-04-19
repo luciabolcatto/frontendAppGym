@@ -117,7 +117,7 @@ const ReservarClase: React.FC = () => {
 
       // Validar contrato pagado vigente para la fecha de la clase
       const token = localStorage.getItem('token');
-      const contratosRes = await fetch(`${API_BASE}/api/contratos/usuario/${usuario.id}`, {
+      const contratosRes = await fetch(buildApiUrl(`/api/contratos/usuario/${usuario.id}`), {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -160,7 +160,7 @@ const ReservarClase: React.FC = () => {
       }
 
       //  Registrar la reserva
-      const reservaRes = await fetch(`${API_BASE}/api/Reservas`, {
+      const reservaRes = await fetch(buildApiUrl('/api/Reservas'), {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ const ReservarClase: React.FC = () => {
 
       //  Actualizar el cupo de la clase
       const cupoRes = await fetch(
-        `${API_BASE}/api/clases/${claseId}/actualizar-cupo`,
+        buildApiUrl(`/api/clases/${claseId}/actualizar-cupo`),
         {
           method: 'PATCH',
         }

@@ -1,12 +1,38 @@
-# React + Vite
+# Frontend App Gym
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación frontend construida con React + Vite.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 18+
+- pnpm
 
-## Expanding the ESLint configuration
+## Desarrollo local
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Instalar dependencias:
+
+   ```bash
+   pnpm install
+   ```
+
+2. Configurar variables de entorno (crear archivo `.env` en la raíz del frontend):
+
+   ```env
+   VITE_API_URL=https://backendappgym.onrender.com
+   ```
+
+3. Ejecutar en modo desarrollo:
+
+   ```bash
+   pnpm dev
+   ```
+
+## Build de producción
+
+```bash
+pnpm build
+```
+
+## Deploy en Vercel
+
+La app ya incluye `vercel.json` para soporte de rutas de React Router (SPA fallback).

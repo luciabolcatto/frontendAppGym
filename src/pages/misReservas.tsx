@@ -169,7 +169,7 @@ const MisReservas: React.FC = () => {
     try {
       setCancelando(reservaId);
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE}/api/Reservas/${reservaId}`, {
+      const response = await fetch(buildApiUrl(`/api/Reservas/${reservaId}`), {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
