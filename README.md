@@ -33,6 +33,14 @@ Aplicación frontend construida con React + Vite.
 pnpm build
 ```
 
+## Scripts útiles
+
+- `pnpm test` - ejecuta todos los tests de Jest
+- `pnpm test:e2e` - ejecuta los tests end to end
+- `pnpm test:components` - ejecuta los tests de componentes
+- `pnpm test:star` - ejecuta solo el test de StarRating
+- `pnpm test:pago` - ejecuta solo el test de PagoModal
+
 ## Deploy en Vercel
 
 La app ya incluye `vercel.json` para soporte de rutas de React Router (SPA fallback).
