@@ -1,46 +1,41 @@
-# Frontend App Gym
+# Gym App - Frontend 
 
-Aplicación frontend construida con React + Vite.
+Cliente web para el Sistema de Gestión de Gimnasios, desarrollado con **React**, **Vite** y **TypeScript**.
 
-## Requisitos
+## Tecnologías
+- **Core:** React 18, TypeScript, React Router DOM v6.
+- **Estilos:** Tailwind CSS v4, Lucide React.
+- **Pagos:** Stripe SDK.
+- **Feedback:** React Hot Toast.
+- **Testing:** Jest + React Testing Library.
+  
+## Estructura
+- `components/`: UI reutilizable (Modales de pago, Valoraciones).
+- `services/`: Comunicación con la API (Contratos, Reservas).
+- `hooks/`: Lógica de estado y efectos.
+- `types/`: Definiciones de interfaces TypeScript.
+- `test/` & `e2e/`: Pruebas unitarias y de flujo completo.
 
-- Node.js 18+
-- pnpm
-
-## Desarrollo local
-
-1. Instalar dependencias:
-
+## Instalación y Desarrollo
+1. **Instalar dependencias:**
    ```bash
    pnpm install
-   ```
 
-2. Configurar variables de entorno (crear archivo `.env` en la raíz del frontend):
+2. **Configurar .env:** [br]
+VITE_API_URL=[https://backendappgym.onrender.com](https://backendappgym.onrender.com)
 
-   ```env
-   VITE_API_URL=https://backendappgym.onrender.com
-   ```
-
-3. Ejecutar en modo desarrollo:
-
-   ```bash
+3. **Iniciar:**
+    ```bash
    pnpm dev
-   ```
 
-## Build de producción
+## Testing 
+- `pnpm test` (Unitarios).
 
-```bash
-pnpm build
-```
+- `pnpm test:e2e` (Flujos completos).
 
-## Scripts útiles
+- `pnpm test:star` (Test de Valoraciones).
 
-- `pnpm test` - ejecuta todos los tests de Jest
-- `pnpm test:e2e` - ejecuta los tests end to end
-- `pnpm test:components` - ejecuta los tests de componentes
-- `pnpm test:star` - ejecuta solo el test de StarRating
-- `pnpm test:pago` - ejecuta solo el test de PagoModal
+- `pnpm test:pago` (Test de Modal de Pago).
 
-## Deploy en Vercel
-
-La app ya incluye `vercel.json` para soporte de rutas de React Router (SPA fallback).
+## Deploy
+Configurado para **Vercel** con soporte para rutas SPA.
