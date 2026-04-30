@@ -21,7 +21,7 @@ Cliente web para el Sistema de Gestión de Gimnasios, desarrollado con **React**
    ```bash
    pnpm install
 
-2. **Configurar .env:** [br]
+2. **Configurar .env:** <br>
 VITE_API_URL=[https://backendappgym.onrender.com](https://backendappgym.onrender.com)
 
 3. **Iniciar:**
