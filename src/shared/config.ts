@@ -1,3 +1,4 @@
+// Busca la URL del backend deployado en el env (VITE_API_URL); si no la encuentra, usa localhost
 const rawApiBase =
   (globalThis as any).__APP_API_BASE_URL__ ??
   import.meta.env?.VITE_API_URL ??

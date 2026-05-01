@@ -1,15 +1,17 @@
-# Gym App - Frontend 
+# Gym App - Frontend
 
 Cliente web para el Sistema de Gestión de Gimnasios, desarrollado con **React**, **Vite** y **TypeScript**.
 
 ## Tecnologías
+
 - **Core:** React 18, TypeScript, React Router DOM v6.
-- **Estilos:** Tailwind CSS v4, Lucide React.
+- **Estilos:** Tailwind CSS v4, Lucide React, React Icons.
 - **Pagos:** Stripe SDK.
 - **Feedback:** React Hot Toast.
 - **Testing:** Jest + React Testing Library.
-  
+
 ## Estructura
+
 - `components/`: UI reutilizable (Modales de pago, Valoraciones).
 - `services/`: Comunicación con la API (Contratos, Reservas).
 - `hooks/`: Lógica de estado y efectos.
@@ -17,18 +19,24 @@ Cliente web para el Sistema de Gestión de Gimnasios, desarrollado con **React**
 - `test/` & `e2e/`: Pruebas unitarias y de flujo completo.
 
 ## Instalación y Desarrollo
+
 1. **Instalar dependencias:**
+
    ```bash
    pnpm install
 
+   ```
+
 2. **Configurar .env:** <br>
-VITE_API_URL=[https://backendappgym.onrender.com](https://backendappgym.onrender.com)
+   VITE_API_URL=[https://backendappgym.onrender.com](https://backendappgym.onrender.com)
 
 3. **Iniciar:**
-    ```bash
+   ```bash
    pnpm dev
+   ```
 
-## Testing 
+## Testing
+
 - `pnpm test` (Unitarios).
 
 - `pnpm test:e2e` (Flujos completos).
@@ -38,4 +46,5 @@ VITE_API_URL=[https://backendappgym.onrender.com](https://backendappgym.onrender
 - `pnpm test:pago` (Test de Modal de Pago).
 
 ## Deploy
-Configurado para **Vercel** con soporte para rutas SPA.
+
+Configurado para **Vercel** con soporte para rutas SPA (https://frontend-app-gym.vercel.app/).
