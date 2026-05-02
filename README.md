@@ -37,11 +37,11 @@ Cliente web para el Sistema de Gestión de Gimnasios, desarrollado con **React**
 
 ## Testing
 
-- `pnpm test` EJecuta todos los test.
-- `pnpm test:components` Ejecuta los test de componentes.
-- `pnpm test:e2e` Ejecuta test de flujo completo.
-- `pnpm test:star` Ejecuta test de Valoraciones.
-- `pnpm test:pago` ejecuta test de modal de Pago.
+- `pnpm test`: Ejecuta todos los tests.
+- `pnpm test:components`: Ejecuta los tests de componentes.
+- `pnpm test:e2e`: Ejecuta tests de flujo completo.
+- `pnpm test:star`: Ejecuta tests de valoraciones.
+- `pnpm test:pago`: Ejecuta tests del modal de pago.
 
 ## Deploy
 
