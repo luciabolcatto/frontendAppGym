@@ -1,4 +1,4 @@
-// Busca la URL del backend deployado en el env (VITE_API_URL); si no la encuentra, usa localhost
+// Busca la URL del backend inyectada por Vite; si no existe, usa una global o localhost.
 const rawApiBase =
   (globalThis as any).__APP_API_BASE_URL__ ??
   'http://localhost:5500';
