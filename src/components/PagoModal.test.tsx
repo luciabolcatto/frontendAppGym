@@ -399,4 +399,261 @@ describe('PagoModal', () => {
       expect(screen.getByText('Por favor, selecciona un método de pago')).toBeInTheDocument();
     });
   });
+
+  it('cambia de metodo de pago y muestra UI correspondiente', async () => {
+    render(
+      <PagoModal
+        contrato={contratoBase}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    await screen.findByText('Transferencia');
+
+    // Selecciona transferencia
+    fireEvent.click(screen.getByText('Transferencia'));
+    expect(await screen.findByText('Datos para la transferencia')).toBeInTheDocument();
+
+    // Cambia a efectivo
+    fireEvent.click(screen.getByText('Efectivo'));
+    expect(await screen.findByText('Instrucciones')).toBeInTheDocument();
+    expect(screen.queryByText('Datos para la transferencia')).not.toBeInTheDocument();
+
+    // Cambia a tarjeta
+    fireEvent.click(screen.getByText('Tarjeta'));
+    expect(screen.queryByText('Instrucciones')).not.toBeInTheDocument();
+  });
+
+  it('muestra datos bancarios completos cuando se selecciona transferencia', async () => {
+    render(
+      <PagoModal
+        contrato={contratoBase}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    await screen.findByText('Transferencia');
+    fireEvent.click(screen.getByText('Transferencia'));
+
+    expect(await screen.findByText('Banco Test')).toBeInTheDocument();
+    expect(screen.getByText('Gym SA')).toBeInTheDocument();
+    expect(screen.getByText('0000003100000000000001')).toBeInTheDocument();
+    expect(screen.getByText('GYM.TEST')).toBeInTheDocument();
+  });
+
+  it('no ejecuta onPagoExitoso si la transaccion falla', async () => {
+    const onPagoExitoso = jest.fn();
+    (StripeService.pagarConEfectivo as jest.Mock).mockRejectedValueOnce(
+      new Error('Error del servidor')
+    );
+
+    render(
+      <PagoModal
+        contrato={contratoBase}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={onPagoExitoso}
+      />
+    );
+
+    await screen.findByText('Efectivo');
+    fireEvent.click(screen.getByText('Efectivo'));
+    fireEvent.click(screen.getByRole('button', { name: /confirmar pago/i }));
+
+    await screen.findByText(/Error del servidor/);
+
+    expect(onPagoExitoso).not.toHaveBeenCalled();
+  });
+
+  it('valida que el comprobante es requerido para transferencia cuando falla sin él', async () => {
+    (StripeService.pagarConTransferencia as jest.Mock).mockRejectedValueOnce(
+      new Error('Comprobante requerido')
+    );
+
+    render(
+      <PagoModal
+        contrato={contratoBase}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    await screen.findByText('Transferencia');
+    fireEvent.click(screen.getByText('Transferencia'));
+    fireEvent.click(screen.getByRole('button', { name: /confirmar pago/i }));
+
+    await screen.findByText(/Comprobante requerido/);
+    expect(StripeService.pagarConTransferencia).toHaveBeenCalledWith('c1', undefined);
+  });
+
+  it('actualiza informacion del contrato cuando prop cambia', async () => {
+    const { rerender } = render(
+      <PagoModal
+        contrato={contratoBase}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    expect(screen.getByText(/Mensual/)).toBeInTheDocument();
+    expect(screen.getByText(/10000|10\.000/)).toBeInTheDocument();
+
+    const nuevoContrato = {
+      ...contratoBase,
+      id: 'c2',
+      membresia: {
+        id: 'm2',
+        nombre: 'Trimestral',
+        descripcion: 'Plan trimestral',
+        precio: 25000,
+        meses: 3,
+      },
+    };
+
+    rerender(
+      <PagoModal
+        contrato={nuevoContrato}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    expect(screen.getByText(/Trimestral/)).toBeInTheDocument();
+    expect(screen.getByText(/25000|25\.000/)).toBeInTheDocument();
+  });
+
+  it('cierra el modal y ejecuta callbacks correctamente en pago exitoso', async () => {
+    const onClose = jest.fn();
+    const onPagoExitoso = jest.fn();
+
+    (StripeService.pagarConEfectivo as jest.Mock).mockResolvedValueOnce({
+      data: {
+        contrato: {
+          fechaPago: new Date().toISOString(),
+          metodoPago: 'efectivo',
+        },
+      },
+    });
+
+    render(
+      <PagoModal
+        contrato={contratoBase}
+        isOpen={true}
+        onClose={onClose}
+        onPagoExitoso={onPagoExitoso}
+      />
+    );
+
+    await screen.findByText('Efectivo');
+    fireEvent.click(screen.getByText('Efectivo'));
+    fireEvent.click(screen.getByRole('button', { name: /confirmar pago/i }));
+
+    await waitFor(() => {
+      expect(onPagoExitoso).toHaveBeenCalledTimes(1);
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('muestra error especifico si contrato esta cancelado', async () => {
+    render(
+      <PagoModal
+        contrato={{ ...contratoBase, estado: EstadoContrato.CANCELADO }}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    await screen.findByText('Tarjeta');
+    
+    // Obtener el botón de pago (el segundo botón en el modal footer)
+    const botonesPago = screen.getAllByRole('button');
+    const botonPago = botonesPago[botonesPago.length - 1]; // Último botón es el de pagar
+    fireEvent.click(botonPago);
+
+    await waitFor(() => {
+      expect(screen.getByText('Este contrato no puede ser pagado')).toBeInTheDocument();
+    });
+  });
+
+  it('valida integridad de datos bancarios mostrados', async () => {
+    render(
+      <PagoModal
+        contrato={contratoBase}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    await screen.findByText('Transferencia');
+    fireEvent.click(screen.getByText('Transferencia'));
+
+    const datosBancarios = await screen.findByText(/Datos para la transferencia/);
+    expect(datosBancarios).toBeInTheDocument();
+
+    // Verifica que todos los datos están presentes
+    const bancoText = screen.getByText('Banco Test');
+    const titularText = screen.getByText('Gym SA');
+    const cbuText = screen.getByText('0000003100000000000001');
+    const aliasText = screen.getByText('GYM.TEST');
+
+    expect(bancoText.closest('[class*="info"]')).toBeInTheDocument();
+    expect(titularText.closest('[class*="info"]')).toBeInTheDocument();
+    expect(cbuText.closest('[class*="info"]')).toBeInTheDocument();
+    expect(aliasText.closest('[class*="info"]')).toBeInTheDocument();
+  });
+
+  it('permite pagar multiples contratos sin interferencia de estado anterior', async () => {
+    const { rerender } = render(
+      <PagoModal
+        contrato={contratoBase}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    (StripeService.pagarConEfectivo as jest.Mock).mockResolvedValueOnce({
+      data: { contrato: { fechaPago: new Date().toISOString() } },
+    });
+
+    await screen.findByText('Efectivo');
+    fireEvent.click(screen.getByText('Efectivo'));
+
+    // Los métodos de pago se cargan al abrir
+    expect(StripeService.getMetodosPago).toHaveBeenCalledTimes(1);
+
+    // Rerender con nuevo contrato y isOpen=false
+    rerender(
+      <PagoModal
+        contrato={{ ...contratoBase, id: 'c2' }}
+        isOpen={false}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    // Rerender nuevamente con isOpen=true
+    rerender(
+      <PagoModal
+        contrato={{ ...contratoBase, id: 'c2' }}
+        isOpen={true}
+        onClose={jest.fn()}
+        onPagoExitoso={jest.fn()}
+      />
+    );
+
+    // Deberia cargar los métodos nuevamente para el nuevo contrato
+    await waitFor(() => {
+      expect(StripeService.getMetodosPago).toHaveBeenCalledTimes(2);
+    });
+  });
 });

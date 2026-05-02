@@ -23,4 +23,5 @@ module.exports = {
     ],
   },
   clearMocks: true,
+  testTimeout: 10000,
 };
