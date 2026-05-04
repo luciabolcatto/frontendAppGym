@@ -8,6 +8,19 @@ import {
 } from '../types/stripe';
 import { buildApiUrl } from '../shared/config';
 
+function buildAuthHeaders(): HeadersInit {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    throw new Error('No hay token de autenticación. Inicia sesión nuevamente.');
+  }
+
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+}
+
 /**
  * Servicio para integración con Stripe Checkout y otros métodos de pago
  */
@@ -54,9 +67,7 @@ export class StripeService {
       
       const response = await fetch(buildApiUrl('/api/stripe/create-checkout-session'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(),
         credentials: 'include',
         body: JSON.stringify(requestBody),
       });
@@ -93,9 +104,7 @@ export class StripeService {
       
       const response = await fetch(buildApiUrl('/api/stripe/pagar-transferencia'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(),
         credentials: 'include',
         body: JSON.stringify(requestBody),
       });
@@ -123,9 +132,7 @@ export class StripeService {
     try {
       const response = await fetch(buildApiUrl('/api/stripe/pagar-efectivo'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(),
         credentials: 'include',
         body: JSON.stringify({ contratoId }),
       });
@@ -154,9 +161,7 @@ export class StripeService {
     try {
       const response = await fetch(buildApiUrl(`/api/stripe/session/${sessionId}`), {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(),
         credentials: 'include',
       });
 

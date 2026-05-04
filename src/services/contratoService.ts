@@ -25,7 +25,7 @@ export class ContratoService {
     try {
       const response = await fetch(buildApiUrl('/api/contratos/contratar'), {
         method: 'POST',
-        headers: buildHeaders(),
+        headers: buildHeaders(true),
         credentials: 'include',
         body: JSON.stringify(data),
       });
@@ -49,7 +49,7 @@ export class ContratoService {
     try {
       const response = await fetch(buildApiUrl(`/api/contratos/cancelar/${contratoId}`), {
         method: 'PATCH',
-        headers: buildHeaders(),
+        headers: buildHeaders(true),
         credentials: 'include',
       });
 

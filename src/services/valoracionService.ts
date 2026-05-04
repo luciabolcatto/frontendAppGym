@@ -2,13 +2,16 @@ import { buildApiUrl } from '../shared/config';
 
 const API_URL = buildApiUrl('/api/valoraciones');
 
-console.log("API_URL", API_URL);
-
 function getAuthHeaders() {
   const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error('No hay token de autenticación. Inicia sesión nuevamente.');
+  }
+
   return {
     "Content-Type": "application/json",
-    Authorization: token ? `Bearer ${token}` : "",
+    Authorization: `Bearer ${token}`,
   };
 }
  //pide al back el promedio de valoriciones y cantidad

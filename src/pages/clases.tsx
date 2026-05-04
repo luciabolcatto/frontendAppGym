@@ -620,6 +620,7 @@ const ClasesPage: React.FC = () => {
                                         method: 'PATCH',
                                         headers: {
                                           'Content-Type': 'application/json',
+                                          'Authorization': `Bearer ${localStorage.getItem('token')}`,
                                         },
                                         body: JSON.stringify({
                                           estado: 'cancelada'

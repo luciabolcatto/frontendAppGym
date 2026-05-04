@@ -182,6 +182,9 @@ const ReservarClase: React.FC = () => {
         buildApiUrl(`/api/clases/${claseId}/actualizar-cupo`),
         {
           method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
         }
       );
       const cupoData = await cupoRes.json();
